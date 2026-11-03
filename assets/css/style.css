@@ -157,6 +157,9 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
   margin-bottom: clamp(40px, 5vw, 64px);
 }
 
+.section-head--stack { grid-template-columns: minmax(0, 1fr); gap: 0; align-items: start; }
+.section-head--stack .section-intro { margin-top: 16px; margin-bottom: 0; }
+
 .section-intro {
   max-width: 58ch;
   color: var(--stone);
@@ -300,8 +303,9 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
   background: var(--ink);
   transition: transform .22s var(--ease), opacity .22s var(--ease);
 }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:first-child { transform: translateY(3.25px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:first-child { transform: translateY(6.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:last-child { transform: translateY(-6.5px) rotate(-45deg); }
 
 .progress {
   position: absolute;
@@ -342,8 +346,8 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
   text-decoration: none;
   line-height: 1.1;
 }
-.mobile-menu-foot { padding-top: 28px; }
-.mobile-menu-foot p { margin-top: 16px; font-size: 14px; color: var(--stone); }
+.mobile-menu-foot { padding-top: 22px; }
+.mobile-menu-foot p { margin-top: 0; font-size: 14px; color: var(--stone); }
 
 body.menu-open { overflow: hidden; }
 
@@ -603,19 +607,22 @@ body.menu-open { overflow: hidden; }
 }
 
 /* 6. About ----------------------------------------------------------------- */
+/* заглавие -> голяма снимка -> текст */
+/* лаптоп: текст отляво, снимка отдясно; телефон: снимката е над текста */
 .about {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: clamp(32px, 6vw, 88px);
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(24px, 4vw, 64px);
   align-items: stretch;
 }
+.about-text { order: 1; max-width: 78ch; }
 
-/* снимката заема точно височината на текстовата колона, за да съвпаднат дъната */
 .about-media {
+  order: 2;
   margin: 0;
   position: relative;
-  min-height: clamp(300px, 34vw, 460px);
-  border-radius: var(--r);
+  min-height: 0;
+  border-radius: 24px;
   overflow: hidden;
   background: var(--paper-2);
 }
@@ -626,12 +633,20 @@ body.menu-open { overflow: hidden; }
   height: 100%;
   object-fit: cover;
   object-position: 50% 42%;
-  border-radius: var(--r);
+  border-radius: 24px;
 }
 
-@media (max-width: 900px) {
+/* тесен екран: една колона, снимката първа (както е и в HTML) */
+@media (max-width: 1040px) {
   .about { grid-template-columns: minmax(0, 1fr); gap: 22px; }
-  .about-media { min-height: 0; aspect-ratio: 4 / 3; }
+  .about-text { order: 2; }
+  .about-media { order: 1; position: static; min-height: 0; }
+  .about-media img {
+    position: static; inset: auto;
+    width: 100%; height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
 }
 .about-media figcaption {
   margin-top: 12px;
@@ -759,7 +774,12 @@ body.menu-open { overflow: hidden; }
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  /* линията е на целия ред, не само под заглавието */
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 16px;
+  margin-bottom: clamp(24px, 3vw, 38px);
 }
+.subhead-row .subhead { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
 .subhead-row .stories-more { min-height: 0; }
 
 /* „Минали събития“ е заглавие на цяла секция — същият размер като другите */
@@ -1348,9 +1368,10 @@ body.menu-open { overflow: hidden; }
   text-transform: uppercase;
   color: var(--stone);
 }
-.page-hero--media { padding-top: clamp(26px, 3.2vw, 44px); }
-.page-hero--media .page-title { max-width: 18ch; font-size: clamp(31px, 3.74vw, 50px); }
-.page-hero--media .lead { max-width: 58ch; margin-top: clamp(20px, 2.4vw, 28px); }
+/* Вътрешни страници: един и същ заглавен блок навсякъде (Начало работи другояче) */
+.page-hero--plain { padding-top: clamp(26px, 3.2vw, 44px); }
+.page-hero--plain .page-title { max-width: 20ch; font-size: clamp(31px, 3.90vw, 53px); }
+.page-hero--plain .lead { max-width: 56ch; margin-top: clamp(20px, 2.4vw, 28px); }
 .section-tight { padding-block: clamp(18px, 2.4vw, 30px) var(--section-y); }
 
 .filters {
@@ -1663,10 +1684,6 @@ body.menu-open { overflow: hidden; }
 .trail-flag .flag-pole { stroke: var(--pine); stroke-width: 2; stroke-linecap: round; }
 .trail-flag .flag-cloth { fill: var(--ember); }
 
-.page-hero--events { padding-top: clamp(26px, 3.2vw, 44px); }
-.page-hero--events .page-title { max-width: 20ch; font-size: clamp(31px, 3.90vw, 53px); }
-.page-hero--events .lead { max-width: 56ch; margin-top: clamp(20px, 2.4vw, 28px); }
-
 @media (max-width: 900px) {
   .journey { --head: 76px; }
   .journey-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; padding-bottom: 84px; }
@@ -1771,7 +1788,7 @@ body.menu-open { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 14px;
   padding: clamp(14px, 1.25vw, 20px);
   border: 1px solid var(--line-dark);
   border-radius: var(--r);
@@ -1791,6 +1808,8 @@ body.menu-open { overflow: hidden; }
   max-width: 52ch;
 }
 .give-method .btn { margin-top: auto; }
+/* бутоните в картите се свиват до текста; еднаква ширина с „Към кампанията“ */
+.give-method > .btn { width: auto; min-width: 196px; padding-inline: 30px; }
 .give-method .btn-outline-light { min-width: 185px; }
 
 .give-amounts-label {
@@ -1813,7 +1832,7 @@ body.menu-open { overflow: hidden; }
   gap: 10px;
   width: 100%;
   flex-wrap: wrap;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 .select-wrap {
   position: relative;
@@ -2207,15 +2226,44 @@ body.menu-open { overflow: hidden; }
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: clamp(32px, 5vw, 80px);
-  align-items: start;
+  align-items: stretch;
 }
+/* текстът отляво се разпределя, за да завършва на една линия с последния елемент отдясно */
 .story-copy .h2 { margin-bottom: clamp(24px, 3vw, 36px); }
 .story-copy p { max-width: 62ch; }
-.story-copy p + p { margin-top: 18px; }
+.story-copy p + p { margin-top: 1.6em; }   /* един празен ред между абзаците */
 
 .story-aside { position: sticky; top: 128px; }
 .story-aside .quote { margin: 0; }
 .story-aside .quote p { font-size: clamp(15px, 1.33vw, 18px); line-height: 1.32; }
+.story-aside--static { position: static; }
+
+.about-story-media { margin: 0 0 clamp(24px, 3vw, 34px); }
+.about-story-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 20px;
+  background: var(--paper-2);
+}
+.about-story-media figcaption,
+.about-video figcaption {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--stone);
+}
+.about-video { margin: clamp(24px, 3vw, 34px) 0 0; }
+.about-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  background: #000;
+}
 
 .story-facts {
   margin-top: 32px;
@@ -2241,6 +2289,8 @@ body.menu-open { overflow: hidden; }
 }
 
 /* Documents */
+/* без уводен текст под „Отчетност“ — по-малко разстояние до списъка */
+#reports .section-head { margin-bottom: 0; }
 .docs { margin-top: clamp(28px, 3.4vw, 44px); }
 .doc-group {
   display: grid;
@@ -2320,7 +2370,7 @@ body.menu-open { overflow: hidden; }
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
   gap: clamp(28px, 4vw, 72px);
-  align-items: center;
+  align-items: start;
 }
 .award img {
   width: 100%;
@@ -2359,8 +2409,13 @@ body.menu-open { overflow: hidden; }
   .stories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-facts { max-width: 420px; }
   .page-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .story-grid { grid-template-columns: minmax(0, 1fr); }
-  .story-aside { position: static; margin-top: 8px; }
+  /* телефон: снимката веднага след заглавието, после текстът, цитатът и видеото */
+  .story-grid { display: flex; flex-direction: column; }
+  .story-aside { display: contents; }
+  .about-story-media { order: 1; margin: 0 0 clamp(20px, 3vw, 28px); }
+  .story-copy { order: 2; }
+  .story-grid .story-aside .quote { order: 3; margin: clamp(24px, 4vw, 32px) 0 0; }
+  .story-grid .about-video { order: 4; margin: clamp(24px, 4vw, 32px) 0 0; }
   .award { grid-template-columns: minmax(0, 1fr); }
   .award img { aspect-ratio: 16 / 10; object-position: 50% 40%; }
   .hero-actions { margin-top: 4px; }
@@ -2391,9 +2446,39 @@ body.menu-open { overflow: hidden; }
   .slide-card { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 10px; }
   .slide-media { height: auto; min-height: 0; aspect-ratio: 16 / 10; border-radius: 18px; }
   .slide-body { padding: 4px 10px 14px; }
+  .about-media img { aspect-ratio: 4 / 3; border-radius: 20px; }
+  /* връзките „Виж всички“ / „Всички публикации“ – вдясно */
+  .subhead-row { flex-wrap: wrap; }
+  .subhead-row .stories-more { margin-left: auto; }
+
+  /* ePay: сума и бутон на един ред и при 100 € (iPhone 375px) */
+  .epay-row { flex-wrap: nowrap; gap: 8px; }
+  .select-wrap { flex: 0 1 auto; min-width: 0; }
+  .amount-select { width: 160px; max-width: 46vw; min-width: 0; padding-right: 30px; }
+  .give-amounts-cta { flex: 0 0 auto; padding: 10px 15px; font-size: 13.5px; }
+  .give-method .give-amounts-cta { min-width: 0; }
+
+  /* на телефон – само първите две новини (останалите са в Медии) */
+  #media .stories .story:nth-child(n+3) { display: none; }
   .slide-card--event { grid-template-columns: minmax(0, 1fr); }
-  .slide-card--event .slide-body { padding: 4px 10px 16px; }
-  .slide-card--event .slide-media-wrap { order: -1; aspect-ratio: 16 / 10; min-height: 0; border-radius: 18px; }
+  /* ред на мобилно: заглавие, дата и час, място, снимка, описание, бутони */
+  .slide-card--event .slide-body { display: contents; }
+  .slide-card--event .slide-title { order: 1; margin: 0; }
+  .slide-card--event .event-when { order: 2; margin-top: 8px; }
+  .slide-card--event .event-place { order: 3; }
+  /* снимката не се позиционира абсолютно: iOS Safari не дава височина на
+     процентно позициониран елемент в кутия, висока чрез aspect-ratio */
+  .slide-card--event .slide-media-wrap { order: 4; margin-top: 14px; min-height: 0; border-radius: 18px; }
+  .slide-card--event .slide-media {
+    position: static; inset: auto;
+    display: block;
+    width: 100%; height: auto;
+    aspect-ratio: auto;
+    border-radius: 0;
+    object-fit: cover; object-position: 50% 45%;
+  }
+  .slide-card--event .slide-text { order: 5; margin-top: 14px; margin-bottom: 0; }
+  .slide-card--event .event-actions { order: 6; padding-top: 16px; }
   .event-actions .btn { flex: 1 1 auto; }
   .slide-title { max-width: none; }
   .stories-head { flex-direction: column; align-items: flex-start; gap: 8px; }
@@ -2580,9 +2665,29 @@ body.menu-open { overflow: hidden; }
 }
 @media (max-width: 760px) {
   .event-card { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 10px; }
-  .event-card-body { padding: 4px 10px 16px; }
-  .event-media-wrap { order: -1; min-height: 0; aspect-ratio: 16 / 10; border-radius: 18px; }
-  .event-card-title { max-width: none; }
+  /* същият ред като на началната: заглавие, дата и час, място, снимка, описание, бутони */
+  .event-card-body { display: contents; }
+  .event-card-title { order: 1; margin: 0; max-width: none; }
+  .event-card-body .event-when { order: 2; margin-top: 8px; }
+  .event-card-body .event-place { order: 3; }
+  .event-media-wrap { order: 4; margin-top: 14px; min-height: 0; border-radius: 18px; }
+  .event-media {
+    position: static; inset: auto;
+    display: block;
+    width: 100%; height: auto;
+    object-fit: cover; object-position: 50% 45%;
+  }
+  .event-card-text { order: 5; margin-top: 14px; margin-bottom: 0; }
+  .event-card .event-actions { order: 6; padding-top: 16px; }
   .event-card .event-actions .btn { flex: 1 1 auto; }
   .event-cover img { border-radius: 18px; }
+}
+
+/* „Всички публикации“: на лаптоп – до заглавието, на телефон – под новините */
+.stories-more--bottom, .past-more--bottom { display: none; }
+@media (max-width: 760px) {
+  #media .stories-more--head { display: none; }
+  .past-more--head { display: none; }
+  .past-more--bottom { display: flex; width: fit-content; margin: 14px 0 0 auto; }
+  #media .stories-more--bottom { display: flex; width: fit-content; margin: 12px 0 0 auto; }
 }

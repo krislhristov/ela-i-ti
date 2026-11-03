@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=60">
+<link rel="stylesheet" href="assets/css/style.css?v=83">
 </head>
 <body>
 
@@ -29,8 +29,8 @@
     <nav class="nav" aria-label="Основна навигация">
       <a href="index.html">Начало</a>
       <a href="about.html">За нас</a>
-      <a href="campaigns.html">Кампании</a>
       <a href="events.html" aria-current="page">Събития</a>
+      <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти</a>
       <a href="media.html">Медии</a>
     </nav>
@@ -38,7 +38,7 @@
     <div class="header-actions">
       <a class="btn btn-sm" href="index.html#support">Дари сега</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i></span>
+        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="visually-hidden">Меню</span>
       </button>
     </div>
@@ -50,43 +50,42 @@
   <nav aria-label="Мобилна навигация">
     <a href="index.html">Начало</a>
     <a href="about.html">За нас</a>
-    <a href="campaigns.html">Кампании</a>
     <a href="events.html">Събития</a>
+    <a href="campaigns.html">Кампании</a>
     <a href="projects.html">Проекти</a>
     <a href="media.html">Медии</a>
     <a href="index.html#contact">Контакти</a>
   </nav>
   <div class="mobile-menu-foot">
-    <a class="btn btn-block" href="index.html#support" data-close-menu>Дари сега</a>
     <p>087&nbsp;868&nbsp;6720 · info@elaiti.com</p>
   </div>
 </div>
 
 <main id="main">
 
-  <section class="page-hero page-hero--events" aria-labelledby="page-title">
+  <section class="page-hero page-hero--plain" aria-labelledby="page-title">
     <div class="wrap">
-      <h1 class="page-title" id="page-title">Събития</h1>
+      <h1 class="page-title" id="page-title">Предстоящи събития</h1>
     </div>
   </section>
 
-  <section class="section section-events" aria-label="Списък със събития">
+  <section class="section section-events" id="upcoming" aria-label="Предстоящи събития">
     <div class="wrap">
-      <ul class="events-list" data-events-list></ul>
+      <ul class="events-list" data-events-list="future"></ul>
+      <p class="lead" data-events-empty="future" hidden>Няма насрочени събития в момента. Очаквайте скоро следващото ни приключение!</p>
+
       <noscript>
         <p class="lead">За да видите събитията, включете JavaScript в браузъра си.</p>
       </noscript>
     </div>
   </section>
 
-  <section class="cta-band" aria-labelledby="cta-title">
-    <div class="wrap cta-band-inner">
-      <h2 class="h2" id="cta-title">Следващото може да е с теб.</h2>
-      <p>Датите излизат първо във Facebook. Кажи ни, че искаш да си там — и ще те потърсим.</p>
-      <div class="cta-band-actions">
-        <a class="btn" href="index.html#support">Дари сега</a>
-        <a class="btn btn-outline-light" href="https://www.facebook.com/elaitifoundation/" target="_blank" rel="noopener">Следи във Facebook</a>
-      </div>
+  <section class="section section-events" id="past" aria-labelledby="past-title">
+    <div class="wrap">
+      <h2 class="h2 section-title section-title--sub" id="past-title">Минали събития</h2>
+
+      <ul class="events-list" data-events-list="past"></ul>
+      <p class="lead" data-events-empty="past" hidden>Няма минали събития.</p>
     </div>
   </section>
 
@@ -122,8 +121,8 @@
     <nav class="footer-nav" aria-label="Навигация в долната част">
       <a href="index.html">Начало</a>
       <a href="about.html">За нас</a>
-      <a href="campaigns.html">Кампании</a>
       <a href="events.html">Събития</a>
+      <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти</a>
       <a href="media.html">Медии</a>
       <a href="index.html#support">Дари сега</a>
@@ -136,8 +135,8 @@
 </footer>
 
 <!-- събитията идват от assets/js/events-data.js -->
-<script src="assets/js/events-data.js?v=4" defer></script>
-<script src="assets/js/events.js?v=4" defer></script>
-<script src="assets/js/main.js?v=36" defer></script>
+<script src="assets/js/events-data.js?v=6" defer></script>
+<script src="assets/js/events.js?v=7" defer></script>
+<script src="assets/js/main.js?v=37" defer></script>
 </body>
 </html>

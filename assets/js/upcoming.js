@@ -89,7 +89,7 @@
       var img = node("img", "slide-media");
       img.src = first.src;
       img.alt = first.alt || ev.title;
-      img.loading = "lazy";
+      img.loading = i === 0 ? "eager" : "lazy";
       img.decoding = "async";
       media.appendChild(img);
       card.appendChild(media);

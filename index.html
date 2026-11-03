@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=60">
+<link rel="stylesheet" href="assets/css/style.css?v=83">
 </head>
 <body>
 
@@ -29,8 +29,8 @@
     <nav class="nav" aria-label="Основна навигация">
       <a href="index.html">Начало</a>
       <a href="about.html">За нас</a>
-      <a href="campaigns.html">Кампании</a>
       <a href="events.html">Събития</a>
+      <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти</a>
       <a href="media.html">Медии</a>
     </nav>
@@ -38,7 +38,7 @@
     <div class="header-actions">
       <a class="btn btn-sm" href="#support">Дари сега</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i></span>
+        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="visually-hidden">Меню</span>
       </button>
     </div>
@@ -50,14 +50,13 @@
   <nav aria-label="Мобилна навигация">
     <a href="index.html">Начало</a>
     <a href="about.html">За нас</a>
-    <a href="campaigns.html">Кампании</a>
     <a href="events.html">Събития</a>
+    <a href="campaigns.html">Кампании</a>
     <a href="projects.html">Проекти</a>
     <a href="media.html">Медии</a>
     <a href="#contact">Контакти</a>
   </nav>
   <div class="mobile-menu-foot">
-    <a class="btn btn-block" href="#support" data-close-menu>Дари сега</a>
     <p>087&nbsp;868&nbsp;6720 · info@elaiti.com</p>
   </div>
 </div>
@@ -203,7 +202,7 @@
     <div class="wrap">
       <div class="subhead-row">
         <h3 class="h3 subhead" id="past-title">Минали събития</h3>
-        <a class="stories-more" href="events.html">
+        <a class="stories-more past-more--head" href="events.html">
           Виж всички
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -275,6 +274,11 @@
           </div>
         </div>
       </div>
+
+      <a class="stories-more past-more--bottom" href="events.html">
+        Виж всички
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </section>
 
@@ -293,7 +297,7 @@
 
       <div class="about-text">
         <h3 class="about-head">Как започна всичко?</h3>
-        <p class="lead">
+        <p>
           Създадохме фондация „Ела и ти“ в подкрепа на хората в неравностойно положение.
         </p>
         <p>
@@ -317,7 +321,7 @@
     <div class="wrap">
       <div class="section-head-row is-lined">
         <h2 class="h2 section-title section-title--sub" id="media-title">Новини и истории</h2>
-        <a class="stories-more" href="media.html">
+        <a class="stories-more stories-more--head" href="media.html">
           Всички публикации
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -388,6 +392,11 @@
           </span>
         </a>
       </div>
+
+      <a class="stories-more stories-more--bottom" href="media.html">
+        Всички публикации
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </section>
 
@@ -430,9 +439,9 @@
               <div class="select-wrap">
                 <label class="visually-hidden" for="amount">Сума за дарение</label>
                 <select id="amount" class="amount-select" data-amount-select>
-                <option value="" selected>Сума</option>
+                <option value="">Сума</option>
                 <option value="5">5 €</option>
-                <option value="10">10 €</option>
+                <option value="10" selected>10 €</option>
                 <option value="20">20 €</option>
                 <option value="50">50 €</option>
                 <option value="100">100 €</option>
@@ -481,7 +490,7 @@
           <div class="give-method">
             <p class="give-method-head">DMS ELA на 17 777</p>
             <p class="give-method-text">Дари със SMS от 1,02 евро или се абонирай за месечно SMS дарение от 2,56 или 5,12 евро.</p>
-            <a class="btn btn-outline-light" href="https://dmsbg.com/34042/zaedno-v-planinata-zaedno-v-grada/" target="_blank" rel="noopener">DMS кампания</a>
+            <a class="btn btn-donate" href="sms:17777?body=DMS%20ELA">Изпрати SMS</a>
           </div>
         </div>
   </section>
@@ -561,8 +570,8 @@
     <nav class="footer-nav" aria-label="Навигация в долната част">
       <a href="index.html">Начало</a>
       <a href="#about">За нас</a>
-      <a href="campaigns.html">Кампании</a>
       <a href="events.html">Събития</a>
+      <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти</a>
       <a href="media.html">Медии</a>
       <a href="#support">Дари сега</a>
@@ -574,8 +583,8 @@
   </div>
 </footer>
 
-<script src="assets/js/events-data.js?v=4" defer></script>
-<script src="assets/js/upcoming.js?v=5" defer></script>
-<script src="assets/js/main.js?v=36" defer></script>
+<script src="assets/js/events-data.js?v=6" defer></script>
+<script src="assets/js/upcoming.js?v=6" defer></script>
+<script src="assets/js/main.js?v=37" defer></script>
 </body>
 </html>

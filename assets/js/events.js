@@ -44,64 +44,76 @@
   var ITEMS = collect();
 
   /* ── Списък със събития ───────────────────────────────────────────────── */
-  var listBox = document.querySelector("[data-events-list]");
-  if (listBox) {
-    ITEMS.forEach(function (item) {
-      var ev = item.ev;
-      var url = "event.html?event=" + encodeURIComponent(ev.slug);
+  function buildCard(item, eager) {
+    var ev = item.ev;
+    var url = "event.html?event=" + encodeURIComponent(ev.slug);
 
-      var card = node("article", "event-card" + (item.future ? " is-future" : ""));
+    var card = node("article", "event-card" + (item.future ? " is-future" : ""));
 
-      var body = node("div", "event-card-body");
-      body.appendChild(node("h2", "event-card-title", ev.title));
+    var body = node("div", "event-card-body");
+    body.appendChild(node("h2", "event-card-title", ev.title));
 
-      var when = node("p", "event-when");
-      var time = node("time", null, whenText(item));
-      time.setAttribute("datetime", isoDay(item.start));
-      when.appendChild(time);
-      body.appendChild(when);
+    var when = node("p", "event-when");
+    var time = node("time", null, whenText(item));
+    time.setAttribute("datetime", isoDay(item.start));
+    when.appendChild(time);
+    body.appendChild(when);
 
-      if (ev.location) body.appendChild(node("p", "event-place", ev.location));
-      if (ev.short) body.appendChild(node("p", "event-card-text", ev.short));
+    if (ev.location) body.appendChild(node("p", "event-place", ev.location));
+    if (ev.short) body.appendChild(node("p", "event-card-text", ev.short));
 
-      var actions = node("div", "event-actions");
-      if (item.future && ev.signup) {
-        var signup = node("a", "btn", "Запиши се");
-        signup.href = ev.signup;
-        signup.target = "_blank";
-        signup.rel = "noopener";
-        signup.setAttribute("aria-label", "Запиши се за „" + ev.title + "“");
-        actions.appendChild(signup);
-      }
-      var more = node("a", "btn btn-outline", "Научи повече");
-      more.href = url;
-      more.setAttribute("aria-label", "Научи повече за „" + ev.title + "“");
-      actions.appendChild(more);
-      body.appendChild(actions);
-      card.appendChild(body);
+    var actions = node("div", "event-actions");
+    if (item.future && ev.signup) {
+      var signup = node("a", "btn", "Запиши се");
+      signup.href = ev.signup;
+      signup.target = "_blank";
+      signup.rel = "noopener";
+      signup.setAttribute("aria-label", "Запиши се за „" + ev.title + "“");
+      actions.appendChild(signup);
+    }
+    var more = node("a", "btn btn-outline", "Научи повече");
+    more.href = url;
+    more.setAttribute("aria-label", "Научи повече за „" + ev.title + "“");
+    actions.appendChild(more);
+    body.appendChild(actions);
+    card.appendChild(body);
 
-      if (ev.images && ev.images.length) {
-        var wrap = node("span", "event-media-wrap");
-        var img = node("img", "event-media");
-        img.src = ev.images[0].src;
-        img.alt = ev.images[0].alt || ev.title;
-        img.loading = "lazy";
-        img.decoding = "async";
-        wrap.appendChild(img);
-        card.appendChild(wrap);
-      }
+    if (ev.images && ev.images.length) {
+      var wrap = node("span", "event-media-wrap");
+      var img = node("img", "event-media");
+      img.src = ev.images[0].src;
+      img.alt = ev.images[0].alt || ev.title;
+      img.loading = eager ? "eager" : "lazy";
+      img.decoding = "async";
+      wrap.appendChild(img);
+      card.appendChild(wrap);
+    }
 
-      /* цялата карта е кликаема; бутоните са отгоре и работят сами */
-      var hit = node("a", "event-hit");
-      hit.href = url;
-      hit.setAttribute("aria-label", "Отвори „" + ev.title + "“");
-      card.appendChild(hit);
+    /* цялата карта е кликаема; бутоните са отгоре и работят сами */
+    var hit = node("a", "event-hit");
+    hit.href = url;
+    hit.setAttribute("aria-label", "Отвори „" + ev.title + "“");
+    card.appendChild(hit);
 
-      var li = node("li", "events-list-item");
-      li.appendChild(card);
-      listBox.appendChild(li);
-    });
+    var li = node("li", "events-list-item");
+    li.appendChild(card);
+    return li;
   }
+
+  /* Два отделни списъка в страницата — предстоящи и минали.
+     Кое събитие в кой списък влиза се решава от датата, не се отбелязва ръчно. */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-events-list]"), function (box) {
+    var kind = box.getAttribute("data-events-list");
+    var items = ITEMS.filter(function (it) { return kind === "past" ? !it.future : it.future; });
+
+    items.forEach(function (item, i) {
+      box.appendChild(buildCard(item, kind !== "past" && i === 0));
+    });
+
+    var empty = document.querySelector('[data-events-empty="' + kind + '"]');
+    if (empty) empty.hidden = items.length > 0;
+    if (!items.length) box.hidden = true;
+  });
 
   /* ── Страница на едно събитие ─────────────────────────────────────────── */
   var page = document.querySelector("[data-event-page]");
