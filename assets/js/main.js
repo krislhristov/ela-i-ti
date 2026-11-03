@@ -179,7 +179,12 @@
       return ok;
     }
 
+    var TICK = '<svg class="copy-tick" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">'
+      + '<path d="M4.5 12.5 9.5 17.5 19.5 6.5" fill="none" stroke="currentColor" '
+      + 'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
     Array.prototype.forEach.call(buttons, function (button) {
+      button.insertAdjacentHTML("beforeend", TICK);
       button.addEventListener("click", function () {
         var row = button.closest(".copy-row");
         var valueNode = row ? row.querySelector("[data-copy-value]") : null;
@@ -188,8 +193,10 @@
 
         function done() {
           button.classList.add("is-done");
-          window.setTimeout(function () { button.classList.remove("is-done"); }, 1800);
-          announce("Копирано: " + value);
+          window.clearTimeout(button.__copyTimer);
+          button.__copyTimer = window.setTimeout(function () {
+            button.classList.remove("is-done");
+          }, 3000);
         }
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -600,67 +607,7 @@
     }
   }
 
-  /* ── Hero banner: сменящи се снимки ───────────────────────────────────── */
-  (function () {
-    var banner = document.querySelector("[data-banner]");
-    if (!banner) return;
-    var slides = Array.prototype.slice.call(banner.querySelectorAll("[data-slide]"));
-    var texts = Array.prototype.slice.call(banner.querySelectorAll("[data-text]"));
-    if (slides.length < 2) return;
-
-    var DURATION = 4000;
-    var index = 0;
-    var timer = null;
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    slides.forEach(function (slide, i) {
-      slide.setAttribute("aria-hidden", i === 0 ? "false" : "true");
-    });
-
-    function sync() {
-      slides.forEach(function (slide, i) {
-        slide.classList.toggle("is-active", i === index);
-        slide.setAttribute("aria-hidden", i === index ? "false" : "true");
-      });
-      texts.forEach(function (text, i) {
-        text.classList.toggle("is-active", i === index);
-        text.setAttribute("aria-hidden", i === index ? "false" : "true");
-      });
-    }
-
-    function stop() {
-      if (timer) { clearInterval(timer); timer = null; }
-    }
-
-    function start() {
-      stop();
-      if (reduce.matches || document.hidden) return;
-      timer = window.setInterval(function () {
-        index = (index + 1) % slides.length;
-        sync();
-      }, DURATION);
-    }
-
-    banner.addEventListener("mouseenter", stop);
-    banner.addEventListener("mouseleave", start);
-    banner.addEventListener("focusin", stop);
-    banner.addEventListener("focusout", start);
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) stop(); else start();
-    });
-
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) start(); else stop();
-        });
-      }, { threshold: 0.15 }).observe(banner);
-    } else {
-      start();
-    }
-
-    sync();
-  })();
+  /* Слайдерът „Предстоящи събития“ се строи в assets/js/upcoming.js. */
 
   /* ── Избор на сума за дарение ─────────────────────────────────────────── */
   (function () {

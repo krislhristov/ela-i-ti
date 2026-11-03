@@ -19,26 +19,27 @@
 
 /* 1. Tokens ---------------------------------------------------------------- */
 :root {
-  --paper:      #FBFAF6;
-  --paper-2:    #F3F0E7;
-  --ink:        #15241E;
-  --pine:       #234A3B;
-  --pine-deep:  #122C25;
-  --moss:       #E8EBDD;
-  --ember:      #BE4724;
-  --ember-deep: #9E3A1C;
-  --ember-soft: #E4764F;
-  --stone:      #5C665C;
+  --paper:      #F7FAFA;
+  --paper-2:    #ECF2F3;
+  --ink:        #10293A;
+  --pine:       #1B589D;
+  --pine-deep:  #0D2B3C;
+  --sea:        #006B5C;
+  --moss:       #DCEDEA;
+  --ember:      #C04E36;
+  --ember-deep: #9E3B26;
+  --ember-soft: #F2755A;
+  --stone:      #54686F;
 
-  --line:       rgba(21, 36, 30, .16);
-  --line-soft:  rgba(21, 36, 30, .10);
-  --line-dark:  rgba(246, 242, 232, .18);
+  --line:       rgba(16, 41, 58, .16);
+  --line-soft:  rgba(16, 41, 58, .10);
+  --line-dark:  rgba(234, 244, 242, .18);
 
-  --light:      #F6F2E8;
-  --light-muted: rgba(246, 242, 232, .80);
+  --light:      #EAF4F2;
+  --light-muted: rgba(234, 244, 242, .86);
 
-  --display: "Wix Madefor Display", "Fira Sans", "Segoe UI", system-ui, sans-serif;
-  --body: "Fira Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --display: "Wix Madefor Display", "Segoe UI", system-ui, sans-serif;
+  --body: "Wix Madefor Text", "Segoe UI", system-ui, -apple-system, sans-serif;
 
   --maxw: 1400px;
   --gutter: clamp(20px, 4vw, 48px);
@@ -211,10 +212,10 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
 
 .btn-outline-light {
   background: transparent;
-  border-color: rgba(246, 242, 232, .4);
+  border-color: rgba(234, 244, 242, .4);
   color: var(--light);
 }
-.btn-outline-light:hover { background: rgba(246, 242, 232, .1); border-color: var(--light); color: var(--light); }
+.btn-outline-light:hover { background: rgba(234, 244, 242, .1); border-color: var(--light); color: var(--light); }
 
 .btn-sm { min-height: 44px; padding: 10px 22px; font-size: 15px; }
 .btn-block { width: 100%; }
@@ -224,7 +225,7 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
   position: sticky;
   top: 0;
   z-index: 80;
-  background: rgba(251, 250, 246, .88);
+  background: rgba(247, 250, 250, .88);
   backdrop-filter: saturate(1.4) blur(14px);
   -webkit-backdrop-filter: saturate(1.4) blur(14px);
   border-bottom: 1px solid transparent;
@@ -232,7 +233,7 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
 }
 .site-header.is-stuck {
   border-bottom-color: var(--line);
-  background: rgba(251, 250, 246, .95);
+  background: rgba(247, 250, 250, .95);
 }
 
 .header-inner {
@@ -349,76 +350,62 @@ body.menu-open { overflow: hidden; }
 /* 5. Hero ------------------------------------------------------------------ */
 .hero { padding-top: 0; }
 
-/* банер със сменящи се снимки */
-.banner {
+/* една снимка на цяла ширина, надпис и бутон върху нея */
+.hero-media {
   position: relative;
-  width: 100%;
-  background: var(--pine-deep);
+  height: clamp(470px, 76vh, 700px);
   overflow: hidden;
+  background: var(--pine-deep);
 }
-.banner-track {
-  position: relative;
-  height: clamp(420px, 76vh, 780px);
-}
-.banner-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity .9s var(--ease);
-  will-change: opacity;
-}
-.banner-slide.is-active { opacity: 1; }
-.banner-slide img {
-  width: 100%;
-  height: 100%;
+.hero-media picture,
+.hero-media img { display: block; width: 100%; height: 100%; }
+.hero-media img {
   object-fit: cover;
-  object-position: var(--pos-d, 50% 50%);
-  filter: saturate(.92) contrast(1.03);
-  transform: scale(1.02);
+  object-position: 50% 55%;
+  filter: saturate(.95) contrast(1.04);
 }
-.banner-slide::after {
+/* затъмняване, за да стои текстът четим върху планината */
+.hero-media::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(18,44,37,.42) 0%, rgba(18,44,37,.10) 38%, rgba(18,44,37,.55) 100%),
-    radial-gradient(120% 90% at 50% 45%, rgba(18,44,37,0) 40%, rgba(18,44,37,.35) 100%);
+    linear-gradient(180deg, rgba(13,43,60,.52) 0%, rgba(13,43,60,.18) 34%, rgba(13,43,60,.10) 62%, rgba(13,43,60,.46) 100%),
+    radial-gradient(125% 85% at 50% 42%, rgba(13,43,60,0) 44%, rgba(13,43,60,.38) 100%);
   pointer-events: none;
 }
-.banner-cap {
+
+.hero-inner {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 2vw, 26px);
+  gap: clamp(18px, 2.2vw, 30px);
+  /* блокът се вдига пропорционално на височината на хероя, за да не
+     покрива главите на хората при каквато и да е височина на екрана */
   padding: 0 clamp(16px, 4vw, 48px);
+  transform: translateY(-14%);
   text-align: center;
 }
-.banner-texts { display: grid; justify-items: center; align-items: end; }
-.banner-text {
-  grid-area: 1 / 1;
-  align-self: end;
+.hero-title {
+  margin: 0;
   display: inline-block;
   padding: .16em .46em .10em;
-  background: rgba(18, 34, 28, .80);
+  background: rgba(13, 43, 60, .70);
   color: var(--paper);
   font-family: var(--display);
-  font-size: clamp(20px, 3.28vw, 47px);
+  font-size: clamp(22px, 3.28vw, 47px);
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -.005em;
   text-transform: uppercase;
-  max-width: 24ch;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .7s var(--ease), visibility .7s var(--ease);
+  max-width: 22ch;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
-.banner-text.is-active { opacity: 1; visibility: visible; }
-.banner-cap .btn-donate { margin-top: 2px; }
+.hero-inner .btn-donate { margin-top: 2px; }
 .btn-donate {
   background: var(--ember);
   border-color: var(--ember);
@@ -426,30 +413,29 @@ body.menu-open { overflow: hidden; }
   font-size: 16px;
   padding: 15px 32px;
   gap: 10px;
-  box-shadow: 0 10px 26px -10px rgba(9, 20, 16, .55);
+  box-shadow: 0 10px 26px -10px rgba(9, 26, 36, .55);
 }
 .btn-donate:hover { background: var(--ember-deep); border-color: var(--ember-deep); color: #fff; }
 
 
-/* мобилен вариант: снимката се приближава към сюжета, текстът е по-едър спрямо екрана */
+/* мобилен вариант: надписът е горе, групата остава видима долу */
 @media (max-width: 760px) {
-  .banner-track { height: clamp(430px, 74svh, 620px); }
-  .banner-slide img {
-    object-position: var(--pos-m, 50% 45%);
-    transform: scale(var(--zoom-m, 1.12));
-  }
-  .banner-cap {
-    padding: 0 18px;
+  .hero-media { height: clamp(440px, 66svh, 560px); }
+  .hero-media img { object-position: 50% 50%; }
+  .hero-inner {
+    justify-content: flex-start;
+    padding: clamp(26px, 5vh, 48px) 18px 0;
     gap: 16px;
+    transform: none;
   }
-  .banner-text {
-    font-size: clamp(16px, 4.60vw, 25px);
-    max-width: 21ch;
+  .hero-title {
+    font-size: clamp(26px, 7.6vw, 38px);
+    max-width: 15ch;
   }
   .btn-donate { padding: 13px 26px; font-size: 15px; }
 }
 
-/* Включи се в следващите ни събития ---------------------------------------- */
+/* Предстоящи събития ------------------------------------------------------ */
 .section-upnext {
   padding-block: clamp(36px, 4.2vw, 58px) clamp(38px, 4.6vw, 64px);
 }
@@ -458,8 +444,8 @@ body.menu-open { overflow: hidden; }
   margin-bottom: clamp(18px, 2.2vw, 28px);
 }
 .section-title--sub {
-  font-size: clamp(20px, 1.87vw, 27px);
-  line-height: 1.05;
+  font-size: clamp(26px, 2.75vw, 40px);
+  line-height: 1.02;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--ink);
   margin-bottom: clamp(24px, 3vw, 38px);
@@ -484,12 +470,21 @@ body.menu-open { overflow: hidden; }
 }
 .section-head-row .section-title { margin-bottom: clamp(18px, 2.2vw, 28px); }
 .upnext { display: block; }
+.upnext[hidden] { display: none; }
+.upnext-date {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 10px;
+}
 .upnext-copy { max-width: 68ch; }
 .upnext-head {
   font-family: var(--display);
-  font-size: clamp(24px, 2.72vw, 38px);
+  font-size: clamp(22px, 2vw, 30px);
   font-weight: 700;
-  line-height: 1.06;
+  line-height: 1.08;
   letter-spacing: -.012em;
 }
 .upnext-copy p {
@@ -650,9 +645,9 @@ body.menu-open { overflow: hidden; }
 .about-text .h2 { margin-bottom: 28px; }
 .about-head {
   font-family: var(--display);
-  font-size: clamp(22px, 2.35vw, 33px);
+  font-size: clamp(20px, 1.6vw, 24px);
   font-weight: 700;
-  line-height: 1.08;
+  line-height: 1.12;
   letter-spacing: -.008em;
   margin-bottom: 24px;
 }
@@ -681,7 +676,7 @@ body.menu-open { overflow: hidden; }
 
 /* 7. Dark sections --------------------------------------------------------- */
 .section-dark {
-  background: var(--pine-deep);
+  background: var(--sea);
   color: var(--light);
 }
 .section-dark .section-intro { color: var(--light-muted); }
@@ -707,9 +702,9 @@ body.menu-open { overflow: hidden; }
   margin-top: 14px;
   max-width: 20ch;
   font-family: var(--display);
-  font-size: clamp(23px, 2.81vw, 39px);
+  font-size: clamp(20px, 1.9vw, 28px);
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1.06;
   letter-spacing: -.01em;
   color: #fff;
 }
@@ -767,6 +762,12 @@ body.menu-open { overflow: hidden; }
 }
 .subhead-row .stories-more { min-height: 0; }
 
+/* „Минали събития“ е заглавие на цяла секция — същият размер като другите */
+.h3.subhead {
+  font-size: clamp(26px, 2.75vw, 40px);
+  line-height: 1.02;
+  letter-spacing: -.015em;
+}
 .subhead {
   padding-bottom: 16px;
   border-bottom: 1px solid var(--ink);
@@ -808,9 +809,9 @@ body.menu-open { overflow: hidden; }
 }
 .video-title {
   font-family: var(--display);
-  font-size: clamp(24px, 2.4vw, 34px);
+  font-size: clamp(19px, 1.5vw, 23px);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: -.005em;
   text-transform: uppercase;
   color: var(--ink);
@@ -831,7 +832,7 @@ body.menu-open { overflow: hidden; }
   overflow: hidden;
   background: var(--pine-deep);
   transform: rotate(-1.6deg);
-  box-shadow: 0 18px 40px rgba(18, 44, 37, .18);
+  box-shadow: 0 18px 40px rgba(13, 43, 60, .18);
 }
 .video-el {
   display: block;
@@ -853,7 +854,7 @@ body.menu-open { overflow: hidden; }
   place-items: center;
   border: 0;
   border-radius: 999px;
-  background: rgba(18, 44, 37, .72);
+  background: rgba(13, 43, 60, .72);
   color: var(--paper);
   cursor: pointer;
   backdrop-filter: blur(4px);
@@ -901,7 +902,7 @@ body.menu-open { overflow: hidden; }
 .cta-card:hover,
 .cta-card:focus-within {
   transform: translateY(-3px);
-  background: #EFEBE0;
+  background: #E4EDEE;
 }
 .cta-media { background: var(--moss); }
 .cta-media img {
@@ -945,7 +946,7 @@ body.menu-open { overflow: hidden; }
   text-align: center;
   padding: clamp(18px, 1.8vw, 26px) clamp(14px, 1.5vw, 20px);
   border-radius: 20px;
-  background: var(--pine);
+  background: var(--sea);
   color: var(--paper);
 }
 .cta-stats-kicker {
@@ -953,7 +954,7 @@ body.menu-open { overflow: hidden; }
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(251, 250, 246, .62);
+  color: rgba(247, 250, 250, .80);
 }
 .cta-stats-title {
   font-family: var(--display);
@@ -976,7 +977,7 @@ body.menu-open { overflow: hidden; }
   place-content: center;
   gap: 3px;
   padding-block: 10px;
-  border-top: 1px solid rgba(251, 250, 246, .18);
+  border-top: 1px solid rgba(247, 250, 250, .18);
 }
 .cta-stats-list dt {
   font-family: var(--display);
@@ -989,19 +990,19 @@ body.menu-open { overflow: hidden; }
 .cta-stats-list dd {
   font-size: 13px;
   line-height: 1.3;
-  color: rgba(251, 250, 246, .78);
+  color: rgba(247, 250, 250, .85);
 }
 .cta-stats-punch {
   width: 100%;
   margin-top: auto;
   padding-top: 14px;
-  border-top: 2px solid rgba(251, 250, 246, .28);
+  border-top: 2px solid rgba(247, 250, 250, .28);
   font-family: var(--display);
   font-size: clamp(16px, 1.4vw, 19px);
   font-weight: 700;
   line-height: 1.18;
   letter-spacing: -.005em;
-  color: #F4A88C;
+  color: #FFD8CE;
 }
 
 @media (max-width: 1080px) {
@@ -1038,6 +1039,7 @@ body.menu-open { overflow: hidden; }
 }
 
 .slide-card {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(18px, 2.6vw, 40px);
@@ -1122,10 +1124,10 @@ body.menu-open { overflow: hidden; }
   width: 26px;
   height: 4px;
   border-radius: 2px;
-  background: rgba(21, 36, 30, .22);
+  background: rgba(16, 41, 58, .22);
   transition: background-color .2s var(--ease), width .2s var(--ease);
 }
-.slider-dot:hover::before { background: rgba(21, 36, 30, .45); }
+.slider-dot:hover::before { background: rgba(16, 41, 58, .45); }
 .slider-dot[aria-current="true"]::before { background: var(--ember); width: 44px; }
 
 .slider-arrows { display: flex; gap: 8px; }
@@ -1135,7 +1137,7 @@ body.menu-open { overflow: hidden; }
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1px solid rgba(21, 36, 30, .35);
+  border: 1px solid rgba(16, 41, 58, .35);
   border-radius: 9999px;
   background: transparent;
   color: var(--ink);
@@ -1144,6 +1146,49 @@ body.menu-open { overflow: hidden; }
 }
 .slider-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .slider-btn:disabled { opacity: .35; cursor: default; }
+/* атрибутът hidden трябва да бие display:grid/flex на бутоните и точките */
+.slider-btn[hidden],
+.slider-dots[hidden] { display: none; }
+
+/* Слайдер „Предстоящи събития“ — снимката е отдясно ------------------------- */
+.slide-card--event {
+  grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+  align-items: stretch;
+}
+.slide-card--event .slide-body { padding: clamp(6px, .9vw, 14px) clamp(16px, 2vw, 32px); }
+/* снимката се разпъва по височината на текста, без да го разтяга */
+.slide-media-wrap {
+  position: relative;
+  display: block;
+  min-height: 260px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--moss);
+}
+.slide-card--event .slide-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  aspect-ratio: auto;
+}
+.slide-place {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--stone);
+}
+.slide-card--event .slide-text { margin-bottom: 0; }
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: clamp(18px, 2vw, 26px);
+}
+.event-actions .btn { min-height: 46px; padding: 10px 24px; font-size: 15px; }
 
 /* 9. Projects -------------------------------------------------------------- */
 .projects {
@@ -1231,7 +1276,7 @@ body.menu-open { overflow: hidden; }
   text-decoration: none;
   transition: transform .25s var(--ease), background-color .25s var(--ease);
 }
-.story:hover { transform: translateY(-3px); background: #EFEBE0; }
+.story:hover { transform: translateY(-3px); background: #E4EDEE; }
 
 .story-media {
   display: block;
@@ -1332,7 +1377,7 @@ body.menu-open { overflow: hidden; }
 .filter span { font-size: 12px; color: var(--stone); }
 .filter:hover { border-color: var(--ink); }
 .filter.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.filter.is-active span { color: rgba(251, 250, 246, .7); }
+.filter.is-active span { color: rgba(247, 250, 250, .7); }
 
 .stories--page { row-gap: clamp(16px, 1.9vw, 26px); grid-auto-flow: dense; }
 .stories--page .story-title { margin: 0; }
@@ -1359,7 +1404,7 @@ body.menu-open { overflow: hidden; }
   background: rgba(255, 255, 255, .95);
   color: var(--ink);
   cursor: pointer;
-  box-shadow: 0 6px 22px rgba(9, 20, 16, .3);
+  box-shadow: 0 6px 22px rgba(9, 26, 36, .3);
   transition: transform .2s var(--ease), background-color .2s var(--ease);
 }
 .story-play:hover { transform: translate(-50%, -50%) scale(1.07); background: #fff; }
@@ -1369,7 +1414,7 @@ body.menu-open { overflow: hidden; }
   top: 10px;
   padding: 4px 9px;
   border-radius: 9999px;
-  background: rgba(18, 44, 37, .82);
+  background: rgba(13, 43, 60, .82);
   color: #fff;
   font-size: 10.5px;
   font-weight: 600;
@@ -1420,7 +1465,7 @@ body.menu-open { overflow: hidden; }
 .story--video .story-media,
 .story--audio .story-media { cursor: pointer; }
 
-.story.is-playing .story-media { background: #0B1512; }
+.story.is-playing .story-media { background: #0A1B26; }
 .story.is-playing .story-media > img,
 .story.is-playing .story-play,
 .story.is-playing .story-kind,
@@ -1441,7 +1486,7 @@ body.menu-open { overflow: hidden; }
   font-size: 12px;
   letter-spacing: .05em;
   text-transform: uppercase;
-  color: rgba(246, 242, 232, .66);
+  color: rgba(234, 244, 242, .66);
 }
 .story-audio audio { width: 100%; }
 
@@ -1499,7 +1544,7 @@ body.menu-open { overflow: hidden; }
   border-radius: 5px;
   overflow: hidden;
   background: var(--paper-2);
-  box-shadow: 0 24px 48px -22px rgba(9, 20, 16, .5), 0 2px 6px rgba(9, 20, 16, .08);
+  box-shadow: 0 24px 48px -22px rgba(9, 26, 36, .5), 0 2px 6px rgba(9, 26, 36, .08);
   will-change: transform, opacity;
   transform-origin: 50% 92%;
 }
@@ -1558,7 +1603,7 @@ body.menu-open { overflow: hidden; }
   max-width: 44ch;
   font-size: 16.5px;
   line-height: 1.55;
-  color: #2C3A33;
+  color: #2B4453;
 }
 .event-link {
   display: inline-flex;
@@ -1589,7 +1634,7 @@ body.menu-open { overflow: hidden; }
 .trail-ground { fill: var(--moss); opacity: .65; }
 .trail-base {
   fill: none;
-  stroke: rgba(21, 36, 30, .3);
+  stroke: rgba(16, 41, 58, .3);
   stroke-width: 2.4;
   stroke-linejoin: round;
   stroke-linecap: round;
@@ -1604,7 +1649,7 @@ body.menu-open { overflow: hidden; }
 }
 .trail-marks circle {
   fill: var(--paper);
-  stroke: rgba(21, 36, 30, .35);
+  stroke: rgba(16, 41, 58, .35);
   stroke-width: 1.6;
   transition: fill .3s var(--ease), stroke .3s var(--ease);
 }
@@ -1730,7 +1775,7 @@ body.menu-open { overflow: hidden; }
   padding: clamp(14px, 1.25vw, 20px);
   border: 1px solid var(--line-dark);
   border-radius: var(--r);
-  background: rgba(251, 250, 246, .04);
+  background: rgba(247, 250, 250, .04);
 }
 .give-method-head {
   font-family: var(--display);
@@ -1754,7 +1799,7 @@ body.menu-open { overflow: hidden; }
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: rgba(251, 250, 246, .58);
+  color: rgba(247, 250, 250, .58);
 }
 .amount-row {
   display: flex;
@@ -1784,7 +1829,7 @@ body.menu-open { overflow: hidden; }
   min-height: 48px;
   padding: 10px 34px 10px 16px;
   font-size: 14.5px;
-  border: 1px solid rgba(251, 250, 246, .32);
+  border: 1px solid rgba(247, 250, 250, .32);
   border-radius: 9999px;
   background: transparent;
   color: var(--paper);
@@ -1801,7 +1846,7 @@ body.menu-open { overflow: hidden; }
   position: absolute;
   right: 13px;
   pointer-events: none;
-  color: rgba(251, 250, 246, .7);
+  color: rgba(247, 250, 250, .7);
 }
 
 .give-amounts-cta {
@@ -1824,9 +1869,9 @@ body.menu-open { overflow: hidden; }
   align-items: center;
   gap: 2px 8px;
   padding: 7px 6px 7px 12px;
-  border: 1px solid rgba(251, 250, 246, .10);
+  border: 1px solid rgba(247, 250, 250, .10);
   border-radius: 12px;
-  background: rgba(6, 18, 14, .38);
+  background: rgba(6, 22, 32, .38);
 }
 .copy-label {
   grid-column: 1 / -1;
@@ -1834,7 +1879,7 @@ body.menu-open { overflow: hidden; }
   font-weight: 600;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: rgba(251, 250, 246, .55);
+  color: rgba(247, 250, 250, .55);
 }
 .copy-value {
   font-size: 13.5px;
@@ -1852,12 +1897,16 @@ body.menu-open { overflow: hidden; }
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: rgba(251, 250, 246, .65);
+  color: rgba(247, 250, 250, .65);
   cursor: pointer;
   transition: background-color .18s var(--ease), color .18s var(--ease);
 }
-.copy-btn:hover { background: rgba(251, 250, 246, .12); color: var(--paper); }
-.copy-btn.is-done { color: var(--ember-soft); background: rgba(251, 250, 246, .10); }
+.copy-btn:hover { background: rgba(247, 250, 250, .12); color: var(--paper); }
+.copy-btn.is-done { color: #56D19B; background: rgba(86, 209, 155, .16); }
+.copy-btn > svg:not(.copy-tick) { display: block; }
+.copy-btn .copy-tick { display: none; }
+.copy-btn.is-done > svg:not(.copy-tick) { display: none; }
+.copy-btn.is-done .copy-tick { display: block; }
 .copy-status { font-size: 13px; color: var(--ember-soft); }
 .copy-status:empty { display: none; }
 
@@ -1878,7 +1927,7 @@ body.menu-open { overflow: hidden; }
   border: 1px solid var(--line-dark);
   border-radius: var(--r);
   padding: clamp(24px, 3vw, 36px);
-  background: rgba(246, 242, 232, .04);
+  background: rgba(234, 244, 242, .04);
 }
 .give-label {
   font-size: 13px;
@@ -2024,9 +2073,9 @@ body.menu-open { overflow: hidden; }
 }
 .field textarea { resize: vertical; min-height: 108px; }
 .field input:hover,
-.field textarea:hover { border-color: rgba(21, 36, 30, .3); }
+.field textarea:hover { border-color: rgba(16, 41, 58, .3); }
 .field input:focus,
-.field textarea:focus { outline: none; border-color: var(--pine); background: #fff; box-shadow: 0 0 0 3px rgba(35, 74, 59, .12); }
+.field textarea:focus { outline: none; border-color: var(--pine); background: #fff; box-shadow: 0 0 0 3px rgba(27, 88, 157, .12); }
 
 .field-error {
   font-size: 13.5px;
@@ -2041,10 +2090,11 @@ body.menu-open { overflow: hidden; }
   color: var(--stone);
   line-height: 1.5;
 }
+.form-status:empty { display: none; }
 
 /* 14. Footer --------------------------------------------------------------- */
 .site-footer {
-  background: var(--pine-deep);
+  background: var(--sea);
   color: var(--light);
   padding-block: clamp(44px, 5vw, 64px);
 }
@@ -2072,7 +2122,7 @@ body.menu-open { overflow: hidden; }
   font-weight: 600;
   line-height: 1.5;
   letter-spacing: .1em;
-  color: rgba(251, 250, 246, .72);
+  color: rgba(247, 250, 250, .72);
 }
 .footer-social {
   display: flex;
@@ -2341,6 +2391,10 @@ body.menu-open { overflow: hidden; }
   .slide-card { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 10px; }
   .slide-media { height: auto; min-height: 0; aspect-ratio: 16 / 10; border-radius: 18px; }
   .slide-body { padding: 4px 10px 14px; }
+  .slide-card--event { grid-template-columns: minmax(0, 1fr); }
+  .slide-card--event .slide-body { padding: 4px 10px 16px; }
+  .slide-card--event .slide-media-wrap { order: -1; aspect-ratio: 16 / 10; min-height: 0; border-radius: 18px; }
+  .event-actions .btn { flex: 1 1 auto; }
   .slide-title { max-width: none; }
   .stories-head { flex-direction: column; align-items: flex-start; gap: 8px; }
   .contact-list li { grid-template-columns: 92px minmax(0, 1fr); }
@@ -2368,4 +2422,167 @@ body.menu-open { overflow: hidden; }
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
+}
+
+
+/* ── Страница „Събития“: списък ─────────────────────────────────────────── */
+.section-events { padding-block: clamp(18px, 2.2vw, 30px) clamp(38px, 4.6vw, 64px); }
+.events-list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(14px, 1.8vw, 24px); }
+.events-list-item { list-style: none; margin: 0; }
+
+.event-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+  align-items: stretch;
+  gap: clamp(18px, 2.6vw, 40px);
+  padding: clamp(10px, 1.2vw, 16px);
+  background: var(--paper-2);
+  border-radius: 28px;
+  transition: transform .25s var(--ease), background-color .25s var(--ease);
+}
+.event-card:hover,
+.event-card:focus-within { transform: translateY(-3px); background: #E4EDEE; }
+
+.event-card-body { display: flex; flex-direction: column; padding: clamp(6px, .9vw, 14px) clamp(16px, 2vw, 32px); }
+.event-card-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(21px, 2.1vw, 30px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.012em;
+  max-width: 26ch;
+}
+/* датата, часът и мястото — едро и тъмно, като заглавие */
+.event-when {
+  margin: 10px 0 0;
+  font-family: var(--display);
+  font-size: clamp(16px, 1.35vw, 20px);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -.005em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.event-place {
+  margin: 3px 0 0;
+  font-family: var(--display);
+  font-size: clamp(14.5px, 1.15vw, 16px);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--stone);
+}
+.event-card-text { margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: var(--stone); max-width: 52ch; }
+.event-card .event-actions {
+  margin-top: auto;
+  padding-top: clamp(16px, 1.8vw, 24px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.event-card .event-actions .btn { min-height: 46px; padding: 10px 24px; font-size: 15px; }
+
+.event-media-wrap {
+  position: relative;
+  display: block;
+  min-height: 250px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--moss);
+}
+.event-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+/* цялата карта е кликаема; бутоните стоят отгоре и работят сами */
+.event-hit { position: absolute; inset: 0; z-index: 1; border-radius: 28px; }
+.slide-card .slide-body a,
+.slide-card .event-actions { position: relative; z-index: 2; }
+.event-hit:focus-visible { outline: 3px solid var(--ember); outline-offset: 4px; }
+.event-card-body a { position: relative; z-index: 2; }
+.event-card-body .event-actions { position: relative; z-index: 2; }
+
+/* ── Страница на едно събитие ──────────────────────────────────────────── */
+.event-page { padding-block: clamp(22px, 2.8vw, 40px) 0; }
+.event-page-loading { min-height: 40vh; }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--stone);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .18s var(--ease), border-color .18s var(--ease);
+}
+.back-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.back-link:focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; }
+
+.event-page-title {
+  margin: clamp(16px, 2vw, 24px) 0 0;
+  font-family: var(--display);
+  font-size: clamp(30px, 3.6vw, 50px);
+  font-weight: 700;
+  line-height: 1.03;
+  letter-spacing: -.015em;
+  max-width: 24ch;
+}
+.event-page-meta { margin-top: clamp(14px, 1.6vw, 20px); }
+.event-page .event-when { margin-top: 0; font-size: clamp(17px, 1.45vw, 21px); }
+.event-page .event-place { font-size: clamp(15px, 1.2vw, 17px); }
+
+.event-cover { margin-top: clamp(22px, 2.8vw, 38px); }
+.event-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.event-page-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
+  gap: clamp(24px, 3.4vw, 48px);
+  align-items: start;
+  padding-block: clamp(26px, 3vw, 44px);
+}
+.event-page-body.is-single { grid-template-columns: minmax(0, 1fr); }
+/* без странична колона текстът се разлива в две колони на широк екран */
+@media (min-width: 1081px) {
+  .event-page-body.is-single .event-page-text { column-count: 2; column-gap: clamp(32px, 4vw, 68px); }
+  .event-page-body.is-single .event-page-text p { max-width: none; break-inside: avoid; }
+}
+.event-page-text p { margin: 0; font-size: 17.5px; line-height: 1.7; color: var(--ink); max-width: 68ch; }
+.event-page-text p + p { margin-top: 16px; }
+.event-page-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+
+.event-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(10px, 1.4vw, 16px);
+  padding-bottom: clamp(30px, 4vw, 56px);
+}
+.event-gallery figure { margin: 0; }
+.event-gallery img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; }
+
+.event-missing { display: grid; gap: 18px; justify-items: start; padding-block: clamp(40px, 6vw, 80px); }
+
+@media (max-width: 860px) {
+  .event-page-body { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .event-card { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 10px; }
+  .event-card-body { padding: 4px 10px 16px; }
+  .event-media-wrap { order: -1; min-height: 0; aspect-ratio: 16 / 10; border-radius: 18px; }
+  .event-card-title { max-width: none; }
+  .event-card .event-actions .btn { flex: 1 1 auto; }
+  .event-cover img { border-radius: 18px; }
 }
