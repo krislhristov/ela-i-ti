@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=83">
+<link rel="stylesheet" href="assets/css/style.css?v=137">
 </head>
 <body>
 
@@ -43,7 +43,6 @@
       </button>
     </div>
   </div>
-  <div class="progress" aria-hidden="true"><span data-progress></span></div>
 </header>
 
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
@@ -64,18 +63,24 @@
 <main id="main">
 
   <!-- ── Hero: една снимка, надпис и бутон ────────────────── -->
-  <section class="hero" id="home" aria-labelledby="hero-title">
+  <section class="hero hero--haze" id="home" aria-labelledby="hero-title">
 
     <div class="hero-media">
       <picture>
-        <source media="(max-width: 760px)" srcset="assets/img/hero/mobile/m-group.jpg">
-        <img src="assets/img/hero/hero-group.jpg" width="1920" height="1080" fetchpriority="high" decoding="async"
+        <source media="(max-width: 760px)" srcset="assets/img/hero/mobile/m-group-sky.jpg">
+        <img src="assets/img/hero/hero-group.jpg"
+             srcset="assets/img/hero/hero-group.jpg 1920w, assets/img/hero/hero-group-2400.jpg 2400w"
+             sizes="100vw"
+             width="1920" height="1080" fetchpriority="high" decoding="async"
              alt="Участници и доброволци на фондация „Ела и ти“ пред планинско езеро, част от групата в специализирани колички.">
       </picture>
 
       <div class="hero-inner">
-        <h1 class="hero-title" id="hero-title">Заедно планината е достъпна</h1>
-        <a class="btn btn-donate" href="#support">ДАРИ СЕГА</a>
+        <h1 class="hero-title is-haze" id="hero-title">Заедно Планината е достъпна</h1>
+        <div class="hero-actions">
+          <a class="btn btn-donate" href="#support">Дари сега</a>
+          <a class="btn btn-outline-light" href="#contact">Доброволствай</a>
+        </div>
       </div>
     </div>
 
@@ -143,6 +148,40 @@
     </div>
   </section>
 
+  <!-- ── About ────────────────────────────────────────────── -->
+  <section class="section" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <h2 class="h2 section-title section-title--sub" id="about-title">За нас</h2>
+    </div>
+
+    <div class="wrap about">
+      <figure class="about-media">
+        <img src="assets/img/about-story.jpg" width="2000" height="1163"
+             alt="Голяма група участници и доброволци на фондация „Ела и ти“ пред заслон, част от тях в специализирани колички."
+             loading="lazy" decoding="async">
+      </figure>
+
+      <div class="about-text">
+        <h3 class="about-head">Как започна всичко?</h3>
+        <p>
+          Създадохме фондация „Ела и ти“ в подкрепа на хората в неравностойно положение.
+        </p>
+        <p>
+          Започнахме дейността си с изготвяне на красиви изделия от отпадъци, като включвахме
+          активно самите хора. Част от инициативите ни са посещения на труднодостъпни места за
+          хора в неравностойно положение – със затруднена или невъзможна подвижност, с помощта
+          на сърцати доброволци и специализирани екипи от Планинска спасителна служба,
+          Пещерно спасяване и пещерни клубове от страната.
+        </p>
+
+        <blockquote class="quote">
+          <p>„Границите, които определяме, са само в нашите глави.“</p>
+          <cite>Гергана Дойчинова, учредител</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Три стъпки + постижения ───────────────────────────── -->
   <section class="section section-cta" id="steps" aria-labelledby="steps-title">
     <div class="wrap">
@@ -186,10 +225,22 @@
         <aside class="cta-stats" aria-labelledby="cta-stats-title">
           <p class="cta-stats-title" id="cta-stats-title">Заедно постигнахме</p>
           <dl class="cta-stats-list">
-            <div><dt>150+</dt><dd>души в планината</dd></div>
-            <div><dt>450+</dt><dd>доброволци</dd></div>
-            <div><dt>21</dt><dd>събития</dd></div>
+            <div><dt data-count="150+">150+</dt><dd>души в планината</dd></div>
+            <div><dt data-count="450+">450+</dt><dd>доброволци</dd></div>
+            <div><dt data-count="21">21</dt><dd>събития</dd></div>
           </dl>
+          <!-- числата се нулират още при зареждане, за да не се мярка крайната
+               стойност преди броенето; без JS остават истинските числа -->
+          <script>
+            (function () {
+              if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+              if (!("IntersectionObserver" in window)) return;
+              document.querySelectorAll("[data-count]").forEach(function (el) {
+                var m = el.textContent.match(/^(\d+)(\D*)$/);
+                if (m) el.textContent = "0" + m[2];
+              });
+            })();
+          </script>
           <p class="cta-stats-punch">Невъзможно?<br>Не, възможно!</p>
         </aside>
 
@@ -202,7 +253,7 @@
     <div class="wrap">
       <div class="subhead-row">
         <h3 class="h3 subhead" id="past-title">Минали събития</h3>
-        <a class="stories-more past-more--head" href="events.html">
+        <a class="stories-more past-more--head" href="events.html#past">
           Виж всички
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -275,47 +326,12 @@
         </div>
       </div>
 
-      <a class="stories-more past-more--bottom" href="events.html">
+      <a class="stories-more past-more--bottom" href="events.html#past">
         Виж всички
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </section>
-
-  <!-- ── About ────────────────────────────────────────────── -->
-  <section class="section" id="about" aria-labelledby="about-title">
-    <div class="wrap">
-      <h2 class="h2 section-title section-title--sub" id="about-title">За нас</h2>
-    </div>
-
-    <div class="wrap about">
-      <figure class="about-media">
-        <img src="assets/img/about-story.jpg" width="2000" height="1163"
-             alt="Голяма група участници и доброволци на фондация „Ела и ти“ пред заслон, част от тях в специализирани колички."
-             loading="lazy" decoding="async">
-      </figure>
-
-      <div class="about-text">
-        <h3 class="about-head">Как започна всичко?</h3>
-        <p>
-          Създадохме фондация „Ела и ти“ в подкрепа на хората в неравностойно положение.
-        </p>
-        <p>
-          Започнахме дейността си с изготвяне на красиви изделия от отпадъци, като включвахме
-          активно самите хора. Част от инициативите ни са посещения на труднодостъпни места за
-          хора в неравностойно положение – със затруднена или невъзможна подвижност, с помощта
-          на сърцати доброволци и специализирани екипи от Планинска спасителна служба,
-          Пещерно спасяване и пещерни клубове от страната.
-        </p>
-
-        <blockquote class="quote">
-          <p>„Границите, които определяме, са само в нашите глави.“</p>
-          <cite>Гергана Дойчинова, учредител</cite>
-        </blockquote>
-      </div>
-    </div>
-  </section>
-
   <!-- ── Media ────────────────────────────────────────────── -->
   <section class="section" id="media" aria-labelledby="media-title">
     <div class="wrap">
@@ -569,7 +585,7 @@
     </div>
     <nav class="footer-nav" aria-label="Навигация в долната част">
       <a href="index.html">Начало</a>
-      <a href="#about">За нас</a>
+      <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти</a>
@@ -583,8 +599,9 @@
   </div>
 </footer>
 
-<script src="assets/js/events-data.js?v=6" defer></script>
+<script src="assets/js/events-data.js?v=8" defer></script>
 <script src="assets/js/upcoming.js?v=6" defer></script>
-<script src="assets/js/main.js?v=37" defer></script>
+<script src="assets/js/main.js?v=40" defer></script>
+<script src="assets/js/count-up.js?v=2" defer></script>
 </body>
 </html>

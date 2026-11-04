@@ -141,39 +141,68 @@
 
     page.innerHTML = "";
 
-    var hero = node("div", "wrap event-page-head");
-
+    /* „← Всички събития“ стои над двете колони */
+    var backWrap = node("div", "wrap event-page-back");
     var backLink = node("a", "back-link", "← Всички събития");
     backLink.href = "events.html";
-    hero.appendChild(backLink);
+    backWrap.appendChild(backLink);
+    page.appendChild(backWrap);
+
+    var layout = node("div", "wrap event-page-layout");
+    var mainCol = node("div", "event-page-main");
+    var hero = node("div", "event-page-head");
 
     hero.appendChild(node("h1", "event-page-title", ev.title));
+    mainCol.appendChild(hero);
 
-    var meta = node("div", "event-page-meta");
-    var when = node("p", "event-when");
-    var time = node("time", null, whenText(item));
-    time.setAttribute("datetime", isoDay(item.start));
-    when.appendChild(time);
-    meta.appendChild(when);
-    if (ev.location) meta.appendChild(node("p", "event-place", ev.location));
-    hero.appendChild(meta);
+    var text = node("div", "event-page-text");
+    (ev.body || []).forEach(function (p) {
+      /* пренасянето на нов ред в текста се запазва като <br> в абзаца */
+      var para = document.createElement("p");
+      String(p).split("\n").forEach(function (line, i) {
+        if (i) para.appendChild(document.createElement("br"));
+        para.appendChild(document.createTextNode(line));
+      });
+      text.appendChild(para);
+    });
+    mainCol.appendChild(text);
 
-    page.appendChild(hero);
+    /* дясна колона: снимка, под нея картичка с данните, накрая „Запиши се“ */
+    var sideCol = node("div", "event-page-side");
 
     if (images.length) {
-      var cover = node("figure", "wrap event-cover");
+      var cover = node("figure", "event-cover");
       var cimg = node("img", null);
       cimg.src = images[0].src;
       cimg.alt = images[0].alt || ev.title;
       cimg.decoding = "async";
       cover.appendChild(cimg);
-      page.appendChild(cover);
+      sideCol.appendChild(cover);
     }
 
-    var bodyWrap = node("div", "wrap event-page-body");
-    var text = node("div", "event-page-text");
-    (ev.body || []).forEach(function (p) { text.appendChild(node("p", null, p)); });
-    bodyWrap.appendChild(text);
+    var info = node("aside", "event-info");
+    var infoList = node("ul");
+
+    function infoRow(ico, label, value) {
+      if (!value) return;
+      var li = node("li");
+      li.appendChild(node("span", "event-info-ico", ico));
+      var line = node("span", "event-info-line");
+      line.appendChild(node("b", "event-info-label", label + ":"));
+      line.appendChild(document.createTextNode(" " + value));
+      li.appendChild(line);
+      infoList.appendChild(li);
+    }
+
+    infoRow("📍", "Локация", ev.location);
+    infoRow("📅", "Дата", dayText(item.start));
+    infoRow("👋", "Начало", item.ev.allDay ? "" : clock(item.start));
+    infoRow("🎫", "Билети", ev.tickets || "—");
+
+    if (infoList.childNodes.length) {
+      info.appendChild(infoList);
+      sideCol.appendChild(info);
+    }
 
     var side = node("aside", "event-page-aside");
     if (item.future && ev.signup) {
@@ -183,12 +212,11 @@
       cta.rel = "noopener";
       side.appendChild(cta);
     }
-    if (side.childNodes.length) {
-      bodyWrap.appendChild(side);
-    } else {
-      bodyWrap.classList.add("is-single");
-    }
-    page.appendChild(bodyWrap);
+    if (side.childNodes.length) sideCol.appendChild(side);
+
+    layout.appendChild(mainCol);
+    if (sideCol.childNodes.length) layout.appendChild(sideCol);
+    page.appendChild(layout);
 
     if (images.length > 1) {
       var gallery = node("div", "wrap event-gallery");

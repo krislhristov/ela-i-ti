@@ -44,6 +44,7 @@
   --maxw: 1400px;
   --gutter: clamp(20px, 4vw, 48px);
   --section-y: clamp(46px, 5.6vw, 84px);
+  --after-hero: clamp(18px, 2.4vw, 30px);   /* разстояние под заглавието на вътрешна страница */
 
   --r: 4px;
   --ease: cubic-bezier(.2, .7, .3, 1);
@@ -90,6 +91,11 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
   outline-offset: 3px;
   border-radius: 2px;
 }
+/* Секцията, до която водим с #hash (напр. events.html#past), получава фокус,
+   за да е ясно къде е човек. Но рамката на фокуса обгражда цялата секция и се
+   вижда като оранжева линия над заглавието — затова тук я няма. */
+section[tabindex="-1"]:focus,
+section[tabindex="-1"]:focus-visible { outline: none; }
 
 ::selection { background: var(--moss); color: var(--ink); }
 
@@ -147,6 +153,10 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
 }
 
 .section { padding-block: var(--section-y); }
+/* Единственото място, което решава колко въздух има между заглавието на
+   вътрешна страница и първото съдържание под него. Всички вътрешни страници
+   наследяват това число; не се пипа по отделни секции. */
+.page-hero + .section { padding-top: var(--after-hero); }
 .section-moss { background: var(--moss); }
 
 .section-head {
@@ -307,20 +317,6 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars i:nth-child(2) { opacity: 0; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bars i:last-child { transform: translateY(-6.5px) rotate(-45deg); }
 
-.progress {
-  position: absolute;
-  left: 0; right: 0; bottom: -1px;
-  height: 2px;
-  overflow: hidden;
-}
-.progress span {
-  display: block;
-  height: 100%;
-  width: 100%;
-  background: var(--ember);
-  transform: scaleX(0);
-  transform-origin: left;
-}
 
 /* Mobile menu */
 .mobile-menu {
@@ -409,6 +405,113 @@ body.menu-open { overflow: hidden; }
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
+
+/* Опит: вместо плътна подложка — мек градиент върху снимката.
+   Тъмно горе, изчезва към средата, като долният ръб остава леко затъмнен.
+   Маха се, като се махне класът hero--scrim от секцията в index.html. */
+.hero--scrim .hero-media::after {
+  background:
+    linear-gradient(180deg,
+      rgba(9, 26, 36, .62) 0%,
+      rgba(9, 26, 36, .50) 36%,
+      rgba(9, 26, 36, .24) 62%,
+      rgba(9, 26, 36, .10) 78%,
+      rgba(9, 26, 36, .46) 100%),
+    radial-gradient(125% 85% at 50% 42%, rgba(13, 43, 60, 0) 44%, rgba(13, 43, 60, .38) 100%);
+}
+
+/* Опит: само буквите — без подложка, без замъгляване, без контур.
+   Маха се, като се махне класът is-bare от h1 в index.html. */
+.hero-title.is-bare {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  text-shadow: none;
+}
+
+/* Опит 2: мека „мъгла“ зад буквите — овално потъмняване, което изчезва
+   напълно вътре в собствения си контур. Няма ръб, защото няма къде да свърши.
+   Маха се, като се махне класът is-haze от h1 в index.html. */
+/* ::before е дете на .hero-media и без подреждане остава ПОД снимката —
+   затова тук слоят се вдига над нея, а текстът остава най-отгоре. */
+.hero--haze .hero-media { isolation: isolate; }
+.hero--haze .hero-media::after { z-index: 2; }
+.hero--haze .hero-inner { z-index: 3; }
+
+.hero--haze .hero-media::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  width: min(2000px, 165%);
+  height: min(760px, 96%);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%,
+    rgba(9, 26, 36, .44) 0%,
+    rgba(9, 26, 36, .36) 40%,
+    rgba(9, 26, 36, .18) 70%,
+    rgba(9, 26, 36, 0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.hero-title.is-haze {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  text-shadow:
+    0 1px 2px rgba(6, 18, 25, .55),
+    0 4px 24px rgba(6, 18, 25, .55),
+    0 0 60px rgba(6, 18, 25, .35);
+}
+
+/* Опит 3: затъмняване от горния ръб надолу. Няма страничен ръб, който окото
+   да хване — тъмното е отрязано от самата снимка, затова не се чете като форма.
+   Маха се, като се махне класът hero--veil от секцията в index.html. */
+.hero--veil .hero-media::after {
+  background: linear-gradient(180deg,
+    rgba(9, 26, 36, .56) 0%,
+    rgba(9, 26, 36, .44) 20%,
+    rgba(9, 26, 36, .24) 38%,
+    rgba(9, 26, 36, .08) 54%,
+    rgba(9, 26, 36, 0) 68%);
+}
+@media (max-width: 760px) {
+  .hero--veil .hero-media::after {
+    background: linear-gradient(180deg,
+      rgba(9, 26, 36, .60) 0%,
+      rgba(9, 26, 36, .46) 24%,
+      rgba(9, 26, 36, .22) 44%,
+      rgba(9, 26, 36, .05) 60%,
+      rgba(9, 26, 36, 0) 74%);
+  }
+}
+
+/* по-лек общ затъмняващ слой, когато надписът си носи собствена мъгла */
+.hero--haze .hero-media::after {
+  background:
+    linear-gradient(180deg,
+      rgba(9, 26, 36, .26) 0%,
+      rgba(9, 26, 36, .12) 40%,
+      rgba(9, 26, 36, .04) 62%,
+      rgba(9, 26, 36, .30) 100%);
+}
+/* два бутона в началото: основният и до него вторичният */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+/* вторичният бутон в началото: плътна тъмна подложка, за да се откроява на снимката */
+.hero-actions .btn-outline-light {
+  background: rgba(9, 26, 36, .55);
+  border-color: rgba(234, 244, 242, .55);
+}
+.hero-actions .btn-outline-light:hover {
+  background: rgba(9, 26, 36, .75);
+  border-color: var(--light);
+}
 .hero-inner .btn-donate { margin-top: 2px; }
 .btn-donate {
   background: var(--ember);
@@ -424,17 +527,35 @@ body.menu-open { overflow: hidden; }
 
 /* мобилен вариант: надписът е горе, групата остава видима долу */
 @media (max-width: 760px) {
-  .hero-media { height: clamp(440px, 66svh, 560px); }
-  .hero-media img { object-position: 50% 50%; }
+  /* по-нисък банер: така снимката има вертикален запас и групата може да се
+     качи по-високо, вместо да виси на дъното под празна планина */
+  .hero-media { height: clamp(400px, 54svh, 500px); }
+  .hero-media img { object-position: 50% 40%; }   /* мобилно: половината небе, снимката е вдигната по-малко */
   .hero-inner {
-    justify-content: flex-start;
-    padding: clamp(26px, 5vh, 48px) 18px 0;
-    gap: 16px;
-    transform: none;
+    /* текстът и бутонът са в средата на снимката, а бутонът — точно по средата */
+    justify-content: center;
+    padding: 0 18px;
+    gap: 18px;
+    transform: translateY(-9%);
   }
   .hero-title {
-    font-size: clamp(26px, 7.6vw, 38px);
-    max-width: 15ch;
+    /* по-малко, за да се събере „ЗАЕДНО ПЛАНИНАТА“ на един ред на телефон */
+    font-size: clamp(23px, 7.0vw, 34px);
+    max-width: none;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  /* на телефон надписът е горе, затова мъглата се мести с него */
+  .hero--haze .hero-media::before {
+    /* мъглата се центрира върху надписа, за да остава той четим и след слизането */
+    top: 0;
+    width: 240%;
+    height: min(760px, 108%);
+    background: radial-gradient(ellipse 50% 50% at 50% 50%,
+      rgba(9, 26, 36, .46) 0%,
+      rgba(9, 26, 36, .38) 40%,
+      rgba(9, 26, 36, .17) 70%,
+      rgba(9, 26, 36, 0) 100%);
   }
   .btn-donate { padding: 13px 26px; font-size: 15px; }
 }
@@ -1372,7 +1493,7 @@ body.menu-open { overflow: hidden; }
 .page-hero--plain { padding-top: clamp(26px, 3.2vw, 44px); }
 .page-hero--plain .page-title { max-width: 20ch; font-size: clamp(31px, 3.90vw, 53px); }
 .page-hero--plain .lead { max-width: 56ch; margin-top: clamp(20px, 2.4vw, 28px); }
-.section-tight { padding-block: clamp(18px, 2.4vw, 30px) var(--section-y); }
+.section-tight { padding-bottom: var(--section-y); }   /* горното разстояние идва от .page-hero + .section */
 
 .filters {
   display: flex;
@@ -1747,7 +1868,8 @@ body.menu-open { overflow: hidden; }
 }
 /* Първият ред (ePay / Платформата) се разтяга до еднаква височина;
    банковите данни и DMS остават плътно по съдържанието си. */
-.give-method--bank,
+/* DMS остава по съдържанието си; банковата кутия се разтяга до нея, за да
+   завършват двете на една линия. */
 .give-methods > .give-method:nth-child(4) { align-self: start; }
 .give-method--bank { justify-content: flex-start; }
 .give-method--bank .copy-list {
@@ -1763,7 +1885,7 @@ body.menu-open { overflow: hidden; }
 .give-method--bank .copy-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 1px 0;
   min-height: 0;
   border: 0;
@@ -1775,9 +1897,21 @@ body.menu-open { overflow: hidden; }
   grid-column: auto;
   font-size: 10px;
 }
-.give-method--bank .copy-value { flex: 0 1 auto; min-width: 0; }
+.give-method--bank .copy-value { flex: 0 1 auto; min-width: 0; }   /* копчето стои до самия текст */
 .give-method--bank .copy-btn { flex: 0 0 auto; }
 .give-col--bank .give-method { flex: none; }
+
+/* Телефони: по-тесен етикет и по-малка отстъпка до стойността — така IBAN-ът
+   се събира на един ред, а етикетите и стойностите остават подравнени. */
+@media (max-width: 620px) {
+  .give-method--bank .copy-row { gap: 8px; }
+  .give-method--bank .copy-label { flex-basis: 72px; letter-spacing: .07em; }
+}
+@media (max-width: 360px) {
+  .give-method--bank .copy-row { gap: 6px; }
+  .give-method--bank .copy-label { flex-basis: 64px; }
+  .give-method--bank .copy-value { font-size: 12.5px; }
+}
 
 @media (max-width: 860px) {
   .give-methods { grid-template-columns: minmax(0, 1fr); max-width: none; }
@@ -1927,6 +2061,7 @@ body.menu-open { overflow: hidden; }
 .copy-btn.is-done > svg:not(.copy-tick) { display: none; }
 .copy-btn.is-done .copy-tick { display: block; }
 .copy-status { font-size: 13px; color: var(--ember-soft); }
+
 .copy-status:empty { display: none; }
 
 @media (max-width: 620px) {
@@ -2370,7 +2505,7 @@ body.menu-open { overflow: hidden; }
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
   gap: clamp(28px, 4vw, 72px);
-  align-items: start;
+  align-items: center;
 }
 .award img {
   width: 100%;
@@ -2491,7 +2626,10 @@ body.menu-open { overflow: hidden; }
 
 @media (max-width: 520px) {
   body { font-size: 16.5px; }
-  .hero-actions .btn { width: 100%; }
+  /* в началото двата бутона стоят един до друг и на телефон */
+  .hero-actions { flex-wrap: nowrap; gap: 8px; }
+  .hero-actions .btn { width: auto; flex: 0 1 auto; }
+  .hero-actions .btn-outline-light { padding: 13px 18px; font-size: 15px; }
   .stat { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .partner-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; }
   .stories { grid-template-columns: minmax(0, 1fr); }
@@ -2610,7 +2748,9 @@ body.menu-open { overflow: hidden; }
 .back-link:focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; }
 
 .event-page-title {
-  margin: clamp(16px, 2vw, 24px) 0 0;
+  /* „← Всички събития“ вече е над решетката — заглавието започва на една
+     линия със снимката, без собствен горен отстъп */
+  margin: 0;
   font-family: var(--display);
   font-size: clamp(30px, 3.6vw, 50px);
   font-weight: 700;
@@ -2622,7 +2762,7 @@ body.menu-open { overflow: hidden; }
 .event-page .event-when { margin-top: 0; font-size: clamp(17px, 1.45vw, 21px); }
 .event-page .event-place { font-size: clamp(15px, 1.2vw, 17px); }
 
-.event-cover { margin-top: clamp(22px, 2.8vw, 38px); }
+.event-cover { margin: 0; }
 .event-cover img {
   display: block;
   width: 100%;
@@ -2632,22 +2772,38 @@ body.menu-open { overflow: hidden; }
   border-radius: 24px;
 }
 
-.event-page-body {
+/* Страница на събитие: заглавие и текст отляво, снимка отдясно с бутона под нея */
+.event-page-back { padding-top: clamp(26px, 3vw, 44px); }
+.event-page-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
-  gap: clamp(24px, 3.4vw, 48px);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(28px, 3.6vw, 56px);
   align-items: start;
-  padding-block: clamp(26px, 3vw, 44px);
+  padding-block: clamp(16px, 1.8vw, 26px) clamp(26px, 3vw, 44px);
 }
-.event-page-body.is-single { grid-template-columns: minmax(0, 1fr); }
-/* без странична колона текстът се разлива в две колони на широк екран */
-@media (min-width: 1081px) {
-  .event-page-body.is-single .event-page-text { column-count: 2; column-gap: clamp(32px, 4vw, 68px); }
-  .event-page-body.is-single .event-page-text p { max-width: none; break-inside: avoid; }
+.event-page-main { min-width: 0; }
+.event-page-text { margin-top: clamp(24px, 2.8vw, 36px); }
+.event-page-side {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6vw, 20px);
+  align-items: stretch;
 }
+
+/* картичка с данните за събитието */
+.event-info {
+  padding: clamp(18px, 1.8vw, 26px) clamp(18px, 1.8vw, 26px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--paper-2);
+}
+.event-info ul { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(12px, 1.3vw, 16px); }
+.event-info li { display: flex; align-items: baseline; gap: 10px; font-size: 16px; line-height: 1.4; }
+.event-info-ico { font-size: 17px; line-height: 1.2; flex: none; }
+.event-info-label { font-weight: 700; color: var(--ink); }
 .event-page-text p { margin: 0; font-size: 17.5px; line-height: 1.7; color: var(--ink); max-width: 68ch; }
 .event-page-text p + p { margin-top: 16px; }
-.event-page-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.event-page-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
 
 .event-gallery {
   display: grid;
@@ -2661,7 +2817,17 @@ body.menu-open { overflow: hidden; }
 .event-missing { display: grid; gap: 18px; justify-items: start; padding-block: clamp(40px, 6vw, 80px); }
 
 @media (max-width: 860px) {
-  .event-page-body { grid-template-columns: minmax(0, 1fr); }
+  /* на телефон: заглавие, картичка с данните, бутон, текст, снимка */
+  .event-page-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .event-page-main,
+  .event-page-side { display: contents; }
+  .event-page-back { padding-top: clamp(22px, 4vw, 34px); }
+  .event-page-head { order: 1; }
+  .event-info { order: 2; margin-top: clamp(18px, 3vw, 26px); }
+  .event-page-aside { margin-top: clamp(18px, 3vw, 26px); align-items: center; }
+  .event-page-text { order: 3; margin-top: clamp(22px, 3.2vw, 30px); }
+  .event-page-aside { order: 4; }
+  .event-cover { order: 5; margin-top: clamp(22px, 3.2vw, 30px); }
 }
 @media (max-width: 760px) {
   .event-card { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 10px; }

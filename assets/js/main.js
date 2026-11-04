@@ -6,18 +6,13 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var clamp = function (v, min, max) { return Math.min(max, Math.max(min, v)); };
 
-  /* ── Header state + scroll progress ───────────────────────────────────── */
+  /* ── Header state ─────────────────────────────────────────────────────── */
   var header = document.querySelector("[data-header]");
-  var progressBar = document.querySelector("[data-progress]");
 
   function onScrollFrame() {
     var y = window.scrollY || window.pageYOffset;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
 
     if (header) header.classList.toggle("is-stuck", y > 8);
-    if (progressBar) {
-      progressBar.style.transform = "scaleX(" + clamp(max > 0 ? y / max : 0, 0, 1) + ")";
-    }
     drawProfile();
   }
 
@@ -653,4 +648,21 @@
   window.addEventListener("scroll", requestScroll, { passive: true });
   window.addEventListener("resize", requestScroll);
   onScrollFrame();
+})();
+
+/* Влизане в страница с #hash (например events.html#past):
+   списъците се строят с JavaScript, затова браузърът често scrollва
+   преди да са готови. Тук scrollваме отново и слагаме фокуса върху
+   секцията, за да е ясно къде е човек — и с клавиатура, и с екранен четец. */
+(function () {
+  var id = (window.location.hash || "").slice(1);
+  if (!id) return;
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
+  var go = function () {
+    el.scrollIntoView({ block: "start" });
+    try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
+  };
+  requestAnimationFrame(go);
 })();
