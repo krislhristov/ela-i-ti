@@ -337,7 +337,7 @@ section[tabindex="-1"]:focus-visible { outline: none; }
   padding-block: 14px;
   border-bottom: 1px solid var(--line-soft);
   font-family: var(--display);
-  font-size: clamp(30px, 8vw, 40px);
+  font-size: clamp(25px, 6.6vw, 33px);
   font-weight: 700;
   text-decoration: none;
   line-height: 1.1;
@@ -2259,11 +2259,15 @@ body.menu-open { overflow: hidden; }
   align-items: start;
 }
 .footer-logo-link {
-  display: inline-flex;
-  padding: 12px 14px;
-  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 3px 2px;
+  border-radius: 10px;
   background: #fff;
   line-height: 0;
+  flex: none;
 }
 .footer-logo {
   height: 84px;

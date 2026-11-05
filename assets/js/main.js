@@ -30,6 +30,12 @@
   var toggle = document.querySelector("[data-nav-toggle]");
   var menu = document.querySelector("[data-mobile-menu]");
   var lastFocused = null;
+  /* Дали последното действие е било с клавиатура. Само тогава местим
+     фокуса в менюто — иначе при докосване около „Начало“ светва
+     оранжевият focus ring, който не значи нищо за потребителя. */
+  var keyboardNav = false;
+  document.addEventListener("keydown", function () { keyboardNav = true; }, true);
+  document.addEventListener("pointerdown", function () { keyboardNav = false; }, true);
 
   function setMenu(open) {
     if (!toggle || !menu) return;
@@ -39,9 +45,11 @@
 
     if (open) {
       lastFocused = document.activeElement;
-      var first = menu.querySelector("a, button");
-      if (first) first.focus();
-    } else if (lastFocused) {
+      if (keyboardNav) {
+        var first = menu.querySelector("a, button");
+        if (first) first.focus();
+      }
+    } else if (lastFocused && keyboardNav) {
       lastFocused.focus();
     }
   }
@@ -53,6 +61,13 @@
 
     menu.addEventListener("click", function (event) {
       if (event.target.closest("a")) setMenu(false);
+    });
+
+    /* „Дари сега“ в хедъра: при отворено меню то покрива екрана и скокът
+       към секцията остава невидим — затова първо затваряме. */
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest(".header-actions .btn")) return;
+      if (toggle.getAttribute("aria-expanded") === "true") setMenu(false);
     });
 
     document.addEventListener("keydown", function (event) {
