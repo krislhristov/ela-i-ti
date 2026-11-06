@@ -37,7 +37,7 @@ window.ELAITI_EVENTS = [
       { src: "assets/img/events/nikolas-run.jpg", alt: "Деца в зимни дрехи тичат край езерото в парка." }
     ],
     tickets: "10 €",
-    signup: "https://www.facebook.com/events/2345476816222018"
+    signup: "https://forms.gle/7sZtVzoWcEdcwaT26"
   },
 
   {
@@ -56,7 +56,7 @@ window.ELAITI_EVENTS = [
       { src: "assets/img/events/nikolas-run-plovdiv.jpg", alt: "Деца тичат по алеята край Гребния канал в Пловдив, облечени за прохладно есенно утро." }
     ],
     tickets: "10 €",
-    signup: "https://www.facebook.com/events/1440998694079066/"
+    signup: "https://forms.gle/WgXNrwrkdfNcahBA8"
   },
 
   {

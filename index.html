@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=141">
+<link rel="stylesheet" href="assets/css/style.css?v=144">
 </head>
 <body>
 
@@ -456,8 +456,8 @@
                 <label class="visually-hidden" for="amount">Сума за дарение</label>
                 <select id="amount" class="amount-select" data-amount-select>
                 <option value="">Сума</option>
-                <option value="5">5 €</option>
-                <option value="10" selected>10 €</option>
+                <option value="5" selected>5 €</option>
+                <option value="10">10 €</option>
                 <option value="20">20 €</option>
                 <option value="50">50 €</option>
                 <option value="100">100 €</option>
@@ -466,7 +466,7 @@
               </div>
             <a class="btn btn-donate give-amounts-cta" data-amount-cta
             href="https://www.epay.bg/v3main/paylogin?min=1801952452&total=5&checksum=7fa7e69cd0aae19b07aab606a5fef6bb577c4028&descr=%D0%94%D0%B0%D1%80%D0%B5%D0%BD%D0%B8%D0%B5&encoding=utf8&url_ok=https%3A%2F%2Fwww.epay.bg%2Fv3main%2Ffront%3Fp%3Dthanks&url_cancel=https%3A%2F%2Fwww.epay.bg%2Fv3main%2Ffront%3Fp%3Dcancel"
-            target="_blank" rel="noopener" aria-disabled="true">Дари</a>
+            target="_blank" rel="noopener">Дари 5 €</a>
           </div>
           </div>
 
@@ -549,6 +549,10 @@
           <p class="field-error" id="message-error" hidden></p>
         </div>
         <button class="btn btn-block" type="submit">Изпрати съобщение</button>
+        <p class="form-consent">
+          С изпращането на формата се съгласяваш с обработването на данните ти според
+          <a href="privacy.html">Политиката за поверителност</a>.
+        </p>
         <p class="form-status" role="status" aria-live="polite" data-form-status></p>
       </form>
     </div>
@@ -595,13 +599,14 @@
     <div class="footer-legal">
       <p>© <span data-year>2026</span> Фондация „Ела и ти“</p>
       <p>ЕИК 177135613</p>
+      <p><a href="privacy.html">Поверителност</a></p>
     </div>
   </div>
 </footer>
 
-<script src="assets/js/events-data.js?v=8" defer></script>
+<script src="assets/js/events-data.js?v=9" defer></script>
 <script src="assets/js/upcoming.js?v=6" defer></script>
-<script src="assets/js/main.js?v=41" defer></script>
+<script src="assets/js/main.js?v=43" defer></script>
 <script src="assets/js/count-up.js?v=2" defer></script>
 </body>
 </html>

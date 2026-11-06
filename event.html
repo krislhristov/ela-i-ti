@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Стар адрес event.html?event=<id> → /events/<slug>.html.
+     Двата скрипта са първи, за да смени адреса още преди страницата да се покаже. -->
+<script src="assets/js/event-redirects.js"></script>
+<script src="assets/js/event-redirect.js"></script>
 <title>Събитие — Фондация „Ела и ти“</title>
 <meta name="description" content="Подробности за събитие на фондация „Ела и ти“.">
 <meta name="theme-color" content="#F7FAFA">
@@ -14,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=140">
+<link rel="stylesheet" href="assets/css/style.css?v=144">
 </head>
 <body>
 
@@ -117,13 +121,14 @@
     <div class="footer-legal">
       <p>© <span data-year>2026</span> Фондация „Ела и ти“</p>
       <p>ЕИК 177135613</p>
+      <p><a href="privacy.html">Поверителност</a></p>
     </div>
   </div>
 </footer>
 
 <!-- събитията идват от assets/js/events-data.js -->
-<script src="assets/js/events-data.js?v=7" defer></script>
+<script src="assets/js/events-data.js?v=8" defer></script>
 <script src="assets/js/events.js?v=11" defer></script>
-<script src="assets/js/main.js?v=40" defer></script>
+<script src="assets/js/main.js?v=43" defer></script>
 </body>
 </html>

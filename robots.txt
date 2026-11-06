@@ -1,0 +1,8 @@
+# Фондация „Ела и ти“ — https://elaiti.com
+# Кроулъри: всичко е публично и достъпно.
+
+User-agent: *
+Allow: /
+
+# Картата на сайта се генерира при публикуване.
+Sitemap: https://elaiti.com/sitemap.xml

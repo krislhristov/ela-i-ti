@@ -273,6 +273,18 @@
     return !message;
   }
 
+  function setFormStatus(message, isError) {
+    if (!formStatus) return;
+    formStatus.textContent = message;
+    formStatus.classList.toggle("is-error", !!isError);
+    window.clearTimeout(formStatus.__statusTimer);
+    if (!isError) {
+      formStatus.__statusTimer = window.setTimeout(function () {
+        if (formStatus.textContent === message) formStatus.textContent = "";
+      }, 6000);
+    }
+  }
+
   if (form) {
     var required = Array.prototype.slice.call(form.querySelectorAll("[data-required]"));
 
@@ -296,7 +308,7 @@
 
       if (firstInvalid) {
         firstInvalid.focus();
-        announce(formStatus, "Провери отбелязаните полета и опитай отново.");
+        setFormStatus("Провери отбелязаните полета и опитай отново.", true);
         return;
       }
 
@@ -308,7 +320,7 @@
       var body = message + "\n\n—\n" + name + "\n" + email;
       var href = "mailto:info@elaiti.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
 
-      announce(formStatus, "Отваряме твоята пощенска програма с готово съобщение до info@elaiti.com.");
+      setFormStatus("Отваряме твоята пощенска програма с готово съобщение до info@elaiti.com.");
       window.location.href = href;
     });
   }
@@ -618,6 +630,16 @@
   }
 
   /* Слайдерът „Предстоящи събития“ се строи в assets/js/upcoming.js. */
+
+  /* ── Клавиатура срещу докосване ────────────────────────────────────────
+     Слагаме клас „kbd“ на <html>, когато човекът работи с клавиатура, за да
+     показваме focus ring само тогава. Иначе при докосване остават видими
+     състояния, които не значат нищо. */
+  (function () {
+    var root = document.documentElement;
+    document.addEventListener("keydown", function () { root.classList.add("kbd"); }, true);
+    document.addEventListener("pointerdown", function () { root.classList.remove("kbd"); }, true);
+  })();
 
   /* ── Избор на сума за дарение ─────────────────────────────────────────── */
   (function () {
