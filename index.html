@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=144">
+<link rel="stylesheet" href="assets/css/style.css?v=163">
 </head>
 <body>
 
@@ -420,20 +420,58 @@
   <section class="partners" id="partners" aria-labelledby="partners-title">
     <div class="wrap">
       <h2 class="h2 section-title section-title--sub" id="partners-title">Нашите партньори</h2>
-      <ul class="partner-list">
-        <li><a href="http://www.pzrescue.org/" target="_blank" rel="noopener">
-          <img src="assets/img/logo-pzrescue.jpg" width="320" height="320" alt="Планинско спасяване – Пазарджик" loading="lazy">
-        </a></li>
-        <li><a href="http://www.caverescue.bg/" target="_blank" rel="noopener">
-          <img src="assets/img/logo-caverescue.jpg" width="180" height="180" alt="Пещерно спасяване" loading="lazy">
-        </a></li>
-        <li><a href="http://www.spk.bg/" target="_blank" rel="noopener">
-          <img src="assets/img/logo-spk.png" width="320" height="221" alt="Софийски планински клуб" loading="lazy">
-        </a></li>
-        <li><a href="https://credirect.bg/" target="_blank" rel="noopener">
-          <img src="assets/img/logo-credirect.png" width="450" height="135" alt="Credirect" loading="lazy" class="is-wide">
-        </a></li>
-      </ul>
+      <div class="partner-slider" data-slider>
+        <div class="partner-viewport" data-slider-viewport tabindex="0" role="group"
+             aria-roledescription="карусел" aria-label="Нашите партньори">
+          <div class="partner-track" data-slider-track>
+            <ul class="partner-page partner-list">
+                <li><a href="https://timeheroes.org/bg/" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-timeheroes.png" width="297" height="157" alt="TimeHeroes" loading="lazy">
+                </a></li>
+                <li><a href="https://www.dm-drogeriemarkt.bg/" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-dm.png" width="492" height="329" alt="dm drogerie markt" loading="lazy">
+                </a></li>
+                <li><a href="https://runtrack.online/" target="_blank" rel="noopener">
+                  <img class="is-wide" src="assets/img/logo-runtrack.png" width="317" height="66" alt="RunTrack" loading="lazy">
+                </a></li>
+                <li><a href="https://travellersclub.bg/" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-travellersclub.png" width="480" height="480" alt="Клуб на пътешественика" loading="lazy">
+                </a></li>
+            </ul>
+            <ul class="partner-page partner-list">
+                <li><a href="https://www.facebook.com/PSSotrqdSofia" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-pss.png" width="164" height="199" alt="Планинска спасителна служба – Отряд София" loading="lazy">
+                </a></li>
+                <li><a href="https://azimutrunners.wordpress.com/" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-azimut.jpg" width="376" height="300" alt="Спортен клуб Азимут – София" loading="lazy">
+                </a></li>
+                <li><a href="https://pzrescue.org/" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-pzrescue.jpg" width="295" height="295" alt="Планинско спасяване – област Пазарджик" loading="lazy">
+                </a></li>
+                <li><a href="https://www.facebook.com/veloculture/" target="_blank" rel="noopener">
+                  <img src="assets/img/logo-velokultura.png" width="520" height="430" alt="ВелоКултура Пловдив" loading="lazy">
+                </a></li>
+            </ul>
+            <ul class="partner-page partner-list">
+                <li><a href="https://www.wienerclub-bg.org/" target="_blank" rel="noopener">
+                  <img class="is-wide" src="assets/img/logo-wienerclub.png" width="351" height="135" alt="Виенски клуб – България" loading="lazy">
+                </a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="slider-nav">
+          <div class="slider-dots" data-slider-dots role="group" aria-label="Избор на слайд"></div>
+          <div class="slider-arrows">
+            <button class="slider-btn" type="button" data-slider-prev aria-label="Предишни партньори">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="slider-btn" type="button" data-slider-next aria-label="Следващи партньори">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -606,7 +644,7 @@
 
 <script src="assets/js/events-data.js?v=9" defer></script>
 <script src="assets/js/upcoming.js?v=6" defer></script>
-<script src="assets/js/main.js?v=43" defer></script>
+<script src="assets/js/main.js?v=45" defer></script>
 <script src="assets/js/count-up.js?v=2" defer></script>
 </body>
 </html>
