@@ -7,6 +7,20 @@
   var empty = document.querySelector("[data-upcoming-empty]");
   if (!slider || !track || !empty) return;
 
+  // WebP вариантът е значително по-малък; ако файлът липсва, браузърът
+  // просто ползва <img> вътре в <picture>.
+  function withWebp(img) {
+    var raw = img.getAttribute("src") || "";
+    if (!/\.jpe?g$/i.test(raw)) return img;
+    var pic = document.createElement("picture");
+    var src = document.createElement("source");
+    src.type = "image/webp";
+    src.srcset = raw.replace(/\.jpe?g$/i, ".webp");
+    pic.appendChild(src);
+    pic.appendChild(img);
+    return pic;
+  }
+
   var MONTHS = ["януари", "февруари", "март", "април", "май", "юни",
                 "юли", "август", "септември", "октомври", "ноември", "декември"];
 
@@ -55,7 +69,7 @@
     var card = node("article", "slide-card slide-card--event");
     var body = node("div", "slide-body");
 
-    body.appendChild(node("h4", "slide-title", ev.title));
+    body.appendChild(node("h3", "slide-title", ev.title));
 
     var when = dayText(item.start) + ", " + clock(item.start);
     if (item.end > item.start) when += " – " + clock(item.end);
@@ -91,7 +105,7 @@
       img.alt = first.alt || ev.title;
       img.loading = i === 0 ? "eager" : "lazy";
       img.decoding = "async";
-      media.appendChild(img);
+      media.appendChild(withWebp(img));
       card.appendChild(media);
     }
 

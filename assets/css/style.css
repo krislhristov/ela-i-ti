@@ -1701,6 +1701,16 @@ body.menu-open { overflow: hidden; }
 .field textarea:hover { border-color: rgba(16, 41, 58, .3); }}
 .field input:focus,
 .field textarea:focus { outline: none; border-color: var(--pine); background: #fff; box-shadow: 0 0 0 3px rgba(27, 88, 157, .12); }
+/* Клавиатура: рамката трябва да се вижда ясно, не само смяна на цвета на
+   борда. Правилото е с по-висока специфичност от :focus по-горе. */
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 3px solid var(--pine);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.field input[aria-invalid="true"]:focus-visible,
+.field textarea[aria-invalid="true"]:focus-visible { outline-color: var(--ember); }
 
 .field-error {
   font-size: 13.5px;
@@ -2260,3 +2270,176 @@ body.menu-open { overflow: hidden; }
   .event-page-aside { margin-top: 0; align-items: flex-end; }
   .event-cover { margin-top: 0; }
 }
+
+/* ── Страница „Събития“: филтри, етикет за предстоящо, порции ─────────── */
+.events-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin: 0 0 clamp(16px, 2vw, 26px);
+}
+.filter-field { display: flex; align-items: center; }
+.filter-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  padding: 10px 40px 10px 20px;
+  border: 1px solid rgba(16, 41, 58, .14);
+  border-radius: 999px;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2310293A' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.filter-field select:hover { border-color: rgba(16, 41, 58, .3); }
+.filter-field select:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; }
+.filter-field select:invalid,
+.filter-field select option[value=""] { color: var(--ink); }
+.events-count {
+  margin: 0 0 0 auto;
+  font-size: 13px;
+  color: var(--stone);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Предстоящото събитие: по-топъл фон, рамка и етикет — цвят сам не стига */
+.event-card.is-future {
+  background: #E7F1EE;
+  box-shadow: inset 0 0 0 1px rgba(0, 107, 92, .22);
+}
+.event-card.is-future:hover,
+.event-card.is-future:focus-within { background: #DEEDE9; }
+.event-badge {
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--sea);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.events-more { display: flex; justify-content: center; margin-top: clamp(18px, 2.4vw, 30px); }
+.events-more .btn { min-width: 220px; }
+.events-sentinel { height: 1px; }
+
+/* Други издания на събитието — само на страницата на събитието */
+.event-editions { margin-top: clamp(26px, 3vw, 40px); border-top: 1px solid var(--line-soft); padding-top: clamp(18px, 2vw, 26px); }
+.event-editions-title { margin: 0 0 10px; font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.event-editions-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.event-editions-list li { border-bottom: 1px solid var(--line-soft); }
+.event-editions-list a { display: block; color: var(--ink); text-decoration: none; font-size: 14px; padding: 7px 0; }
+.event-editions-list a:hover { color: var(--pine); }
+
+@media (max-width: 640px) {
+  .events-count { margin: 0; width: 100%; order: 3; }
+  .filter-field { flex: 1 1 46%; }
+  .filter-field select { width: 100%; }
+}
+
+/* Карта без снимка: тих фон със знака на фондацията */
+.event-media-wrap--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  background: #E1EAEB;
+  border-radius: 20px;
+}
+.event-media--placeholder {
+  width: 74px;
+  height: auto;
+  opacity: .45;
+  object-fit: contain;
+}
+
+/* ── Проекти и инициативи ─────────────────────────────────────────────── */
+.projects-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 clamp(16px, 2vw, 26px); }
+.project-chip {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  padding: 9px 20px;
+  border: 1px solid rgba(16, 41, 58, .14);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.project-chip:hover { border-color: rgba(16, 41, 58, .3); }
+.project-chip.is-active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.project-chip:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; }
+
+.projects-list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(14px, 1.8vw, 24px); }
+.projects-list-item { list-style: none; margin: 0; }
+
+.project-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 14px;
+  padding: 10px;
+  background: var(--paper-2);
+  border-radius: 28px;
+  transition: transform .25s var(--ease), background-color .25s var(--ease);
+}
+.project-card:focus-within { transform: translateY(-3px); background: #E4EDEE; }
+@media (hover: hover) { .project-card:hover { transform: translateY(-3px); background: #E4EDEE; } }
+.project-card-body { display: contents; }
+@media (min-width: 769px) {
+  .project-card { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); gap: var(--space-05); padding: var(--space-06); }
+  .project-card-body { display: flex; flex-direction: column; padding: clamp(6px, .9vw, 14px) clamp(16px, 2vw, 32px); }
+}
+.project-card-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(21px, 2.1vw, 30px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.012em;
+  max-width: 30ch;
+}
+.project-card-text { margin: 10px 0 0; color: var(--stone); font-size: 15px; line-height: 1.5; max-width: 52ch; }
+.project-card .btn { align-self: flex-start; margin-top: auto; }
+
+.project-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 10px; }
+.project-meta--lead { margin: 0 0 14px; }
+.project-kind {
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(27, 88, 157, .1);
+  color: var(--pine);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.project-period { color: var(--stone); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.project-lead { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.5; color: var(--ink); margin: 0 0 clamp(18px, 2vw, 26px); max-width: 58ch; }
+
+.project-block { margin-top: clamp(24px, 3vw, 36px); border-top: 1px solid var(--line-soft); padding-top: clamp(16px, 2vw, 22px); }
+.project-block-title { margin: 0 0 10px; font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.project-supporters { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14.5px; }
+
+/* ── Кампании: числа и прогрес ────────────────────────────────────────── */
+.campaign-progress { margin: 0 0 clamp(14px, 1.6vw, 20px); }
+.campaign-progress-row { margin: 0 0 8px; font-size: clamp(16px, 1.5vw, 19px); font-variant-numeric: tabular-nums; }
+.campaign-progress-row b { font-weight: 700; }
+.campaign-bar { height: 8px; border-radius: 999px; background: rgba(16, 41, 58, .12); overflow: hidden; }
+.campaign-bar-fill { display: block; height: 100%; border-radius: 999px; background: var(--ember); transition: width .4s var(--ease); }
+.campaign-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 0; color: var(--stone); font-size: 13.5px; }
+.campaign-stamp { margin: 4px 0 0; color: var(--stone); font-size: 12px; }
+.campaign-note { margin: 6px 0 0; color: var(--stone); font-size: 13.5px; max-width: 46ch; }
+.campaign-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 clamp(20px, 2.4vw, 30px); }
+.campaign-actions .btn { margin: 0; }

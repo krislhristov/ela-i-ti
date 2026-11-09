@@ -6,7 +6,6 @@
 <!-- Стар адрес event.html?event=<id> → /events/<slug>.html.
      Двата скрипта са първи, за да смени адреса още преди страницата да се покаже. -->
 <script src="assets/js/event-redirects.js"></script>
-<script src="assets/js/event-redirect.js"></script>
 <title>Събитие — Фондация „Ела и ти“</title>
 <meta name="description" content="Подробности за събитие на фондация „Ела и ти“.">
 <meta name="theme-color" content="#F7FAFA">
@@ -18,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=164">
+<link rel="stylesheet" href="assets/css/style.css?v=168">
 </head>
 <body>
 
@@ -27,7 +26,7 @@
 <header class="site-header" data-header>
   <div class="wrap header-inner">
     <a class="brand" href="index.html" aria-label="Фондация „Ела и ти“ — начало">
-      <img class="brand-logo" src="assets/img/logo.png" width="216" height="220" alt="Фондация „Ела и ти“">
+      <picture><source type="image/webp" srcset="assets/img/logo.webp"><img class="brand-logo" src="assets/img/logo.png" width="216" height="220" alt="Фондация „Ела и ти“"></picture>
     </a>
 
     <nav class="nav" aria-label="Основна навигация">
@@ -35,12 +34,12 @@
       <a href="about.html">За нас</a>
       <a href="events.html" aria-current="page">Събития</a>
       <a href="campaigns.html">Кампании</a>
-      <a href="projects.html">Проекти</a>
+      <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-sm" href="index.html#support">Дари сега</a>
+      <a class="btn btn-sm" href="donate.html">Дари сега</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
         <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="visually-hidden">Меню</span>
@@ -55,7 +54,7 @@
     <a href="about.html">За нас</a>
     <a href="events.html">Събития</a>
     <a href="campaigns.html">Кампании</a>
-    <a href="projects.html">Проекти</a>
+    <a href="projects.html">Проекти и инициативи</a>
     <a href="media.html">Медии</a>
     <a href="index.html#contact">Контакти</a>
   </nav>
@@ -86,8 +85,8 @@
   <div class="wrap footer-inner">
     <div class="footer-brand">
       <a class="footer-logo-link" href="index.html" aria-label="Фондация „Ела и ти“ — начало">
-        <img class="footer-logo" src="assets/img/logo.png" width="216" height="220"
-             alt="Фондация „Ела и ти“" loading="lazy" decoding="async">
+        <picture><source type="image/webp" srcset="assets/img/logo.webp"><img class="footer-logo" src="assets/img/logo.png" width="216" height="220"
+             alt="Фондация „Ела и ти“" loading="lazy" decoding="async"></picture>
       </a>
       <p class="footer-tagline">ФОНДАЦИЯ В ПОДКРЕПА НА ХОРАТА С ДВИГАТЕЛНИ ЗАТРУДНЕНИЯ</p>
 
@@ -114,9 +113,9 @@
       <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
-      <a href="projects.html">Проекти</a>
+      <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
-      <a href="index.html#support">Дари сега</a>
+      <a href="donate.html">Дари сега</a>
     </nav>
     <div class="footer-legal">
       <p>© <span data-year>2026</span> Фондация „Ела и ти“</p>
@@ -127,8 +126,12 @@
 </footer>
 
 <!-- събитията идват от assets/js/events-data.js -->
-<script src="assets/js/events-data.js?v=8" defer></script>
-<script src="assets/js/events.js?v=11" defer></script>
-<script src="assets/js/main.js?v=45" defer></script>
+<script src="assets/js/events-data.js?v=10" defer></script>
+<script src="assets/js/events-archive-data.js?v=1" defer></script>
+<script src="assets/js/events-archive-body.js?v=1" defer></script>
+<script src="assets/js/projects-data.js?v=1" defer></script>
+<script src="assets/js/campaigns-data.js?v=1" defer></script>
+<script src="assets/js/events.js?v=15" defer></script>
+<script src="assets/js/main.js?v=47" defer></script>
 </body>
 </html>

@@ -4,17 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Събития — Фондация „Ела и ти“</title>
+<link rel="canonical" href="https://elaiti.com/events.html">
 <meta name="description" content="Всички събития на фондация „Ела и ти“ — предстоящи и минали: водопад „Скакавица“, Рилските езера, Гребния канал, първата карта на адаптиран маршрут в София.">
 <meta name="theme-color" content="#F7FAFA">
 <meta property="og:title" content="Събития — Фондация „Ела и ти“">
 <meta property="og:description" content="Предстоящи и минали събития: местата, които стигнахме заедно.">
-<meta property="og:image" content="assets/img/events/e1.jpg">
+<meta property="og:image" content="https://elaiti.com/assets/img/events/e1.jpg">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://elaiti.com/events.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Събития — Фондация „Ела и ти“">
+<meta name="twitter:description" content="Предстоящи и минали събития: местата, които стигнахме заедно.">
+<meta name="twitter:image" content="https://elaiti.com/assets/img/events/e1.jpg">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=163">
+<link rel="stylesheet" href="assets/css/style.css?v=168">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  "name": "Фондация „Ела и ти“",
+  "url": "https://elaiti.com/",
+  "logo": "https://elaiti.com/assets/img/logo.png",
+  "email": "info@elaiti.com",
+  "sameAs": [
+    "https://www.facebook.com/elaitifoundation/",
+    "https://www.instagram.com/elaitifoundation/",
+    "https://www.youtube.com/@elaitifoundation8444"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -23,7 +44,7 @@
 <header class="site-header" data-header>
   <div class="wrap header-inner">
     <a class="brand" href="index.html" aria-label="Фондация „Ела и ти“ — начало">
-      <img class="brand-logo" src="assets/img/logo.png" width="216" height="220" alt="Фондация „Ела и ти“">
+      <picture><source type="image/webp" srcset="assets/img/logo.webp"><img class="brand-logo" src="assets/img/logo.png" width="216" height="220" alt="Фондация „Ела и ти“"></picture>
     </a>
 
     <nav class="nav" aria-label="Основна навигация">
@@ -31,12 +52,12 @@
       <a href="about.html">За нас</a>
       <a href="events.html" aria-current="page">Събития</a>
       <a href="campaigns.html">Кампании</a>
-      <a href="projects.html">Проекти</a>
+      <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-sm" href="index.html#support">Дари сега</a>
+      <a class="btn btn-sm" href="donate.html">Дари сега</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
         <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="visually-hidden">Меню</span>
@@ -51,7 +72,7 @@
     <a href="about.html">За нас</a>
     <a href="events.html">Събития</a>
     <a href="campaigns.html">Кампании</a>
-    <a href="projects.html">Проекти</a>
+    <a href="projects.html">Проекти и инициативи</a>
     <a href="media.html">Медии</a>
     <a href="index.html#contact">Контакти</a>
   </nav>
@@ -64,27 +85,50 @@
 
   <section class="page-hero page-hero--plain" aria-labelledby="page-title">
     <div class="wrap">
-      <h1 class="page-title" id="page-title">Предстоящи събития</h1>
+      <h1 class="page-title" id="page-title">Събития</h1>
     </div>
   </section>
 
-  <section class="section section-events" id="upcoming" aria-label="Предстоящи събития">
+  <section class="section section-events" id="all-events" aria-labelledby="page-title">
     <div class="wrap">
-      <ul class="events-list" data-events-list="future"></ul>
-      <p class="lead" data-events-empty="future" hidden>Няма насрочени събития в момента. Очаквайте скоро следващото ни приключение!</p>
+      <div class="events-filters">
+        <label class="filter-field">
+          <select data-filter="category" aria-label="Категория">
+            <option value="">Категория</option>
+            <option value="priroda">В природата</option>
+            <option value="grad">В града</option>
+            <option value="socialni">Социални</option>
+            <option value="izkustvo">Изкуство</option>
+          </select>
+        </label>
+
+        <label class="filter-field">
+          <select data-filter="year" aria-label="Година">
+            <option value="">Година</option>
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+          </select>
+        </label>
+
+        <p class="events-count" data-events-count aria-live="polite"></p>
+      </div>
+
+      <ul class="events-list" data-events-list="all"></ul>
+      <p class="lead" data-events-empty="all" hidden>Няма събития с тези филтри.</p>
+
+      <div class="events-more">
+        <button type="button" class="btn btn-outline" data-events-more hidden>Покажи още</button>
+      </div>
 
       <noscript>
         <p class="lead">За да видите събитията, включете JavaScript в браузъра си.</p>
       </noscript>
-    </div>
-  </section>
-
-  <section class="section section-events" id="past" aria-labelledby="past-title">
-    <div class="wrap">
-      <h2 class="h2 section-title section-title--sub" id="past-title">Минали събития</h2>
-
-      <ul class="events-list" data-events-list="past"></ul>
-      <p class="lead" data-events-empty="past" hidden>Няма минали събития.</p>
     </div>
   </section>
 
@@ -94,8 +138,8 @@
   <div class="wrap footer-inner">
     <div class="footer-brand">
       <a class="footer-logo-link" href="index.html" aria-label="Фондация „Ела и ти“ — начало">
-        <img class="footer-logo" src="assets/img/logo.png" width="216" height="220"
-             alt="Фондация „Ела и ти“" loading="lazy" decoding="async">
+        <picture><source type="image/webp" srcset="assets/img/logo.webp"><img class="footer-logo" src="assets/img/logo.png" width="216" height="220"
+             alt="Фондация „Ела и ти“" loading="lazy" decoding="async"></picture>
       </a>
       <p class="footer-tagline">ФОНДАЦИЯ В ПОДКРЕПА НА ХОРАТА С ДВИГАТЕЛНИ ЗАТРУДНЕНИЯ</p>
 
@@ -122,9 +166,9 @@
       <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
-      <a href="projects.html">Проекти</a>
+      <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
-      <a href="index.html#support">Дари сега</a>
+      <a href="donate.html">Дари сега</a>
     </nav>
     <div class="footer-legal">
       <p>© <span data-year>2026</span> Фондация „Ела и ти“</p>
@@ -135,8 +179,9 @@
 </footer>
 
 <!-- събитията идват от assets/js/events-data.js -->
-<script src="assets/js/events-data.js?v=9" defer></script>
-<script src="assets/js/events.js?v=12" defer></script>
-<script src="assets/js/main.js?v=45" defer></script>
+<script src="assets/js/events-data.js?v=10" defer></script>
+<script src="assets/js/events-archive-data.js?v=1" defer></script>
+<script src="assets/js/events.js?v=15" defer></script>
+<script src="assets/js/main.js?v=47" defer></script>
 </body>
 </html>

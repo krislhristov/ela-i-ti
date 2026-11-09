@@ -4,17 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Проекти — Фондация „Ела и ти“</title>
+<link rel="canonical" href="https://elaiti.com/projects.html">
 <meta name="description" content="Раздел в подготовка.">
-<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F7FAFA">
 <meta property="og:title" content="Проекти — Фондация „Ела и ти“">
 <meta property="og:description" content="Раздел в подготовка.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://elaiti.com/assets/img/hero/hero-group.jpg">
+<meta property="og:url" content="https://elaiti.com/projects.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Проекти — Фондация „Ела и ти“">
+<meta name="twitter:description" content="Раздел в подготовка.">
+<meta name="twitter:image" content="https://elaiti.com/assets/img/hero/hero-group.jpg">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=164">
+<link rel="stylesheet" href="assets/css/style.css?v=168">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  "name": "Фондация „Ела и ти“",
+  "url": "https://elaiti.com/",
+  "logo": "https://elaiti.com/assets/img/logo.png",
+  "email": "info@elaiti.com",
+  "sameAs": [
+    "https://www.facebook.com/elaitifoundation/",
+    "https://www.instagram.com/elaitifoundation/",
+    "https://www.youtube.com/@elaitifoundation8444"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -23,7 +44,7 @@
 <header class="site-header" data-header>
   <div class="wrap header-inner">
     <a class="brand" href="index.html" aria-label="Фондация „Ела и ти“ — начало">
-      <img class="brand-logo" src="assets/img/logo.png" width="216" height="220" alt="Фондация „Ела и ти“">
+      <picture><source type="image/webp" srcset="assets/img/logo.webp"><img class="brand-logo" src="assets/img/logo.png" width="216" height="220" alt="Фондация „Ела и ти“"></picture>
     </a>
 
     <nav class="nav" aria-label="Основна навигация">
@@ -31,12 +52,12 @@
       <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
-      <a href="projects.html" aria-current="page">Проекти</a>
+      <a href="projects.html" aria-current="page">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-sm" href="index.html#support">Дари сега</a>
+      <a class="btn btn-sm" href="donate.html">Дари сега</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
         <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="visually-hidden">Меню</span>
@@ -51,7 +72,7 @@
     <a href="about.html">За нас</a>
     <a href="events.html">Събития</a>
     <a href="campaigns.html">Кампании</a>
-    <a href="projects.html" aria-current="page">Проекти</a>
+    <a href="projects.html" aria-current="page">Проекти и инициативи</a>
     <a href="media.html">Медии</a>
     <a href="index.html#contact">Контакти</a>
   </nav>
@@ -62,16 +83,27 @@
 
 <main id="main">
 
-  <!-- ── Проекти: скелет без съдържание ─────────────────────────────
-       Празен раздел. Пълни се със съдържание по-късно.
-       Свързан е от менюто на всички страници.
-       noindex остава, докато разделът е празен — махни го с първото съдържание. -->
   <section class="page-hero page-hero--plain" aria-labelledby="page-title">
     <div class="wrap">
       <div class="page-hero-copy">
-        <h1 class="page-title" id="page-title">Проекти</h1>
-        <p class="lead">Разделът се подготвя.</p>
+        <h1 class="page-title" id="page-title">Проекти и инициативи</h1>
       </div>
+    </div>
+  </section>
+
+  <section class="section section-events" id="all-projects" aria-labelledby="page-title">
+    <div class="wrap">
+      <div class="projects-filters" role="group" aria-label="Филтър на проектите">
+        <button type="button" class="project-chip is-active" data-kind-filter="" aria-pressed="true">Всички</button>
+        <button type="button" class="project-chip" data-kind-filter="proekt" aria-pressed="false">Проекти</button>
+        <button type="button" class="project-chip" data-kind-filter="iniciativa" aria-pressed="false">Инициативи</button>
+      </div>
+
+      <ul class="projects-list" data-projects-list></ul>
+
+      <noscript>
+        <p class="lead">За да видите проектите, включете JavaScript в браузъра си.</p>
+      </noscript>
     </div>
   </section>
 
@@ -81,8 +113,8 @@
   <div class="wrap footer-inner">
     <div class="footer-brand">
       <a class="footer-logo-link" href="index.html" aria-label="Фондация „Ела и ти“ — начало">
-        <img class="footer-logo" src="assets/img/logo.png" width="216" height="220"
-             alt="Фондация „Ела и ти“" loading="lazy" decoding="async">
+        <picture><source type="image/webp" srcset="assets/img/logo.webp"><img class="footer-logo" src="assets/img/logo.png" width="216" height="220"
+             alt="Фондация „Ела и ти“" loading="lazy" decoding="async"></picture>
       </a>
       <p class="footer-tagline">ФОНДАЦИЯ В ПОДКРЕПА НА ХОРАТА С ДВИГАТЕЛНИ ЗАТРУДНЕНИЯ</p>
 
@@ -109,9 +141,9 @@
       <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
-      <a href="projects.html">Проекти</a>
+      <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
-      <a href="index.html#support">Дари сега</a>
+      <a href="donate.html">Дари сега</a>
     </nav>
     <div class="footer-legal">
       <p>© <span data-year>2026</span> Фондация „Ела и ти“</p>
@@ -121,6 +153,10 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=45" defer></script>
+<script src="assets/js/events-data.js?v=10" defer></script>
+<script src="assets/js/events-archive-data.js?v=1" defer></script>
+<script src="assets/js/projects-data.js?v=1" defer></script>
+<script src="assets/js/projects.js?v=1" defer></script>
+<script src="assets/js/main.js?v=47" defer></script>
 </body>
 </html>

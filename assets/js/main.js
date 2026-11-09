@@ -13,7 +13,6 @@
     var y = window.scrollY || window.pageYOffset;
 
     if (header) header.classList.toggle("is-stuck", y > 8);
-    drawProfile();
   }
 
   var ticking = false;
@@ -117,39 +116,6 @@
       { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
     );
     sections.forEach(function (section) { spy.observe(section); });
-  }
-
-  /* ── Elevation profile: the line draws as the section arrives ─────────── */
-  var profilePath = document.querySelector("[data-profile]");
-  var profileNodes = document.querySelectorAll(".profile-nodes circle");
-  var profileLength = 0;
-
-  if (profilePath && profilePath.getTotalLength) {
-    profileLength = profilePath.getTotalLength();
-    profilePath.style.strokeDasharray = profileLength;
-
-    if (reduceMotion) {
-      profilePath.style.strokeDashoffset = 0;
-    } else {
-      profilePath.style.strokeDashoffset = profileLength;
-      Array.prototype.forEach.call(profileNodes, function (node) {
-        node.style.opacity = "0.35";
-        node.style.transition = "opacity .5s ease";
-      });
-    }
-  }
-
-  function drawProfile() {
-    if (!profilePath || !profileLength || reduceMotion) return;
-
-    var rect = profilePath.getBoundingClientRect();
-    var span = window.innerHeight * 0.45;
-    var t = clamp((window.innerHeight * 1.02 - rect.top) / span, 0, 1);
-
-    profilePath.style.strokeDashoffset = profileLength * (1 - t);
-    Array.prototype.forEach.call(profileNodes, function (node, index) {
-      node.classList.toggle("is-reached", t > (index + 0.85) / 4.2);
-    });
   }
 
   /* ── Копиране на банковите данни ──────────────────────────────────────── */
@@ -404,6 +370,20 @@
   if (storyList) {
     var filters = document.querySelector("[data-filters]");
     if (filters) {
+      // Броят до всеки филтър се смята от самите карти, за да не се разминава
+      // с това, което страницата наистина съдържа.
+      var counts = { all: 0, article: 0, video: 0, audio: 0 };
+      Array.prototype.forEach.call(storyList.querySelectorAll(".story"), function (card) {
+        counts.all += 1;
+        var kindName = card.dataset.kind;
+        if (kindName && counts[kindName] !== undefined) counts[kindName] += 1;
+      });
+      Array.prototype.forEach.call(filters.querySelectorAll(".filter"), function (b) {
+        var span = b.querySelector("span");
+        var value = counts[b.dataset.filter];
+        if (span && value !== undefined) span.textContent = String(value);
+      });
+
       filters.addEventListener("click", function (event) {
         var btn = event.target.closest(".filter");
         if (!btn) return;
@@ -527,106 +507,6 @@
       Array.prototype.forEach.call(open, resetCard);
       focusPlay(open[0]);
     });
-  }
-
-  /* ── Events page: scroll story ────────────────────────────────────────── */
-  var journey = document.querySelector("[data-journey]");
-  if (journey && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    var stage = journey.querySelector("[data-stage]");
-    var photos = Array.prototype.slice.call(journey.querySelectorAll("[data-photo]"));
-    var copies = Array.prototype.slice.call(journey.querySelectorAll("[data-copy]"));
-    var counter = journey.querySelector("[data-count]");
-    var trail = journey.querySelector("[data-trail]");
-    var trailFill = journey.querySelector("[data-trail-fill]");
-    var rider = journey.querySelector("[data-rider]");
-    var marks = journey.querySelector("[data-marks]");
-    var total = copies.length;
-
-    if (total && trailFill && rider) {
-      journey.style.setProperty("--steps", total);
-      journey.classList.add("is-enhanced");
-
-      var pathLen = trailFill.getTotalLength();
-      trailFill.style.strokeDasharray = pathLen + "px";
-      trailFill.style.strokeDashoffset = pathLen + "px";
-
-      var dots = [];
-      for (var d = 0; d < total; d++) {
-        var dotPt = trailFill.getPointAtLength(((d + 0.5) / total) * pathLen);
-        var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        dot.setAttribute("cx", dotPt.x);
-        dot.setAttribute("cy", dotPt.y);
-        dot.setAttribute("r", 5);
-        marks.appendChild(dot);
-        dots.push(dot);
-      }
-
-      var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
-      var activeIdx = -1;
-      var queued = false;
-
-      var riderScale = function () {
-        var w = trail.getBoundingClientRect().width || 1200;
-        return clamp(1200 / w, 0.95, 2.4);
-      };
-
-      var render = function () {
-        queued = false;
-
-        var head = parseFloat(window.getComputedStyle(stage).top) || 0;
-        var rect = journey.getBoundingClientRect();
-        var span = journey.offsetHeight - stage.offsetHeight;
-        var progress = span > 0 ? clamp((head - rect.top) / span, 0, 1) : 0;
-        var step = progress * total;
-
-        var idx = Math.min(total - 1, Math.floor(step));
-        if (idx !== activeIdx) {
-          activeIdx = idx;
-          copies.forEach(function (c, i) { c.classList.toggle("is-active", i === idx); });
-          if (counter) counter.textContent = ("0" + (idx + 1)).slice(-2);
-        }
-
-        for (var i = 0; i < photos.length; i++) {
-          /* всяка снимка „пада“ върху купчината точно когато текстът се сменя */
-          var t = clamp((step - (i - 0.45)) / 0.45, 0, 1);
-          var eased = 1 - Math.pow(1 - t, 3);
-          var behind = Math.min(2, Math.max(0, step - i)) * 5;
-          var rot = (-7 + i * 3.5) * eased - behind * 0.4;
-          var tx = (1 - eased) * (i % 2 ? 26 : -20) - behind;
-          var ty = (1 - eased) * 64 - behind;
-          var sc = (0.94 + 0.06 * eased) - behind * 0.005;
-
-          photos[i].style.transform =
-            "translate(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px) rotate(" + rot.toFixed(2) +
-            "deg) scale(" + sc.toFixed(3) + ")";
-          photos[i].style.opacity = t > 0.002 ? "1" : "0";
-          photos[i].style.zIndex = String(i + 1);
-        }
-
-        trailFill.style.strokeDashoffset = (pathLen * (1 - progress)) + "px";
-
-        var dist = pathLen * progress;
-        var pt = trailFill.getPointAtLength(dist);
-        var ahead = trailFill.getPointAtLength(Math.min(pathLen, dist + 14));
-        var angle = clamp(Math.atan2(ahead.y - pt.y, ahead.x - pt.x) * 180 / Math.PI, -22, 22);
-
-        rider.setAttribute("transform",
-          "translate(" + pt.x.toFixed(1) + " " + pt.y.toFixed(1) + ") rotate(" +
-          angle.toFixed(1) + ") scale(" + (riderScale() * 1.05).toFixed(2) + ")");
-
-        dots.forEach(function (dot, i) {
-          dot.classList.toggle("is-past", progress >= (i + 0.5) / total - 0.01);
-        });
-      };
-
-      var onScroll = function () {
-        if (!queued) { queued = true; window.requestAnimationFrame(render); }
-      };
-
-      window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("resize", onScroll);
-      render();
-    }
   }
 
   /* Слайдерът „Предстоящи събития“ се строи в assets/js/upcoming.js. */

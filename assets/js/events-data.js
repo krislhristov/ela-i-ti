@@ -95,7 +95,8 @@ window.ELAITI_EVENTS = [
 
   {
     slug: "le-tour-du-canal",
-    title: "Le tour du canal",
+    series: "le-tour",
+        title: "Le tour du canal",
     start: "2024-11-03T00:00:00+02:00",
     allDay: true,
     location: "Гребен канал, гр. Пловдив",
@@ -133,7 +134,8 @@ window.ELAITI_EVENTS = [
 
   {
     slug: "panti-rila",
-    title: "Панти, шейни, усмивки на Рилските езера ’24",
+    series: "panti",
+        title: "Панти, шейни, усмивки на Рилските езера ’24",
     start: "2024-03-23T08:30:00+02:00",
     location: "Рила, паркингът на лифта при х. Пионерска",
     short: "Впрегнахме шейните и изтеглихме трима трудно подвижни приятели до замръзналите Рилски езера.",
@@ -151,7 +153,8 @@ window.ELAITI_EVENTS = [
 
   {
     slug: "panti-cherni-vrah",
-    title: "Панти, шейни, усмивки ’24 – Черни връх",
+    series: "panti",
+        title: "Панти, шейни, усмивки ’24 – Черни връх",
     start: "2024-03-09T00:00:00+02:00",
     allDay: true,
     location: "Витоша, изходен пункт х. Алеко",
