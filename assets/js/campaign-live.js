@@ -2,10 +2,10 @@
 window.ELAITI_CAMPAIGN_LIVE = {
   "kupuvame-krile-za-ela-i-ti": {
     "deadline": "14.11.2026 23:00",
-    "donated": 3664.0,
-    "donors": 131,
+    "donated": 3674.0,
+    "donors": 132,
     "source": "platformata.bg",
     "target": 52000.0,
-    "updated": "2026-11-09T18:50:33+02:00"
+    "updated": "2026-11-10T13:56:17+02:00"
   }
 };
