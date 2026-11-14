@@ -818,6 +818,17 @@ body.menu-open { overflow: hidden; }
   object-position: 50% 42%;
 }
 @media (min-width: 769px) { .cta-media img { aspect-ratio: 4 / 5; } }
+
+/* На телефон снимките в „Заедно можем повече“ се виждат цели, не изрязани:
+   височината идва от самата снимка, без фиксирано съотношение. */
+@media (max-width: 768px) {
+  .cta-media img {
+    aspect-ratio: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: 50% 50%;
+  }
+}
 .cta-body {
   display: flex;
   flex-direction: column;
@@ -1750,6 +1761,10 @@ body.menu-open { overflow: hidden; }
 .email-chip:hover { border-color: var(--pine); }
 .email-chip:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
 
+/* Изключение, записано в docs/decisions/settled.md: чиповете за домейн се
+   показват само на телефон — на компютър изглеждат зле, там помага autofill. */
+@media (min-width: 769px) { .email-chips { display: none; } }
+
 .form-status {
   font-size: 13.5px;
   color: var(--stone);
@@ -2294,16 +2309,22 @@ body.menu-open { overflow: hidden; }
 }
 
 /* страница на едно събитие: на телефон всичко е в една колона,
-   подредено заглавие → данни → текст → снимка */
+   подредено заглавие → данни → снимка → текст → стари издания */
 .event-page-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
-.event-page-text { order: 3; margin-top: var(--space-10); }
+.event-page-text { order: 4; margin-top: var(--space-10); }
 .event-info { order: 2; margin-top: var(--space-09); }
-.event-page-aside { align-items: center; margin-top: var(--space-09); order: 4; }
-.event-cover { order: 5; margin: var(--space-10) 0 0; }
+.event-page-aside { align-items: center; margin-top: var(--space-09); order: 5; }
+.event-cover { order: 3; margin: var(--space-10) 0 0; }
 .event-editions { order: 6; margin-top: var(--space-10); }
 .event-page-back { padding-top: clamp(22px, 4vw, 34px); }
 .event-page-head { order: 1; }
 .event-page-main, .event-page-side { display: contents; }
+
+/* на телефон „← назад“ е от дясната страна */
+@media (max-width: 1024px) {
+  .event-page-back { display: flex; justify-content: flex-end; }
+  .event-page-back .back-link { flex-direction: row-reverse; }
+}
 
 @media (min-width: 1025px) {
   .event-page-back { padding-top: clamp(26px, 3vw, 44px); }
@@ -2316,6 +2337,65 @@ body.menu-open { overflow: hidden; }
   .event-page-aside { margin-top: 0; align-items: flex-end; }
   .event-cover { margin-top: 0; }
   .event-editions { margin-top: clamp(26px, 3vw, 40px); }
+}
+
+/* ── Лента за дарение на страницата на кампания ───────────────────────── */
+main.has-donate-dock { padding-bottom: clamp(86px, 9vw, 104px); }
+main.has-donate-dock + .site-footer { padding-bottom: 74px; }
+
+.donate-dock {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, .97);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -8px 24px rgba(16, 41, 58, .08);
+  padding: 10px 0;
+}
+.donate-dock-inner { display: flex; align-items: center; gap: 14px; }
+.donate-dock-text { margin: 0 auto 0 0; display: grid; line-height: 1.25; }
+.donate-dock-text b { font-family: var(--display); font-size: 15px; }
+.donate-dock-text span { font-size: 12.5px; color: var(--stone); }
+.donate-dock .btn { white-space: nowrap; }
+.donate-dock .btn-outline { background: #fff; border-color: #a9bcc4; color: var(--ink); }
+.donate-dock .btn-outline:hover { border-color: var(--ink); }
+
+@media (max-width: 768px) {
+  .donate-dock-text { display: none; }
+  .donate-dock-inner { gap: 8px; }
+  .donate-dock-inner .btn { flex: 1 1 0; justify-content: center; padding-inline: 10px; font-size: 14px; }
+}
+
+/* страница на кампания: телефон → заглавие, снимка, числа, текст, събития */
+.event-page[data-campaign] .event-page-head { order: 1; }
+.event-page[data-campaign] .event-cover { order: 2; }
+.event-page[data-campaign] .campaign-progress { order: 3; margin-top: var(--space-09); }
+.event-page[data-campaign] .project-lead { order: 4; margin-top: var(--space-08); }
+.event-page[data-campaign] .event-page-text { order: 5; }
+.event-page[data-campaign] .project-block { order: 6; margin-top: var(--space-10); }
+
+@media (min-width: 1025px) {
+  .event-page[data-campaign] .campaign-progress { margin-top: clamp(18px, 2vw, 26px); }
+  .event-page[data-campaign] .project-block { margin-top: clamp(18px, 2vw, 26px); }
+}
+
+/* ── Страница „Дари“: бяла основа, зелени карти с начините за дарение ───── */
+.donate-methods .give-method {
+  background: var(--sea);
+  border-color: rgba(255, 255, 255, .16);
+}
+.donate-methods .give-method-head { color: #fff; }
+.donate-methods .give-method-text { color: rgba(247, 250, 250, .82); }
+.donate-methods .give-method .copy-label { color: rgba(247, 250, 250, .88); }
+.donate-methods .give-method .copy-value { color: #fff; }
+
+/* ── Проекти на телефон: заглавие, етикет, описание, снимка, „Научи повече“ ─ */
+@media (max-width: 768px) {
+  .project-card-title { order: 1; }
+  .project-card .project-meta { order: 2; margin: 4px 0 0; }
+  .project-card-text { order: 3; }
+  .project-card .event-media-wrap { order: 4; }
+  .project-card .btn { order: 5; }
 }
 
 /* ── Страница „Събития“: филтри, етикет за предстоящо, порции ─────────── */

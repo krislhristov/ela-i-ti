@@ -20,7 +20,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-700-cyrillic.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-400-cyrillic.woff2">
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=cc0928c4">
-<link rel="stylesheet" href="assets/css/style.css?v=3ccd3fb5">
+<link rel="stylesheet" href="assets/css/style.css?v=d7166f8a">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -248,11 +248,15 @@
 
         <aside class="cta-stats" aria-labelledby="cta-stats-title">
           <p class="cta-stats-title" id="cta-stats-title">Заедно постигнахме</p>
+          <!--@STATS-START-->
           <dl class="cta-stats-list">
-            <div><dt data-count="150+">150+</dt><dd>души в планината</dd></div>
-            <div><dt data-count="450+">450+</dt><dd>доброволци</dd></div>
-            <div><dt data-count="21">21</dt><dd>събития</dd></div>
+            <div><dt data-count="275+">275+</dt><dd>души в планината</dd></div>
+            <div><dt data-count="2 200+">2 200+</dt><dd>доброволци</dd></div>
+            <div><dt data-count="107">107</dt><dd>събития</dd></div>
           </dl>
+          <!--@STATS-END-->
+          <!-- Числата горе се смятат от tools/build_stats.js при ./build.sh —
+               не се пипат на ръка. -->
           <!-- числата се нулират още при зареждане, за да не се мярка крайната
                стойност преди броенето; без JS остават истинските числа -->
           <script>
@@ -260,7 +264,7 @@
               if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
               if (!("IntersectionObserver" in window)) return;
               document.querySelectorAll("[data-count]").forEach(function (el) {
-                var m = el.textContent.match(/^(\d+)(\D*)$/);
+                var m = el.textContent.match(/^([\d\s\u00a0]+?)(\D*)$/);
                 if (m) el.textContent = "0" + m[2];
               });
             })();
@@ -288,54 +292,47 @@
         <div class="slider-viewport" data-slider-viewport tabindex="0" role="group"
              aria-roledescription="карусел" aria-label="Минали събития">
           <ul class="slider-track" data-slider-track>
+<!--@PAST-START-->
             <li class="slide" aria-roledescription="слайд" aria-label="1 от 3">
               <article class="slide-card">
-                <picture><source type="image/webp" srcset="assets/img/event-sofia.webp"><img class="slide-media slide-media--fit" src="assets/img/event-sofia.jpg" width="1080" height="675"
-                     alt="Участници и доброволци пред сграда в София — от представянето на картата с адаптирания маршрут."
-                     loading="lazy" decoding="async"></picture>
+                <picture><source type="image/webp" srcset="assets/img/events/past/le-tour-du-canal-velopohod-na-tolerantnostta-2026.webp"><img class="slide-media" src="assets/img/events/past/le-tour-du-canal-velopohod-na-tolerantnostta-2026.jpg" alt="Le tour du canal — велопоход на толерантността ’26" loading="lazy" decoding="async" width="900" height="1350"></picture>
                 <div class="slide-body">
-                  <h3 class="slide-title">София и за мен</h4>
-                  <p class="event-when"><time datetime="2024-11-07">7 ноември 2024, 18:00</time></p>
-                  <p class="event-place">Зала в хотел „Форум“, гр. София</p>
-                  <p class="slide-text">Първата карта на адаптиран маршрут за хора в количка в София — 34 забележителности и възможност всеки да избере кога и какво да посети.</p>
-                  <a class="slide-link" href="event.html?event=sofiya-i-za-men">Научи повече<span class="visually-hidden"> „София и за мен“</span></a>
+                  <h3 class="slide-title">Le tour du canal — велопоход на толерантността ’26</h3>
+                  <p class="event-when"><time datetime="2026-10-17">17 октомври 2026</time></p>
+                  <p class="event-place">Гребна База, Пловдив</p>
+                  <p class="slide-text">Имаме удоволствието да ви поканим на LE TOUR DU CANAL 2026 – ВЕЛОПОХОД НА ТОЛЕРАНТНОСТТА - събитието, което събира участници с и без увреждания в едно общо приключение! ПРОГРАМА 17 октомври 2026 г.</p>
+                  <a class="slide-link" href="event.html?event=le-tour-du-canal-velopohod-na-tolerantnostta-2026">Научи повече<span class="visually-hidden"> „Le tour du canal — велопоход на толерантността ’26“</span></a>
                 </div>
               </article>
-                <a class="event-hit" href="event.html?event=sofiya-i-za-men" aria-label="Отвори „София и за мен“"></a>
+              <a class="event-hit" href="event.html?event=le-tour-du-canal-velopohod-na-tolerantnostta-2026" aria-label="Отвори „Le tour du canal — велопоход на толерантността ’26“"></a>
             </li>
 
             <li class="slide" aria-roledescription="слайд" aria-label="2 от 3">
               <article class="slide-card">
-                <picture><source type="image/webp" srcset="assets/img/event-skakavitsa.webp"><img class="slide-media" src="assets/img/event-skakavitsa.jpg" width="540" height="675"
-                     alt="Висок планински водопад се спуска по скала, обрасла с храсти и иглолистни дървета."
-                     loading="lazy" decoding="async"></picture>
                 <div class="slide-body">
-                  <h3 class="slide-title">Заедно приключение до водопад „Скакавица“</h4>
-                  <p class="event-when"><time datetime="2024-11-30">30 ноември 2024, 10:00</time></p>
-                  <p class="event-place">Рила, водопад „Скакавица“</p>
-                  <p class="slide-text">Приключение до най-високия рилски водопад с петима участници в количка и подкрепата на доброволци.</p>
-                  <a class="slide-link" href="event.html?event=skakavitsa">Научи повече<span class="visually-hidden"> „Заедно приключение до водопад „Скакавица““</span></a>
+                  <h3 class="slide-title">Бягай за „Ела и ти“ — дари им крила — поеми щафетата</h3>
+                  <p class="event-when"><time datetime="2026-10-17">17 октомври 2026</time></p>
+                  <p class="slide-text">ЩАФЕТАТА ПРОДЪЛЖАВА! Тя тръгна на 3 октомври от „По стъпките на Алеко с приятел“ – пет отбора, пет колички, 43 участници и първите 3 073,77 € към голямата ни цел: 52 000 € за бус с рампа за „Ела и ти“.</p>
+                  <a class="slide-link" href="event.html?event=byagay-za-ela-i-ti-dari-im-krila-poemi-shtafetata-2026">Научи повече<span class="visually-hidden"> „Бягай за „Ела и ти“ — дари им крила — поеми щафетата“</span></a>
                 </div>
               </article>
-                <a class="event-hit" href="event.html?event=skakavitsa" aria-label="Отвори „Заедно приключение до водопад „Скакавица““"></a>
+              <a class="event-hit" href="event.html?event=byagay-za-ela-i-ti-dari-im-krila-poemi-shtafetata-2026" aria-label="Отвори „Бягай за „Ела и ти“ — дари им крила — поеми щафетата“"></a>
             </li>
 
             <li class="slide" aria-roledescription="слайд" aria-label="3 от 3">
               <article class="slide-card">
-                <picture><source type="image/webp" srcset="assets/img/event-canal.webp"><img class="slide-media" src="assets/img/event-canal.jpg" width="960" height="503"
-                     alt="Хора на водно колело по Гребния канал в слънчев ден."
-                     loading="lazy" decoding="async"></picture>
+                <picture><source type="image/webp" srcset="assets/img/events/past/trailcat-the-race-donate-wings-s-pirin-galov-2026.webp"><img class="slide-media" src="assets/img/events/past/trailcat-the-race-donate-wings-s-pirin-galov-2026.jpg" alt="Trailcat The Race — DONATE WINGS с Пирин Галов" loading="lazy" decoding="async" width="900" height="507"></picture>
                 <div class="slide-body">
-                  <h3 class="slide-title">Le tour du canal</h4>
-                  <p class="event-when"><time datetime="2024-11-03">3 ноември 2024</time></p>
-                  <p class="event-place">Гребен канал, гр. Пловдив</p>
-                  <p class="slide-text">Велопоход на толерантността около Гребния канал — заедно на колела, триколки, колички, скейтборд и ролкови кънки.</p>
-                  <a class="slide-link" href="event.html?event=le-tour-du-canal">Научи повече<span class="visually-hidden"> „Le tour du canal“</span></a>
+                  <h3 class="slide-title">Trailcat The Race — DONATE WINGS с Пирин Галов</h3>
+                  <p class="event-when"><time datetime="2026-10-11">11 октомври 2026</time></p>
+                  <p class="event-place">Андора ла Веля, Андора</p>
+                  <p class="slide-text">460 километра за една кауза. Отново.</p>
+                  <a class="slide-link" href="event.html?event=trailcat-the-race-donate-wings-s-pirin-galov-2026">Научи повече<span class="visually-hidden"> „Trailcat The Race — DONATE WINGS с Пирин Галов“</span></a>
                 </div>
               </article>
-                <a class="event-hit" href="event.html?event=le-tour-du-canal" aria-label="Отвори „Le tour du canal“"></a>
+              <a class="event-hit" href="event.html?event=trailcat-the-race-donate-wings-s-pirin-galov-2026" aria-label="Отвори „Trailcat The Race — DONATE WINGS с Пирин Галов“"></a>
             </li>
-          </ul>
+            <!--@PAST-END--></ul>
         </div>
 
         <div class="slider-nav">
@@ -369,9 +366,10 @@
       </div>
 
       <div class="stories">
+        <!--@STORIES-START-->
         <a class="story" href="https://www.btv.bg/shows/predi-obed/videos/da-vidish-rila-otvisoko.html" target="_blank" rel="noopener">
           <span class="story-media">
-            <picture><source type="image/webp" srcset="assets/img/media-btv-rila.webp"><img src="assets/img/media-btv-rila.jpg" width="900" height="502" alt="Кадър от телевизионния репортаж „Да видиш Рила отвисоко“." loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" srcset="assets/img/media/m00.webp"><img src="assets/img/media/m00.jpg" alt="" loading="lazy" decoding="async" width="900" height="502"></picture>
           </span>
           <span class="story-meta">
             <time class="story-date" datetime="2025-07-18">18.07.2025</time>
@@ -379,15 +377,13 @@
           </span>
           <span class="story-foot">
             <span class="story-title">„Да видиш Рила отвисоко“</span>
-            <span class="story-arrow" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
+            <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </span>
         </a>
 
         <a class="story" href="https://bnr.bg/post/101966391/ela-i-ti-kauzata-hora-s-uvrejdania-da-izlizat-sred-prirodata" target="_blank" rel="noopener">
           <span class="story-media">
-            <picture><source type="image/webp" srcset="assets/img/media-bnr.webp"><img src="assets/img/media-bnr.jpg" width="900" height="506" alt="Снимка към репортажа на БНР за фондация „Ела и ти“." loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" srcset="assets/img/media/m01.webp"><img src="assets/img/media/m01.jpg" alt="" loading="lazy" decoding="async" width="900" height="506"></picture>
           </span>
           <span class="story-meta">
             <time class="story-date" datetime="2024-03-22">22.03.2024</time>
@@ -395,15 +391,13 @@
           </span>
           <span class="story-foot">
             <span class="story-title">„Ела и ти“ – каузата хора с увреждания да излизат сред природата</span>
-            <span class="story-arrow" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
+            <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </span>
         </a>
 
         <a class="story" href="https://telegraph.bg/bulgaria/novini/dobrovolci-kachvat-bolni-na-cherni-vryh-s-shejni-prez-mart.-profesori-i-iuristi-se-vkliuchvat-v-iniciativata-redom-s-planinski-spasiteli-i-policai-403025" target="_blank" rel="noopener">
           <span class="story-media">
-            <picture><source type="image/webp" srcset="assets/img/media-telegraph.webp"><img src="assets/img/media-telegraph.jpg" width="900" height="675" alt="Доброволци качват хора с увреждания на Черни връх." loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" srcset="assets/img/media/m02.webp"><img src="assets/img/media/m02.jpg" alt="" loading="lazy" decoding="async" width="900" height="675"></picture>
           </span>
           <span class="story-meta">
             <time class="story-date" datetime="2024-01-28">28.01.2024</time>
@@ -411,27 +405,24 @@
           </span>
           <span class="story-foot">
             <span class="story-title">Доброволци качват болни на Черни връх с шейни през март</span>
-            <span class="story-arrow" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
+            <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </span>
         </a>
 
-        <a class="story" href="https://varhove.com/wordpress/petima-choveka-s-uvrezhdanija-bjaha-kacheni-na-cherni-vrah-v-zimni-uslovija-video-i-snimki/" target="_blank" rel="noopener">
+        <a class="story" href="https://www.youtube.com/watch?v=AirYLHcqAoc" target="_blank" rel="noopener">
           <span class="story-media">
-            <picture><source type="image/webp" srcset="assets/img/media-varhove.webp"><img src="assets/img/media-varhove.jpg" width="900" height="450" alt="Петима души с увреждания на Черни връх през зимата." loading="lazy" decoding="async"></picture>
+            <picture><source type="image/webp" srcset="assets/img/media/m04.webp"><img src="assets/img/media/m04.jpg" alt="" loading="lazy" decoding="async" width="900" height="506"></picture>
           </span>
           <span class="story-meta">
-            <time class="story-date" datetime="2023-03-19">19.03.2023</time>
-            <span class="story-outlet">Varhove.bg</span>
+            <time class="story-date" datetime="2023-12-05">05.12.2023</time>
+            <span class="story-outlet">TimeHeros</span>
           </span>
           <span class="story-foot">
-            <span class="story-title">Петима човека с увреждания стигнаха до Черни връх</span>
-            <span class="story-arrow" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
+            <span class="story-title">Столът е свободен: Гергана Дойчинова и Ясен Цветков</span>
+            <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </span>
         </a>
+        <!--@STORIES-END-->
       </div>
 
       <a class="stories-more stories-more--bottom" href="media.html">
@@ -505,10 +496,10 @@
     <div class="wrap">
       <h2 class="h2 section-title" id="support-title">Дари криле за нови приключения</h2>
       <p class="section-intro">
-        Даренията отиват към кампанията ни за закупуване на специализиран бус, който ще ни
-        помогне с реализирането на нашите събития и инициативи. С него ще можем да превозваме
-        участници, доброволци, колички и оборудване – всичко необходимо, за да стигнем заедно
-        до следващото приключение.
+        Даренията отиват за организирането и провеждането на нови приключения, и към
+        кампанията ни за закупуване на специализиран бус, който ще ни помогне с реализирането
+        на нашите събития и инициативи. С него ще можем да превозваме участници, доброволци,
+        колички и оборудване – всичко необходимо, за да стигнем заедно до следващото приключение.
       </p>
 
               <div class="give-methods">
@@ -577,59 +568,60 @@
   <!-- ── Contact ──────────────────────────────────────────── -->
   <section class="section" id="contact" aria-labelledby="contact-title">
     <div class="wrap contact">
-      <div class="contact-text">
-        <h2 class="h2" id="contact-title">Свържи се с нас</h2>
-        <p>
-          Искаш да бъдеш доброволец или да подкрепиш фондацията? Свържи се с нас и с радост
-          ще отговорим на твоите въпроси.
-        </p>
-        <ul class="contact-list">
-          <li><span>Телефон</span><a href="tel:+359878886890">087 888 6890</a></li>
-          <li><span>Имейл</span><a href="mailto:info@elaiti.com">info@elaiti.com</a></li>
-        </ul>
-      </div>
+              <div class="contact-text">
+      <h2 class="h2" id="contact-title">Свържи се с нас</h2>
+      <p>
+        Искаш да бъдеш доброволец или да подкрепиш фондацията? Свържи се с нас и с радост
+        ще отговорим на твоите въпроси.
+      </p>
+      <ul class="contact-list">
+        <li><span>Телефон</span><a href="tel:+359878886890">087 888 6890</a></li>
+        <li><span>Имейл</span><a href="mailto:info@elaiti.com">info@elaiti.com</a></li>
+      </ul>
+    </div>
 
-      <form class="form" novalidate data-form
-            action="https://formsubmit.co/khristov9@gmail.com" method="post">
-        <!-- ловна пчела: човек не я вижда, бот я попълва -->
-        <input type="text" name="_honey" class="visually-hidden" tabindex="-1"
-               autocomplete="off" aria-hidden="true">
-        <input type="hidden" name="_subject" value="Запитване от сайта — Ела и ти">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <div class="field">
-          <label for="name">Твоето име</label>
-          <input id="name" name="name" type="text" autocomplete="name" required
-                 placeholder="Име и фамилия" maxlength="50" minlength="2"
-                 spellcheck="false" autocapitalize="words"
-                 aria-describedby="name-error name-counter" data-required>
-          <p class="field-error" id="name-error" hidden></p>
-          <p class="field-counter" id="name-counter" data-counter data-counter-max="50" data-counter-remaining="10" hidden></p>
-        </div>
-        <div class="field">
-          <label for="email">Имейл</label>
-          <input id="email" name="email" type="email" autocomplete="email" required
-                 placeholder="Вашия имейл адрес" maxlength="100" inputmode="email"
-                 spellcheck="false" autocapitalize="off"
-                 aria-describedby="email-error" data-required data-type="email">
-          <p class="field-error" id="email-error" hidden></p>
-          <div class="email-chips" data-email-chips hidden></div>
-        </div>
-        <div class="field">
-          <label for="message">Съобщение</label>
-          <textarea id="message" name="message" rows="5" required
-                    placeholder="Напишете вашето съобщение" maxlength="2000" minlength="10"
-                    aria-describedby="message-error message-counter" data-required></textarea>
-          <p class="field-error" id="message-error" hidden></p>
-          <p class="field-counter" id="message-counter" data-counter data-counter-max="2000" hidden></p>
-        </div>
-        <button class="btn btn-block" type="submit">Изпрати съобщение</button>
-        <p class="form-consent">
-          С изпращането на формата се съгласяваш с обработването на данните ти според
-          <a href="privacy.html">Политиката за поверителност</a>.
-        </p>
-        <p class="form-status" role="status" aria-live="polite" data-form-status></p>
-      </form>
+    <form class="form" novalidate data-form
+          action="https://formsubmit.co/khristov9@gmail.com" method="post">
+      <!-- ловна пчела: човек не я вижда, бот я попълва -->
+      <input type="text" name="_honey" class="visually-hidden" tabindex="-1"
+             autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="_subject" value="Запитване от сайта — Ела и ти">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <div class="field">
+        <label for="name">Твоето име</label>
+        <input id="name" name="name" type="text" autocomplete="name" required
+               placeholder="Име и фамилия" maxlength="50" minlength="2"
+               spellcheck="false" autocapitalize="words"
+               aria-describedby="name-error name-counter" data-required>
+        <p class="field-error" id="name-error" hidden></p>
+        <p class="field-counter" id="name-counter" data-counter data-counter-max="50" data-counter-remaining="10" hidden></p>
+      </div>
+      <div class="field">
+        <label for="email">Имейл</label>
+        <input id="email" name="email" type="email" autocomplete="email" required
+               placeholder="Вашия имейл адрес" maxlength="100" inputmode="email"
+               spellcheck="false" autocapitalize="off"
+               aria-describedby="email-error" data-required data-type="email">
+        <p class="field-error" id="email-error" hidden></p>
+        <div class="email-chips" data-email-chips hidden></div>
+      </div>
+      <div class="field">
+        <label for="message">Съобщение</label>
+        <textarea id="message" name="message" rows="5" required
+                  placeholder="Напишете вашето съобщение" maxlength="2000" minlength="10"
+                  aria-describedby="message-error message-counter" data-required></textarea>
+        <p class="field-error" id="message-error" hidden></p>
+        <p class="field-counter" id="message-counter" data-counter data-counter-max="2000" hidden></p>
+      </div>
+      <button class="btn btn-block" type="submit">Изпрати съобщение</button>
+      <p class="form-consent">
+        С изпращането на формата се съгласяваш с обработването на данните ти според
+        <a href="privacy.html">Политиката за поверителност</a>.
+      </p>
+      <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+    </form>
+        
     </div>
   </section>
 
@@ -669,6 +661,7 @@
       <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
       <a href="about.html">За нас</a>
+      <a href="#contact">Контакти</a>
       <a href="#support">Дари сега</a>
     </nav>
     <div class="footer-legal">
@@ -678,9 +671,9 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/events-data.js?v=dc875fe6" defer></script>
+<script src="assets/js/events-data.js?v=88e5eedb" defer></script>
 <script src="assets/js/upcoming.js?v=9cd54da9" defer></script>
 <script src="assets/js/main.js?v=a0c9d679" defer></script>
-<script src="assets/js/count-up.js?v=05c0ea0f" defer></script>
+<script src="assets/js/count-up.js?v=85ecf8df" defer></script>
 </body>
 </html>

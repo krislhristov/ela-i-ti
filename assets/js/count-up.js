@@ -13,9 +13,16 @@
   var items = [];
   els.forEach(function (el) {
     var raw = el.getAttribute("data-count") || el.textContent;
-    var m = String(raw).match(/^(\d+)(\D*)$/);
+    var m = String(raw).match(/^([\d\s\u00a0]+?)(\D*)$/);
     if (!m) return;
-    items.push({ el: el, to: parseInt(m[1], 10), suffix: m[2] || "" });
+    var digits = m[1].replace(/[\s\u00a0]/g, "");
+    items.push({
+      el: el,
+      to: parseInt(digits, 10),
+      suffix: m[2] || "",
+      /* „2 200“ расте с интервали, „450“ — без */
+      group: /[\s\u00a0]/.test(m[1])
+    });
   });
   if (!items.length) return;
 
@@ -25,8 +32,12 @@
     return 1 - Math.pow(1 - t, 3);
   }
 
+  function groupSpaces(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+
   function render(item, value) {
-    item.el.textContent = value + item.suffix;
+    item.el.textContent = (item.group ? groupSpaces(value) : value) + item.suffix;
   }
 
   function run() {
