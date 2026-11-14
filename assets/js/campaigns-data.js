@@ -19,14 +19,11 @@ window.ELAITI_CAMPAIGNS = [
     "status": "active",
     "platformata": "https://platformata.bg/deca-i-vazrastni-s-uvrejdania/kupuvame-krile-za-ela-i-ti",
     "image": "assets/img/events/past/trailcat-the-race-donate-wings-s-pirin-galov-2026.jpg",
-    "imageFocus": {
-      "x": 60,
-      "y": 30
-    },
     "events": [
       "byagay-za-ela-i-ti-dari-im-krila-poemi-shtafetata-2026",
       "trailcat-the-race-donate-wings-s-pirin-galov-2026"
     ],
-    "project": ""
+    "project": "",
+    "imageCrop": {}
   }
 ];
