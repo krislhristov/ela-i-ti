@@ -201,32 +201,80 @@
   var messages = {
     name: {
       empty: "Напиши името си, за да знаем как да те наричаме.",
-      invalid: "Напиши името си, за да знаем как да те наричаме."
+      short: "Името е твърде кратко.",
+      invalid: "Името съдържа невалиден знак."
     },
     email: {
       empty: "Нужен ни е имейл, за да можем да отговорим.",
-      invalid: "Провери имейла — изглежда непълен."
+      invalid: "Невалиден/непълен имейл адрес."
     },
     message: {
       empty: "Напиши няколко думи за това, което те интересува.",
-      invalid: "Напиши няколко думи за това, което те интересува."
+      short: "Съобщението е твърде кратко."
     }
   };
+
+  // Правилата са същите и в tools/contact.php — клиентските се заобикалят.
+  var limits = {
+    name: { min: 2, max: 50 },
+    email: { max: 100 },
+    message: { min: 10, max: 2000 }
+  };
+
+  // Букви (всяка азбука), комбиниращи знаци, интервал, апостроф, тире, точка.
+  var NAME_HAS_LETTER = /\p{L}/u;
+  var FORBIDDEN_CHAR = /[^\p{L}\p{M}\s'\u2019.\-·]/u;
+  var EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function charLength(value) {
+    if (typeof Intl !== "undefined" && Intl.Segmenter) {
+      var segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+      var count = 0;
+      var iterator = segmenter.segment(value)[Symbol.iterator]();
+      while (!iterator.next().done) count++;
+      return count;
+    }
+    return Array.from(value).length;
+  }
+
+  function emailIsValid(value) {
+    if (charLength(value) > limits.email.max) return false;
+    if (!EMAIL_SHAPE.test(value)) return false;
+    if (value.indexOf("..") > -1) return false;
+    var parts = value.split("@");
+    if (parts[0].length > 64) return false;
+    if (parts[0].charAt(0) === "." || parts[0].slice(-1) === ".") return false;
+    var domain = parts[1];
+    if (domain.charAt(0) === "." || domain.slice(-1) === "." || domain.charAt(0) === "-") return false;
+    return domain.split(".").every(function (label) {
+      return label.length > 0 && label.length <= 63 && !/^-|-$/.test(label);
+    });
+  }
 
   function fieldError(input) {
     return document.getElementById(input.id + "-error");
   }
 
   function validateField(input) {
-    var value = input.value.trim();
+    var value = input.value.replace(/\s+/gu, " ").trim();
     var type = input.getAttribute("data-type");
+    var rule = limits[input.name] || {};
     var error = fieldError(input);
     var message = "";
 
     if (!value) {
       message = messages[input.name] ? messages[input.name].empty : "Попълни полето.";
-    } else if (type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
-      message = messages.email.invalid;
+    } else if (type === "email") {
+      if (!emailIsValid(value)) message = messages.email.invalid;
+    } else if (input.name === "name") {
+      var bad = value.match(FORBIDDEN_CHAR);
+      if (bad) {
+        message = "Знакът \u201E" + bad[0] + "\u201C е невалиден.";
+      } else if (!NAME_HAS_LETTER.test(value) || charLength(value) < rule.min) {
+        message = messages.name.short;
+      }
+    } else if (input.name === "message") {
+      if (charLength(value) < rule.min) message = messages.message.short;
     }
 
     if (error) {
@@ -237,6 +285,27 @@
     else input.removeAttribute("aria-invalid");
 
     return !message;
+  }
+
+  function updateCounter(input) {
+    var el = document.getElementById(input.id + "-counter");
+    if (!el) return;
+    var max = parseInt(el.getAttribute("data-counter-max") || "0", 10);
+    var near = parseInt(el.getAttribute("data-counter-remaining") || "0", 10);
+    var used = charLength(input.value);
+    var left = max - used;
+
+    if (!max) return;
+
+    if (near) {
+      // Показва се само в последните няколко знака — например за името.
+      el.textContent = left > 0 && left <= near ? "остават " + left + " знака" : "";
+      el.hidden = !(left > 0 && left <= near);
+    } else {
+      el.textContent = used + " / " + max;
+      el.hidden = used === 0;
+      el.classList.toggle("is-near", left <= Math.max(50, max * 0.05));
+    }
   }
 
   function setFormStatus(message, isError) {
@@ -254,17 +323,55 @@
   if (form) {
     var required = Array.prototype.slice.call(form.querySelectorAll("[data-required]"));
 
+    var formLoadedAt = Date.now();
+
     required.forEach(function (input) {
       input.addEventListener("blur", function () {
         if (input.value.trim() || input.getAttribute("aria-invalid") === "true") validateField(input);
       });
       input.addEventListener("input", function () {
+        updateCounter(input);
+        if (input.getAttribute("data-type") === "email") syncChips();
         if (input.getAttribute("aria-invalid") === "true") validateField(input);
       });
+      updateCounter(input);
     });
+
+    // Пълни домейна само когато полето е точно „нещо@“ — не пречи при писане.
+    var chipsWrap = document.querySelector("[data-email-chips]");
+    var CHIP_DOMAINS = ["gmail.com", "abv.bg"];
+
+    function syncChips() {
+      if (!chipsWrap) return;
+      chipsWrap.hidden = !/^[^\s@]+@$/.test(form.elements.email.value);
+    }
+
+    if (chipsWrap) {
+      CHIP_DOMAINS.forEach(function (domain) {
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "email-chip";
+        chip.textContent = "@" + domain;
+        chip.addEventListener("click", function () {
+          var field = form.elements.email;
+          field.value = field.value.replace(/\s+$/, "") + domain;
+          chipsWrap.hidden = true;
+          validateField(field);
+          field.focus();
+        });
+        chipsWrap.appendChild(chip);
+      });
+    }
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
+
+      // Ботовете попълват за части от секундата. Истинско съобщение не се пише толкова.
+      if (Date.now() - formLoadedAt < 3000) {
+        setFormStatus("Благодарим! Съобщението е изпратено.");
+        form.reset();
+        return;
+      }
 
       var firstInvalid = null;
       required.forEach(function (input) {
@@ -278,16 +385,55 @@
         return;
       }
 
-      var name = form.elements.name.value.trim();
-      var email = form.elements.email.value.trim();
-      var message = form.elements.message.value.trim();
+      if (form.elements["_honey"] && form.elements["_honey"].value) {
+        setFormStatus("Благодарим! Съобщението е изпратено.");
+        form.reset();
+        return;
+      }
 
-      var subject = "Запитване от сайта — " + name;
-      var body = message + "\n\n—\n" + name + "\n" + email;
-      var href = "mailto:info@elaiti.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      // Адресът идва от action на формата — едно място за смяна при миграция.
+      // formsubmit.co приема AJAX заявки на /ajax/ адрес; contact.php отговаря сам.
+      var action = form.getAttribute("action") || "";
+      var endpoint = action.replace("formsubmit.co/", "formsubmit.co/ajax/");
+      var button = form.querySelector('button[type="submit"]');
+      var label = button ? button.textContent : "";
+      var data = new FormData(form);
+      data.delete("_honey");
 
-      setFormStatus("Отваряме твоята пощенска програма с готово съобщение до info@elaiti.com.");
-      window.location.href = href;
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Изпращаме…";
+      }
+      setFormStatus("Изпращаме съобщението…");
+
+      fetch(endpoint, { method: "POST", body: data, headers: { Accept: "application/json" } })
+        .then(function (response) {
+          if (!response.ok) throw new Error("HTTP " + response.status);
+          // Релеят отговаря с JSON, но с Content-Type text/html — затова се разчита на
+          // съдържанието, не на заглавката.
+          return response.text().then(function (text) {
+            try {
+              return JSON.parse(text);
+            } catch (error) {
+              throw new Error("unexpected response");
+            }
+          });
+        })
+        .then(function (result) {
+          var ok = result && (result.success === true || result.success === "true" || result.ok === true);
+          if (!ok) throw new Error((result && result.message) || "not accepted");
+          form.reset();
+          setFormStatus("Благодарим! Съобщението е изпратено — ще отговорим на посочения имейл.");
+        })
+        .catch(function () {
+          setFormStatus("Съобщението не тръгна. Опитай отново или ни пиши на info@elaiti.com.", true);
+        })
+        .then(function () {
+          if (button) {
+            button.disabled = false;
+            button.textContent = label;
+          }
+        });
     });
   }
 

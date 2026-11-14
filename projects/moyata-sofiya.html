@@ -13,13 +13,12 @@
 <meta property="og:image" content="assets/img/events/e1.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css?v=168">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-700-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-400-cyrillic.woff2">
+<link rel="stylesheet" href="../assets/fonts/fonts.css?v=cc0928c4">
+<link rel="stylesheet" href="../assets/css/style.css?v=3ccd3fb5">
 </head>
 <body>
-
 
 <a class="skip-link" href="#main">Към съдържанието</a>
 
@@ -31,11 +30,11 @@
 
     <nav class="nav" aria-label="Основна навигация">
       <a href="../index.html">Начало</a>
-      <a href="../about.html">За нас</a>
       <a href="../events.html">Събития</a>
       <a href="../campaigns.html">Кампании</a>
       <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
       <a href="../media.html">Медии</a>
+      <a href="../about.html">За нас</a>
     </nav>
 
     <div class="header-actions">
@@ -51,15 +50,15 @@
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
   <nav aria-label="Мобилна навигация">
     <a href="../index.html">Начало</a>
-    <a href="../about.html">За нас</a>
     <a href="../events.html">Събития</a>
     <a href="../campaigns.html">Кампании</a>
     <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
     <a href="../media.html">Медии</a>
-    <a href="../index.html#contact">Контакти</a>
+    <a href="../about.html">За нас</a>
+    <a href="#contact">Контакти</a>
   </nav>
   <div class="mobile-menu-foot">
-    <p>087&nbsp;868&nbsp;6720 · info@elaiti.com</p>
+    <p>087&nbsp;888&nbsp;6890 · info@elaiti.com</p>
   </div>
 </div>
 
@@ -70,39 +69,29 @@
       <a class="back-link" href="../projects.html">← Проекти и инициативи</a>
     </div>
 
-    <div class="wrap event-page-layout">
+    <div class="wrap event-page-layout" data-project-page>
       <div class="event-page-main">
         <div class="event-page-head">
           <h1 class="event-page-title">Моята София — един различен поглед</h1>
         </div>
         <p class="project-meta project-meta--lead"><span class="project-kind">Проект</span><span class="project-period">2021</span></p>
+        <figure class="event-cover project-cover">
+          <img src="../assets/img/events/past/moyata-sofiya-edin-razlichen-pogled-2021.jpg" alt="Моята София — един различен поглед" decoding="async" width="900" height="506">
+        </figure>
         <p class="project-lead">Първият пътеводител, създаден от хора с увреждания — те разказват за местата в София с рисунка, песен и пластика.</p>
         <div class="event-page-text">
           <p>„Моята София — един различен поглед“ е първият пътеводител, създаден от хора с увреждания. Те разказват за природните и културните забележителности, използвайки различни изразни средства — рисунка, песен, пластика.</p>
           <p>С помощта на доброволци хора с увреждания посещават различни културни обекти в столицата. Впечатленията и емоциите от преживяното се събират в пътеводител, сътворен от самите тях.</p>
           <p>Проектът спечели финансиране от Столична община, Дирекция „Култура“.</p>
+          <p>Проектът се реализира с подкрепата на Столична община, Дирекция „Култура“ (финансиране).</p>
+          <p>Търсим доброволци с визуални изкуства — пишете на info@elaiti.com.</p>
         </div>
-        <section class="project-block">
-          <h2 class="project-block-title">Кой го подкрепя</h2>
-          <ul class="project-supporters">
-            <li><b>Столична община, Дирекция „Култура“</b> — финансиране</li>
-          </ul>
-        </section>
         <section class="project-block">
           <h2 class="project-block-title">Събития по проекта</h2>
           <ul class="event-editions-list">
             <li><a href="../events/moyata-sofiya-edin-razlichen-pogled-2021.html">7 декември 2021 — Моята София — един различен поглед</a></li>
           </ul>
         </section>
-        <section class="project-block">
-          <h2 class="project-block-title">Как да се включиш</h2>
-          <p>Търсим доброволци с визуални изкуства — пишете на info@elaiti.com.</p>
-        </section>
-      </div>
-      <div class="event-page-side">
-        <figure class="event-cover">
-          <img src="../assets/img/events/past/moyata-sofiya-edin-razlichen-pogled-2021.jpg" alt="Моята София — един различен поглед" decoding="async">
-        </figure>
       </div>
     </div>
 
@@ -139,11 +128,11 @@
     </div>
     <nav class="footer-nav" aria-label="Навигация в долната част">
       <a href="../index.html">Начало</a>
-      <a href="../about.html">За нас</a>
       <a href="../events.html">Събития</a>
       <a href="../campaigns.html">Кампании</a>
-      <a href="../projects.html">Проекти и инициативи</a>
+      <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
       <a href="../media.html">Медии</a>
+      <a href="../about.html">За нас</a>
       <a href="../donate.html">Дари сега</a>
     </nav>
     <div class="footer-legal">
@@ -153,6 +142,6 @@
     </div>
   </div>
 </footer>
-<script src="../assets/js/main.js?v=47" defer></script>
+<script src="../assets/js/main.js?v=a0c9d679" defer></script>
 </body>
 </html>

@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Водим хора с двигателни затруднения до места, които за мнозина остават само на снимка.">
 <meta name="twitter:image" content="https://elaiti.com/assets/img/hero/hero-group.jpg">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=168">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-700-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-400-cyrillic.woff2">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=cc0928c4">
+<link rel="stylesheet" href="assets/css/style.css?v=3ccd3fb5">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -49,11 +49,11 @@
 
     <nav class="nav" aria-label="Основна навигация">
       <a href="index.html">Начало</a>
-      <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
+      <a href="about.html">За нас</a>
     </nav>
 
     <div class="header-actions">
@@ -69,15 +69,15 @@
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
   <nav aria-label="Мобилна навигация">
     <a href="index.html">Начало</a>
-    <a href="about.html">За нас</a>
     <a href="events.html">Събития</a>
     <a href="campaigns.html">Кампании</a>
     <a href="projects.html">Проекти и инициативи</a>
     <a href="media.html">Медии</a>
+    <a href="about.html">За нас</a>
     <a href="#contact">Контакти</a>
   </nav>
   <div class="mobile-menu-foot">
-    <p>087&nbsp;868&nbsp;6720 · info@elaiti.com</p>
+    <p>087&nbsp;888&nbsp;6890 · info@elaiti.com</p>
   </div>
 </div>
 
@@ -584,32 +584,44 @@
           ще отговорим на твоите въпроси.
         </p>
         <ul class="contact-list">
-          <li><span>Телефон</span><a href="tel:+359878686720">087 868 6720</a></li>
+          <li><span>Телефон</span><a href="tel:+359878886890">087 888 6890</a></li>
           <li><span>Имейл</span><a href="mailto:info@elaiti.com">info@elaiti.com</a></li>
         </ul>
       </div>
 
-      <form class="form" novalidate data-form>
+      <form class="form" novalidate data-form
+            action="https://formsubmit.co/khristov9@gmail.com" method="post">
+        <!-- ловна пчела: човек не я вижда, бот я попълва -->
+        <input type="text" name="_honey" class="visually-hidden" tabindex="-1"
+               autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="_subject" value="Запитване от сайта — Ела и ти">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
         <div class="field">
           <label for="name">Твоето име</label>
           <input id="name" name="name" type="text" autocomplete="name" required
-                 placeholder="Име и фамилия"
-                 aria-describedby="name-error" data-required>
+                 placeholder="Име и фамилия" maxlength="50" minlength="2"
+                 spellcheck="false" autocapitalize="words"
+                 aria-describedby="name-error name-counter" data-required>
           <p class="field-error" id="name-error" hidden></p>
+          <p class="field-counter" id="name-counter" data-counter data-counter-max="50" data-counter-remaining="10" hidden></p>
         </div>
         <div class="field">
           <label for="email">Имейл</label>
           <input id="email" name="email" type="email" autocomplete="email" required
-                 placeholder="Вашия имейл адрес"
+                 placeholder="Вашия имейл адрес" maxlength="100" inputmode="email"
+                 spellcheck="false" autocapitalize="off"
                  aria-describedby="email-error" data-required data-type="email">
           <p class="field-error" id="email-error" hidden></p>
+          <div class="email-chips" data-email-chips hidden></div>
         </div>
         <div class="field">
           <label for="message">Съобщение</label>
           <textarea id="message" name="message" rows="5" required
-                    placeholder="Напишете вашето съобщение"
-                    aria-describedby="message-error" data-required></textarea>
+                    placeholder="Напишете вашето съобщение" maxlength="2000" minlength="10"
+                    aria-describedby="message-error message-counter" data-required></textarea>
           <p class="field-error" id="message-error" hidden></p>
+          <p class="field-counter" id="message-counter" data-counter data-counter-max="2000" hidden></p>
         </div>
         <button class="btn btn-block" type="submit">Изпрати съобщение</button>
         <p class="form-consent">
@@ -652,11 +664,11 @@
     </div>
     <nav class="footer-nav" aria-label="Навигация в долната част">
       <a href="index.html">Начало</a>
-      <a href="about.html">За нас</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти и инициативи</a>
       <a href="media.html">Медии</a>
+      <a href="about.html">За нас</a>
       <a href="#support">Дари сега</a>
     </nav>
     <div class="footer-legal">
@@ -666,10 +678,9 @@
     </div>
   </div>
 </footer>
-
-<script src="assets/js/events-data.js?v=9" defer></script>
-<script src="assets/js/upcoming.js?v=8" defer></script>
-<script src="assets/js/main.js?v=47" defer></script>
-<script src="assets/js/count-up.js?v=2" defer></script>
+<script src="assets/js/events-data.js?v=dc875fe6" defer></script>
+<script src="assets/js/upcoming.js?v=9cd54da9" defer></script>
+<script src="assets/js/main.js?v=a0c9d679" defer></script>
+<script src="assets/js/count-up.js?v=05c0ea0f" defer></script>
 </body>
 </html>

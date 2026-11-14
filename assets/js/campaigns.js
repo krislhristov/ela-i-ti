@@ -5,8 +5,13 @@
  * целта — никога не се показват нули.
  */
 (function () {
-  var MONTHS = ["януари", "февруари", "март", "април", "май", "юни",
-                "юли", "август", "септември", "октомври", "ноември", "декември"];
+  var UI = window.UI || {};
+  var node = UI.node;
+  var dayText = UI.dayText;
+  var money = UI.money;
+  var withWebp = UI.withWebp;
+  var bySlug = UI.bySlug;
+  var MONTHS = UI.MONTHS || [];
   var STALE_HOURS = 48;
 
   var CAMPAIGNS = Array.isArray(window.ELAITI_CAMPAIGNS) ? window.ELAITI_CAMPAIGNS : [];
@@ -14,24 +19,6 @@
   var EVENTS = (Array.isArray(window.ELAITI_EVENTS) ? window.ELAITI_EVENTS : [])
     .concat(Array.isArray(window.ELAITI_ARCHIVE) ? window.ELAITI_ARCHIVE : []);
   var PROJECTS = Array.isArray(window.ELAITI_PROJECTS) ? window.ELAITI_PROJECTS : [];
-
-  function node(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-
-  function money(n) {
-    var v = Math.round(Number(n) || 0);
-    return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " €";
-  }
-
-  function dayText(iso) {
-    var d = new Date(iso);
-    if (isNaN(d.getTime())) return "";
-    return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
-  }
 
   /* "14.11.2026 23:00" или ISO → „14 ноември 2026“ */
   function deadlineText(raw) {
@@ -50,24 +37,7 @@
     return { stale: false, data: d };
   }
 
-  function withWebp(img) {
-    var raw = img.getAttribute("src") || "";
-    if (!/\.jpe?g$/i.test(raw)) return img;
-    var pic = document.createElement("picture");
-    var src = document.createElement("source");
-    src.type = "image/webp";
-    src.srcset = raw.replace(/\.jpe?g$/i, ".webp");
-    pic.appendChild(src);
-    pic.appendChild(img);
-    return pic;
-  }
-
-  function bySlug(list, slug) {
-    for (var i = 0; i < list.length; i++) if (list[i].slug === slug) return list[i];
-    return null;
-  }
-
-  function urlFor(slug) { return "campaign.html?campaign=" + encodeURIComponent(slug); }
+  function urlFor(slug) { return "campaigns/" + encodeURIComponent(slug) + ".html"; }
 
   /* блок с числата */
   function buildProgress(camp) {
@@ -93,7 +63,8 @@
 
     var head = node("p", "campaign-progress-row");
     head.appendChild(node("b", null, money(d.donated)));
-    head.appendChild(document.createTextNode(" от " + money(d.target)));
+    head.appendChild(document.createTextNode(" от "));
+    head.appendChild(node("b", null, money(d.target)));
     box.appendChild(head);
 
     var bar = node("div", "campaign-bar");
@@ -105,11 +76,9 @@
     var metaBits = [];
     if (d.donors != null) metaBits.push(d.donors + " дарители");
     var dl = deadlineText(d.deadline);
-    if (dl) metaBits.push("до " + dl);
+    if (dl) metaBits.push("Приключва на " + dl);
     if (metaBits.length) box.appendChild(node("p", "campaign-meta", metaBits.join(" · ")));
 
-    var stamp = node("p", "campaign-stamp", "към " + dayText(d.updated));
-    box.appendChild(stamp);
     return box;
   }
 
@@ -162,6 +131,7 @@
     var slug = "";
     try { slug = new URLSearchParams(window.location.search).get("campaign") || ""; } catch (e) {}
     var camp = bySlug(CAMPAIGNS, slug);
+    if (camp) { try { window.location.replace(urlFor(camp.slug)); return; } catch (e) {} }
     page.innerHTML = "";
 
     var backWrap = node("div", "wrap event-page-back");
@@ -188,9 +158,29 @@
     head.appendChild(node("h1", "event-page-title", camp.title));
     main.appendChild(head);
 
-    if (camp.summary) main.appendChild(node("p", "project-lead", camp.summary));
+    /* снимка на кампанията — под заглавието, над числата */
+    if (camp.image) {
+      var cover = node("figure", "event-cover campaign-cover");
+      var cimg = node("img", null);
+      cimg.src = camp.image;
+      cimg.alt = camp.title;
+      cimg.decoding = "async";
+      cover.appendChild(withWebp(cimg));
+      main.appendChild(cover);
+    }
 
     main.appendChild(buildProgress(camp));
+
+    /* описание преди бутоните */
+    if (camp.body && camp.body.length) {
+      var text = node("div", "event-page-text");
+      camp.body.forEach(function (p) {
+        var para = document.createElement("p");
+        para.textContent = p;
+        text.appendChild(para);
+      });
+      main.appendChild(text);
+    }
 
     var actions = node("div", "campaign-actions");
     var give = node("a", "btn btn-donate", "Дари през Платформата.бг");
@@ -204,16 +194,6 @@
     actions.appendChild(other);
     main.appendChild(actions);
 
-    if (camp.body && camp.body.length) {
-      var text = node("div", "event-page-text");
-      camp.body.forEach(function (p) {
-        var para = document.createElement("p");
-        para.textContent = p;
-        text.appendChild(para);
-      });
-      main.appendChild(text);
-    }
-
     /* което събитие я подкрепя */
     var related = (camp.events || []).map(function (s) { return bySlug(EVENTS, s); }).filter(Boolean);
     if (related.length) {
@@ -222,7 +202,9 @@
       var ul = node("ul", "event-editions-list");
       related.forEach(function (ev) {
         var li = node("li");
-        var a = node("a", null, dayText(ev.start) + " — " + ev.title);
+        var a = node("a");
+        a.appendChild(node("b", null, dayText(ev.start)));
+        a.appendChild(document.createTextNode(" — " + ev.title));
         a.href = "event.html?event=" + encodeURIComponent(ev.slug);
         li.appendChild(a);
         ul.appendChild(li);
@@ -243,17 +225,6 @@
 
     layout.appendChild(main);
 
-    var side = node("div", "event-page-side");
-    if (camp.image) {
-      var cover = node("figure", "event-cover");
-      var cimg = node("img");
-      cimg.src = camp.image;
-      cimg.alt = camp.title;
-      cimg.decoding = "async";
-      cover.appendChild(withWebp(cimg));
-      side.appendChild(cover);
-    }
-    if (side.childNodes.length) layout.appendChild(side);
 
     page.appendChild(layout);
     document.title = camp.title + " — Фондация „Ела и ти“";

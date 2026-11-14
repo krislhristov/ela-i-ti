@@ -13,13 +13,12 @@
 <meta property="og:image" content="assets/img/events/e1.jpg">
 <meta property="og:type" content="website">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Wix+Madefor+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css?v=168">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-700-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-400-cyrillic.woff2">
+<link rel="stylesheet" href="../assets/fonts/fonts.css?v=cc0928c4">
+<link rel="stylesheet" href="../assets/css/style.css?v=3ccd3fb5">
 </head>
 <body>
-
 
 <a class="skip-link" href="#main">Към съдържанието</a>
 
@@ -31,11 +30,11 @@
 
     <nav class="nav" aria-label="Основна навигация">
       <a href="../index.html">Начало</a>
-      <a href="../about.html">За нас</a>
       <a href="../events.html">Събития</a>
       <a href="../campaigns.html">Кампании</a>
       <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
       <a href="../media.html">Медии</a>
+      <a href="../about.html">За нас</a>
     </nav>
 
     <div class="header-actions">
@@ -51,15 +50,15 @@
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
   <nav aria-label="Мобилна навигация">
     <a href="../index.html">Начало</a>
-    <a href="../about.html">За нас</a>
     <a href="../events.html">Събития</a>
     <a href="../campaigns.html">Кампании</a>
     <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
     <a href="../media.html">Медии</a>
-    <a href="../index.html#contact">Контакти</a>
+    <a href="../about.html">За нас</a>
+    <a href="#contact">Контакти</a>
   </nav>
   <div class="mobile-menu-foot">
-    <p>087&nbsp;868&nbsp;6720 · info@elaiti.com</p>
+    <p>087&nbsp;888&nbsp;6890 · info@elaiti.com</p>
   </div>
 </div>
 
@@ -70,7 +69,7 @@
       <a class="back-link" href="../projects.html">← Проекти и инициативи</a>
     </div>
 
-    <div class="wrap event-page-layout">
+    <div class="wrap event-page-layout" data-project-page>
       <div class="event-page-main">
         <div class="event-page-head">
           <h1 class="event-page-title">Заедно в града</h1>
@@ -81,11 +80,8 @@
           <p>Животът на хората с двигателни затруднения често е изпълнен с предизвикателства — не само физически, но и със социална изолация. „Заедно в града“ е инициативата, с която изграждаме мрежа от доброволци, готови да помагат в ежедневието: пазар, посещение при лекар, разходка, съпровод.</p>
           <p>Обучените доброволци стават двигатели на промяна в обществото. Така осигуряваме конкретна помощ в ежедневието на 30 души с увреждания и им даваме възможност за социализация и преживявания, за които никой не вярва, че са възможни.</p>
           <p>За да стане реалност, бяха нужни средства за обучения, помещение, телефонна линия и уебсайт, който свързва доброволци с хора с увреждания. Кампанията за инициативата приключи успешно през август 2025 г. със събрани 4 296 € при цел 4 090 € от 24 дарители.</p>
-        </div>
-        <section class="project-block">
-          <h2 class="project-block-title">Как да се включиш</h2>
           <p>Ако искате да станете доброволец в града, пишете на info@elaiti.com.</p>
-        </section>
+        </div>
       </div>
     </div>
 
@@ -122,11 +118,11 @@
     </div>
     <nav class="footer-nav" aria-label="Навигация в долната част">
       <a href="../index.html">Начало</a>
-      <a href="../about.html">За нас</a>
       <a href="../events.html">Събития</a>
       <a href="../campaigns.html">Кампании</a>
-      <a href="../projects.html">Проекти и инициативи</a>
+      <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
       <a href="../media.html">Медии</a>
+      <a href="../about.html">За нас</a>
       <a href="../donate.html">Дари сега</a>
     </nav>
     <div class="footer-legal">
@@ -136,6 +132,6 @@
     </div>
   </div>
 </footer>
-<script src="../assets/js/main.js?v=47" defer></script>
+<script src="../assets/js/main.js?v=a0c9d679" defer></script>
 </body>
 </html>

@@ -1,26 +1,15 @@
 /* Строи страницата „Събития“ и страницата на отделно събитие от events-data.js */
 (function () {
-  var MONTHS = ["януари", "февруари", "март", "април", "май", "юни",
-                "юли", "август", "септември", "октомври", "ноември", "декември"];
-
-  // WebP вариантът е значително по-малък; ако файлът липсва, браузърът
-  // просто ползва <img> вътре в <picture>.
-  function withWebp(img) {
-    var raw = img.getAttribute("src") || "";
-    if (!/\.jpe?g$/i.test(raw)) return img;
-    var pic = document.createElement("picture");
-    var src = document.createElement("source");
-    src.type = "image/webp";
-    src.srcset = raw.replace(/\.jpe?g$/i, ".webp");
-    pic.appendChild(src);
-    pic.appendChild(img);
-    return pic;
-  }
+  /* общите неща идват от ui.js — тук няма втори екземпляр */
+  var UI = window.UI || {};
+  var MONTHS = UI.MONTHS || [];
+  var node = UI.node;
+  var dayText = UI.dayText;
+  var withWebp = UI.withWebp;
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function toDate(v) { if (!v) return null; var d = new Date(v); return isNaN(d.getTime()) ? null : d; }
   function clock(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
-  function dayText(d) { return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear(); }
   function isoDay(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
 
   /* връзки към програма и кампания — по slug на събитието */
@@ -39,13 +28,6 @@
       if ((CAMPAIGNS[i].events || []).indexOf(slug) > -1) return CAMPAIGNS[i];
     }
     return null;
-  }
-
-  function node(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text) n.textContent = text;
-    return n;
   }
 
   function whenText(item) {
@@ -135,7 +117,14 @@
       ph.alt = "";
       ph.loading = "lazy";
       ph.decoding = "async";
-      phWrap.appendChild(ph);
+      /* знакът също има WebP вариант — обвиваме го, за да е еднакво с останалите */
+      var phPic = document.createElement("picture");
+      var phSrc = document.createElement("source");
+      phSrc.type = "image/webp";
+      phSrc.srcset = "assets/img/logo.webp";
+      phPic.appendChild(phSrc);
+      phPic.appendChild(ph);
+      phWrap.appendChild(phPic);
       card.appendChild(phWrap);
     }
 
@@ -172,6 +161,12 @@
     var counter = document.querySelector("[data-events-count]");
     var moreBtn = document.querySelector("[data-events-more]");
     var empty = document.querySelector('[data-events-empty="all"]');
+    /* Ако страницата идва с готови карти от build-а, не ги прерисуваме:
+       точно това маха скока при зареждане. ?__snap=1 казва на build-а да
+       нарисува всичко наново, за да вземе свежа снимка. */
+    var SNAP_MODE = /[?&]__snap=1/.test(window.location.search);
+    var snapCount = box.querySelectorAll("li[data-snapshot]").length;
+
     var state = { category: "", year: "", shown: BATCH };
 
     try {
@@ -204,9 +199,7 @@
       if (counter) {
         counter.textContent = !list.length
           ? ""
-          : list.length > state.shown
-            ? state.shown + " от " + list.length + " събития"
-            : list.length + (list.length === 1 ? " събитие" : " събития");
+          : list.length + (list.length === 1 ? " събитие" : " събития");
       }
       if (moreBtn) moreBtn.hidden = list.length <= state.shown;
 
@@ -253,7 +246,16 @@
       }, { rootMargin: "600px" }).observe(sentinel);
     }
 
-    paint();
+    if (!SNAP_MODE && snapCount && !state.category && !state.year) {
+      state.shown = snapCount;
+      if (empty) empty.hidden = true;
+      if (counter) {
+        counter.textContent = ITEMS.length + (ITEMS.length === 1 ? " събитие" : " събития");
+      }
+      if (moreBtn) moreBtn.hidden = ITEMS.length <= snapCount;
+    } else {
+      paint();
+    }
   }
 
   Array.prototype.forEach.call(document.querySelectorAll("[data-events-list]"), function (box) {
@@ -265,6 +267,7 @@
   /* ── Страница на едно събитие ─────────────────────────────────────────── */
   var page = document.querySelector("[data-event-page]");
   if (page) {
+    function renderDetail() {
     var slug = "";
     try { slug = new URLSearchParams(window.location.search).get("event") || ""; } catch (e) { slug = ""; }
 
@@ -328,11 +331,13 @@
 
       if (others.length) {
         var editions = node("section", "event-editions");
-        editions.appendChild(node("h2", "event-editions-title", "Други издания"));
+        editions.appendChild(node("h2", "event-editions-title", "Предишни издания"));
         var edList = node("ul", "event-editions-list");
         others.forEach(function (it) {
           var li = node("li");
-          var link = node("a", null, dayText(it.start) + " — " + it.ev.title);
+          var link = node("a");
+          link.appendChild(node("b", null, dayText(it.start)));
+          link.appendChild(document.createTextNode(" — " + it.ev.title));
           link.href = "event.html?event=" + encodeURIComponent(it.ev.slug);
           li.appendChild(link);
           edList.appendChild(li);
@@ -398,7 +403,7 @@
     var camp = campaignFor(ev.slug);
     if (camp) {
       var clink = node("a", "btn btn-outline", "Кампанията зад това събитие");
-      clink.href = "campaign.html?campaign=" + encodeURIComponent(camp.slug);
+      clink.href = "campaigns/" + encodeURIComponent(camp.slug) + ".html";
       side.appendChild(clink);
     }
 
@@ -431,5 +436,10 @@
     }
 
     document.title = ev.title + " — Фондация „Ела и ти“";
+    }
+
+    renderDetail();
+    /* описанията идват с отделен файл; щом пристигне, рисуваме отново */
+    document.addEventListener("ela:bodies", renderDetail);
   }
 })();

@@ -1,36 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://elaiti.com/</loc>
-    <priority>1.0</priority>
-  </url>
-  <url>
     <loc>https://elaiti.com/about.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://elaiti.com/events.html</loc>
-    <priority>0.9</priority>
+    <loc>https://elaiti.com/campaigns/kupuvame-krile-za-ela-i-ti.html</loc>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://elaiti.com/campaigns.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://elaiti.com/projects.html</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://elaiti.com/media.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://elaiti.com/donate.html</loc>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://elaiti.com/privacy.html</loc>
-    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://elaiti.com/events/badi-v-pomosht-2019.html</loc>
@@ -461,6 +445,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://elaiti.com/events.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://elaiti.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://elaiti.com/media.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://elaiti.com/privacy.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://elaiti.com/projects/edin-razlichen-den.html</loc>
     <priority>0.6</priority>
   </url>
@@ -495,5 +495,9 @@
   <url>
     <loc>https://elaiti.com/projects/zaedno-v-grada.html</loc>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://elaiti.com/projects.html</loc>
+    <priority>0.7</priority>
   </url>
 </urlset>

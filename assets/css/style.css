@@ -1720,6 +1720,36 @@ body.menu-open { overflow: hidden; }
 .field input[aria-invalid="true"],
 .field textarea[aria-invalid="true"] { border-color: var(--ember); background: #fff; }
 
+/* Брояч под полето — появява се само когато има смисъл */
+.field-counter {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--stone);
+  font-variant-numeric: tabular-nums;
+}
+.field-counter.is-near { color: var(--ember-deep); }
+
+/* Домейн-чипове: показват се само при „нещо@“ и не покриват полето */
+.email-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.email-chip {
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  padding: 7px 10px;
+  min-height: 32px;
+  border: 1px solid var(--line, rgba(0, 0, 0, .18));
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--pine);
+  cursor: pointer;
+}
+.email-chip:hover { border-color: var(--pine); }
+.email-chip:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
+
 .form-status {
   font-size: 13.5px;
   color: var(--stone);
@@ -1749,6 +1779,16 @@ body.menu-open { overflow: hidden; }
   color: var(--light);
   padding-block: clamp(44px, 5vw, 64px);
 }
+/* на телефон: лого → надпис → карта на сайта → социални икони → авторски права */
+@media (max-width: 768px) {
+  .footer-inner > .footer-brand { display: contents; }
+  .footer-logo-link { order: 1; }
+  .footer-tagline { order: 2; }
+  .footer-nav { order: 3; }
+  .footer-social { order: 4; margin-top: 0; }
+  .footer-legal { order: 5; }
+}
+
 .footer-inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -2042,6 +2082,11 @@ body.menu-open { overflow: hidden; }
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
+  /* Повдигането при посочване е движение — при „намалено движение“ остава само
+     смяната на цвета, без предметът да подскача. */
+  .event-card:hover, .event-card:focus-within,
+  .project-card:hover, .project-card:focus-within,
+  .story:hover, .social-btn:hover, .btn:active { transform: none !important; }
 }
 
 
@@ -2255,6 +2300,7 @@ body.menu-open { overflow: hidden; }
 .event-info { order: 2; margin-top: var(--space-09); }
 .event-page-aside { align-items: center; margin-top: var(--space-09); order: 4; }
 .event-cover { order: 5; margin: var(--space-10) 0 0; }
+.event-editions { order: 6; margin-top: var(--space-10); }
 .event-page-back { padding-top: clamp(22px, 4vw, 34px); }
 .event-page-head { order: 1; }
 .event-page-main, .event-page-side { display: contents; }
@@ -2264,11 +2310,12 @@ body.menu-open { overflow: hidden; }
   .event-page-layout { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(28px, 3.6vw, 56px); }
   .event-page-main { display: block; }
   .event-page-side { display: flex; flex-direction: column; gap: clamp(14px, 1.6vw, 20px); align-items: stretch; }
-  .event-page-head, .event-page-text, .event-page-aside, .event-cover, .event-info { order: 0; }
+  .event-page-head, .event-page-text, .event-page-aside, .event-cover, .event-info, .event-editions { order: 0; }
   .event-page-text { margin-top: clamp(24px, 2.8vw, 36px); }
   .event-info { margin-top: 0; }
   .event-page-aside { margin-top: 0; align-items: flex-end; }
   .event-cover { margin-top: 0; }
+  .event-editions { margin-top: clamp(26px, 3vw, 40px); }
 }
 
 /* ── Страница „Събития“: филтри, етикет за предстоящо, порции ─────────── */
@@ -2332,9 +2379,9 @@ body.menu-open { overflow: hidden; }
 .events-more .btn { min-width: 220px; }
 .events-sentinel { height: 1px; }
 
-/* Други издания на събитието — само на страницата на събитието */
+/* Предишни издания на събитието — само на страницата на събитието */
 .event-editions { margin-top: clamp(26px, 3vw, 40px); border-top: 1px solid var(--line-soft); padding-top: clamp(18px, 2vw, 26px); }
-.event-editions-title { margin: 0 0 10px; font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.event-editions-title { margin: 0 0 10px; font-family: var(--display); font-size: 17px; font-weight: 700; letter-spacing: .02em; }
 .event-editions-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .event-editions-list li { border-bottom: 1px solid var(--line-soft); }
 .event-editions-list a { display: block; color: var(--ink); text-decoration: none; font-size: 14px; padding: 7px 0; }
@@ -2366,6 +2413,9 @@ body.menu-open { overflow: hidden; }
 .projects-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 clamp(16px, 2vw, 26px); }
 .project-chip {
   font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 14px;
   font-weight: 500;
   color: var(--ink);
@@ -2376,8 +2426,26 @@ body.menu-open { overflow: hidden; }
   cursor: pointer;
   transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
 }
+
+/* филтърните бутони на телефон: един ред, без пренасяне; на много тесен
+   екран редът се плъзга странично, вместо да пада на втори ред */
+@media (max-width: 768px) {
+  .projects-filters {
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .projects-filters::-webkit-scrollbar { display: none; }
+  .project-chip { padding: 9px 11px; gap: 4px; flex: 0 0 auto; }
+  .project-chip span { font-size: 11.5px; }
+}
 .project-chip:hover { border-color: rgba(16, 41, 58, .3); }
 .project-chip.is-active { background: var(--ink); border-color: var(--ink); color: #fff; }
+.project-chip span { font-size: 12px; color: var(--stone); }
+.project-chip.is-active span { color: rgba(247, 250, 250, .7); }
 .project-chip:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; }
 
 .projects-list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(14px, 1.8vw, 24px); }
@@ -2429,8 +2497,37 @@ body.menu-open { overflow: hidden; }
 .project-lead { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.5; color: var(--ink); margin: 0 0 clamp(18px, 2vw, 26px); max-width: 58ch; }
 
 .project-block { margin-top: clamp(24px, 3vw, 36px); border-top: 1px solid var(--line-soft); padding-top: clamp(16px, 2vw, 22px); }
-.project-block-title { margin: 0 0 10px; font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: .02em; }
+.project-block-title { margin: 0 0 10px; font-family: var(--display); font-size: 17px; font-weight: 700; letter-spacing: .02em; }
 .project-supporters { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14.5px; }
+
+
+/* страница на кампания: заглавие → снимка → числа → текст → бутони → събития */
+@media (max-width: 768px) {
+  [data-campaign-page] { display: block; }
+  [data-campaign-page] .event-page-layout { display: block; }
+  [data-campaign-page] .event-page-main { display: block; }
+  [data-campaign-page] .event-page-head { order: 1; }
+  [data-campaign-page] .project-lead { order: 2; margin-top: 10px; }
+  [data-campaign-page] .campaign-cover { order: 3; margin: 18px 0 18px; }
+  [data-campaign-page] .campaign-progress { order: 4; }
+  [data-campaign-page] .event-page-text { order: 5; margin-top: 18px; }
+  [data-campaign-page] .campaign-actions { order: 6; margin-top: 20px; }
+  [data-campaign-page] .project-block { order: 7; }
+}
+.campaign-cover img { width: 100%; display: block; border-radius: 16px; }
+
+
+/* страница на проект: заглавие → етикет → снимка → описание → събития */
+@media (max-width: 768px) {
+  [data-project-page] .event-page-layout { display: block; }
+  [data-project-page] .event-page-main { display: block; }
+  [data-project-page] .event-page-head { order: 1; }
+  [data-project-page] .project-meta--lead { order: 2; margin-top: 6px; }
+  [data-project-page] .project-cover { order: 3; margin: 16px 0 18px; }
+  [data-project-page] .event-page-text { order: 4; margin-top: 0; }
+  [data-project-page] .project-block { order: 5; }
+}
+.project-cover img { width: 100%; display: block; border-radius: 16px; }
 
 /* ── Кампании: числа и прогрес ────────────────────────────────────────── */
 .campaign-progress { margin: 0 0 clamp(14px, 1.6vw, 20px); }
