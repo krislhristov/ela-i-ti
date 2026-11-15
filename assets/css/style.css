@@ -25,6 +25,8 @@
   --pine:       #1B589D;
   --pine-deep:  #0D2B3C;
   --sea:        #006B5C;
+  --grey-panel: #3A4247;
+  --panel-r:    clamp(22px, 2.8vw, 36px);
   --moss:       #DCEDEA;
   --ember:      #C04E36;
   --ember-deep: #9E3B26;
@@ -975,6 +977,16 @@ body.menu-open { overflow: hidden; }
 @media (min-width: 769px) { .slide-media { border-radius: 20px; } }
 
 .slide-media--fit { object-fit: contain; object-position: 50% 50%; }
+/* Телефон: картите в слайдера се разпъват до височината на най-високата,
+   за да е един долният им ръб. Отстоянията на контролите са при самите им
+   правила по-долу (иначе по-късният margin-top ги връща на 18px). */
+@media (max-width: 768px) {
+  .slide-card {
+    height: 100%;
+    grid-template-rows: auto 1fr;
+  }
+}
+
 .slide-body { padding: 4px 10px 14px; display: flex; flex-direction: column; align-self: stretch; }
 @media (min-width: 769px) { .slide-body { padding: clamp(6px, .9vw, 14px) clamp(14px, 2vw, 32px) 0 0; } }
 .slide-title {
@@ -1018,6 +1030,11 @@ body.menu-open { overflow: hidden; }
   justify-content: space-between;
   gap: 20px;
   margin-top: 18px;
+}
+/* Телефон: контролите стоят плътно под общия долен ръб на картите
+   (отстоянието на „Виж всички“ е при самото му правило по-долу) */
+@media (max-width: 768px) {
+  .slider-nav { margin-top: 10px; }
 }
 .slider-dots { display: flex; align-items: center; gap: 8px; }
 .slider-dot {
@@ -1656,11 +1673,18 @@ body.menu-open { overflow: hidden; }
   gap: clamp(28px, 4vw, 64px);
   align-items: start;
 }
-
 @media (min-width: 1025px) {
   .contact { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 .contact-text > p { margin-top: 14px; max-width: none; color: var(--stone); }
+/* Формата е в дясната колона и започва от върха на страницата */
+.section.contact-page { padding-top: clamp(26px, 3.2vw, 44px); }
+.contact-text > .lead { color: var(--ink); max-width: 52ch; margin-top: var(--space-04); }
+.contact-subtitle { margin-top: clamp(30px, 4vw, 52px); }
+
+/* Заоблени краища на зелените секции */
+#support { border-radius: var(--panel-r); }
+.page-donate #support { border-radius: 0 0 var(--panel-r) var(--panel-r); }
 
 .contact-list {
   margin-top: 22px;
@@ -1793,7 +1817,23 @@ body.menu-open { overflow: hidden; }
   background: var(--sea);
   color: var(--light);
   padding-block: clamp(44px, 5vw, 64px);
+  border-radius: clamp(22px, 2.8vw, 36px) clamp(22px, 2.8vw, 36px) 0 0;
+  overflow: hidden;
 }
+/* Страница „Дари“: страницата е цялата зелена, затова футърът е сив —
+   така заоблената му форма се вижда, както на референса. */
+/* Страница „Дари“: светъл ред преди футъра — той е „паузата“ между
+   зелената част и тъмния футър. */
+.donate-closing { padding-block: clamp(16px, 2vw, 28px) clamp(22px, 2.6vw, 34px); }
+.donate-closing-text {
+  margin: 0;
+  text-align: center;
+  font-family: var(--display);
+  font-size: clamp(17px, 1.5vw, 22px);
+  font-weight: 600;
+  color: var(--ink);
+}
+.donate-closing-text a { color: var(--sea); text-decoration: underline; text-underline-offset: .18em; }
 /* на телефон: лого → надпис → карта на сайта → социални икони → авторски права */
 @media (max-width: 768px) {
   .footer-inner > .footer-brand { display: contents; }
@@ -2298,8 +2338,8 @@ body.menu-open { overflow: hidden; }
 
 /* „Всички публикации“: на лаптоп – до заглавието, на телефон – под новините */
 .stories-more--head, .past-more--head { display: none; }
-.past-more--bottom { display: flex; width: fit-content; margin: 14px 0 0 auto; }
-#media .stories-more--bottom { display: flex; width: fit-content; margin: 12px 0 0 auto; }
+.past-more--bottom { display: flex; width: fit-content; margin: 8px 0 0 auto; }
+#media .stories-more--bottom { display: flex; width: fit-content; margin: 8px 0 0 auto; }
 
 @media (min-width: 769px) {
   #media .stories-more--head { display: inline-flex; }
@@ -2379,15 +2419,10 @@ main.has-donate-dock + .site-footer { padding-bottom: 74px; }
   .event-page[data-campaign] .project-block { margin-top: clamp(18px, 2vw, 26px); }
 }
 
-/* ── Страница „Дари“: бяла основа, зелени карти с начините за дарение ───── */
-.donate-methods .give-method {
-  background: var(--sea);
-  border-color: rgba(255, 255, 255, .16);
-}
-.donate-methods .give-method-head { color: #fff; }
-.donate-methods .give-method-text { color: rgba(247, 250, 250, .82); }
-.donate-methods .give-method .copy-label { color: rgba(247, 250, 250, .88); }
-.donate-methods .give-method .copy-value { color: #fff; }
+/* ── Страница „Дари“: цялата гора е зелена, картите са стъклени върху нея ── */
+.donate-hero { background: var(--sea); color: var(--light); }
+.donate-hero .page-title { color: var(--light); }
+.donate-hero .lead { color: var(--light-muted); }
 
 /* ── Проекти на телефон: заглавие, етикет, описание, снимка, „Научи повече“ ─ */
 @media (max-width: 768px) {

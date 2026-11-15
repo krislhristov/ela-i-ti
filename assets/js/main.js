@@ -97,7 +97,10 @@
   }
 
   /* ── Current section in the navigation ────────────────────────────────── */
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav a"));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav a"))
+    /* „Контакти“ води към секция на същата страница — не искаме оранжевата
+       черта под нея, докато се скролва надолу */
+    .filter(function (link) { return link.hash !== "#contact"; });
   var sections = navLinks
     .map(function (link) { return document.getElementById(link.hash.slice(1)); })
     .filter(Boolean);
