@@ -21,8 +21,9 @@
     return pic;
   }
 
-  var MONTHS = ["януари", "февруари", "март", "април", "май", "юни",
-                "юли", "август", "септември", "октомври", "ноември", "декември"];
+  var UI = window.UI || {};
+  var MONTHS = UI.MONTHS || ["януари", "февруари", "март", "април", "май", "юни",
+                             "юли", "август", "септември", "октомври", "ноември", "декември"];
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function toDate(value) {
@@ -30,9 +31,9 @@
     var d = new Date(value);
     return isNaN(d.getTime()) ? null : d;
   }
-  function clock(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
-  function dayText(d) { return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear(); }
-  function isoDay(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function clock(d) { return UI.clock ? UI.clock(d) : pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+  function dayText(d) { return UI.dayText ? UI.dayText(d) : d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear(); }
+  function isoDay(d) { return UI.isoDay ? UI.isoDay(d) : d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
 
   function node(tag, className, text) {
     var n = document.createElement(tag);
@@ -91,7 +92,7 @@
       actions.appendChild(signup);
     }
     var more = node("a", "btn btn-outline", "Научи повече");
-    more.href = "event.html?event=" + encodeURIComponent(ev.slug);
+    more.href = "events/" + encodeURIComponent(ev.slug) + ".html";
     actions.appendChild(more);
     body.appendChild(actions);
 
@@ -110,7 +111,9 @@
     }
 
     var hit = node("a", "event-hit");
-    hit.href = "event.html?event=" + encodeURIComponent(ev.slug);
+    hit.href = "events/" + encodeURIComponent(ev.slug) + ".html";
+    hit.tabIndex = -1;
+    hit.setAttribute("aria-hidden", "true");
     hit.setAttribute("aria-label", "Отвори „" + ev.title + "“");
     card.appendChild(hit);
 

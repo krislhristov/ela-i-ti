@@ -15,11 +15,54 @@
     return n;
   }
 
-  /* Приема дата или ISO низ; връща „14 ноември 2026“. */
-  function dayText(value) {
+  /* Приема дата или ISO низ; връща „14 ноември 2026“.
+     Датата се смята в София, а не в часовата зона на посетителя — иначе
+     събитие в 00:00 може да покаже предния ден в Лондон или Ню Йорк. */
+  var SOFIA_FORMAT = null;
+
+  function sofiaParts(value) {
     var d = value instanceof Date ? value : new Date(value);
-    if (isNaN(d.getTime())) return "";
-    return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+    if (isNaN(d.getTime())) return null;
+    try {
+      if (!SOFIA_FORMAT) {
+        SOFIA_FORMAT = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Europe/Sofia",
+          year: "numeric", month: "2-digit", day: "2-digit",
+          hour: "2-digit", minute: "2-digit", hour12: false
+        });
+      }
+      var parts = {};
+      SOFIA_FORMAT.formatToParts(d).forEach(function (part) {
+        if (part.type !== "literal") parts[part.type] = part.value;
+      });
+      return {
+        year: Number(parts.year),
+        month: Number(parts.month) - 1,
+        day: Number(parts.day),
+        hour: Number(parts.hour) % 24,
+        minute: Number(parts.minute)
+      };
+    } catch (error) {
+      return { year: d.getFullYear(), month: d.getMonth(), day: d.getDate(),
+               hour: d.getHours(), minute: d.getMinutes() };
+    }
+  }
+
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function dayText(value) {
+    var p = sofiaParts(value);
+    return p ? p.day + " " + MONTHS[p.month] + " " + p.year : "";
+  }
+
+  function clock(value) {
+    var p = sofiaParts(value);
+    return p ? pad(p.hour) + ":" + pad(p.minute) : "";
+  }
+
+  function isoDay(value) {
+    var p = sofiaParts(value);
+    return p ? p.year + "-" + pad(p.month + 1) + "-" + pad(p.day) : "";
   }
 
   /* „3 674 €“ — интервал за хилядите, без стотинки. */
@@ -44,6 +87,7 @@
     return null;
   }
 
-  window.UI = { MONTHS: MONTHS, node: node, dayText: dayText, money: money,
+  window.UI = { MONTHS: MONTHS, node: node, dayText: dayText, clock: clock,
+                isoDay: isoDay, sofiaParts: sofiaParts, money: money,
                 withWebp: withWebp, bySlug: bySlug };
 })();

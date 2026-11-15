@@ -197,6 +197,10 @@ section[tabindex="-1"]:focus-visible { outline: none; }
   margin-bottom: clamp(28px, 3vw, 44px);
 }
 
+/* Атрибутът hidden трябва да бие display:flex/grid/inline-flex на компонентите.
+   Без това „Покажи още“ и домейн-чиповете се виждат, когато трябва да са скрити. */
+[hidden] { display: none !important; }
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -422,27 +426,6 @@ body.menu-open { overflow: hidden; }
   backdrop-filter: blur(3px);
 }
 
-/* Опит: вместо плътна подложка — мек градиент върху снимката.
-   Тъмно горе, изчезва към средата, като долният ръб остава леко затъмнен.
-   Маха се{
-  background:
-    linear-gradient(180deg,
-      rgba(9, 26, 36, .62) 0%,
-      rgba(9, 26, 36, .50) 36%,
-      rgba(9, 26, 36, .24) 62%,
-      rgba(9, 26, 36, .10) 78%,
-      rgba(9, 26, 36, .46) 100%),
-    radial-gradient(125% 85% at 50% 42%, rgba(13, 43, 60, 0) 44%, rgba(13, 43, 60, .38) 100%);
-}
-
-/* Опит: само буквите — без подложка, без замъгляване, без контур.
-   Маха се{
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  text-shadow: none;
-}
-
 /* Опит 2: мека „мъгла“ зад буквите — овално потъмняване, което изчезва
    напълно вътре в собствения си контур. Няма ръб, защото няма къде да свърши.
    Маха се, като се махне класът is-haze от h1 в index.html. */
@@ -476,17 +459,6 @@ body.menu-open { overflow: hidden; }
     0 1px 2px rgba(6, 18, 25, .55),
     0 4px 24px rgba(6, 18, 25, .55),
     0 0 60px rgba(6, 18, 25, .35);
-}
-
-/* Опит 3: затъмняване от горния ръб надолу. Няма страничен ръб, който окото
-   да хване — тъмното е отрязано от самата снимка, затова не се чете като форма.
-   Маха се{
-  background: linear-gradient(180deg,
-    rgba(9, 26, 36, .56) 0%,
-    rgba(9, 26, 36, .44) 20%,
-    rgba(9, 26, 36, .24) 38%,
-    rgba(9, 26, 36, .08) 54%,
-    rgba(9, 26, 36, 0) 68%);
 }
 
 /* по-лек общ затъмняващ слой, когато надписът си носи собствена мъгла */
@@ -532,8 +504,10 @@ body.menu-open { overflow: hidden; }
   padding: 13px 26px;
   gap: 10px;
   box-shadow: 0 10px 26px -10px rgba(9, 26, 36, .55);
-}@media (hover: hover) {
-.btn-donate:hover { background: var(--ember-deep); border-color: var(--ember-deep); color: #fff; }}
+}
+
+@media (hover: hover) {
+  .btn-donate:hover { background: var(--ember-deep); border-color: var(--ember-deep); color: #fff; }}
 
 
 /* ── Хедър и начало: от 769px нагоре ────────────────────────────────────── */
@@ -1039,7 +1013,7 @@ body.menu-open { overflow: hidden; }
 .slider-dots { display: flex; align-items: center; gap: 8px; }
 .slider-dot {
   width: 44px;
-  height: 40px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -1073,8 +1047,9 @@ body.menu-open { overflow: hidden; }
   cursor: pointer;
   transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
 }@media (hover: hover) {
-.slider-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); color: var(--paper); }}
-.slider-btn:disabled { opacity: .35; cursor: default; }
+.slider-btn:hover:not([aria-disabled="true"]) { background: var(--ink); border-color: var(--ink); color: var(--paper); }}
+.slider-btn:disabled,
+.slider-btn[aria-disabled="true"] { opacity: .35; cursor: default; }
 /* атрибутът hidden трябва да бие display:grid/flex на бутоните и точките */
 .slider-btn[hidden],
 .slider-dots[hidden] { display: none; }
@@ -1254,7 +1229,7 @@ body.menu-open { overflow: hidden; }
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  min-height: 42px;
+  min-height: 44px;
   padding: 8px 18px;
   border: 1px solid var(--line);
   border-radius: 9999px;
@@ -1328,8 +1303,8 @@ body.menu-open { overflow: hidden; }
   top: 10px;
   right: 10px;
   z-index: 2;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -1378,15 +1353,6 @@ body.menu-open { overflow: hidden; }
   color: rgba(234, 244, 242, .66);
 }
 .story-audio audio { width: 100%; }
-
-/* 13. Journey — scroll story (events) -------------------------------------- */
-.journey { --head: 76px; position: relative; }
-
-@media (min-width: 1025px) { .journey { --head: 96px; } }
-.journey.is-enhanced { height: calc((var(--steps, 4) + 1) * 100svh); }
-/* колелото да стъпва върху линията{ transform: translate(0, -11.5px); }
-
-
 
 /* 12. Partners ------------------------------------------------------------- */
 .partners {
@@ -1624,8 +1590,8 @@ body.menu-open { overflow: hidden; }
 .copy-btn {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: 9px;
@@ -1775,7 +1741,7 @@ body.menu-open { overflow: hidden; }
   font-size: 13px;
   line-height: 1;
   padding: 7px 10px;
-  min-height: 32px;
+  min-height: 44px;
   border: 1px solid var(--line, rgba(0, 0, 0, .18));
   border-radius: 999px;
   background: var(--paper);

@@ -3,27 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 404 се показва на произволен адрес. Изчисляваме корена на сайта, за да
+     работят едни и същи относителни пътища на elaiti.com и в подпапката на
+     GitHub Pages. */
+  (function () {
+    var path = location.pathname;
+    var root = path.indexOf("/ela-i-ti/") === 0 ? "/ela-i-ti/" : "/";
+    document.write('<base href="' + root + '">');
+  })();
+</script>
 <title>Страницата не е намерена — Фондация „Ела и ти“</title>
-<meta name="description" content="Адресът не води до страница на сайта. Ето къде да продължиш — начало, събития, за нас.">
+<meta name="description" content="Можеш да се върнеш към началната страница.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F7FAFA">
 <meta property="og:title" content="Страницата не е намерена — Фондация „Ела и ти“">
-<meta property="og:description" content="Адресът не води до страница на сайта.">
+<meta property="og:description" content="Можеш да се върнеш към началната страница.">
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-700-cyrillic.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-400-cyrillic.woff2">
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=cc0928c4">
-<link rel="stylesheet" href="assets/css/style.css?v=2eecbe98">
+<link rel="stylesheet" href="assets/css/style.css?v=cc112f7a">
 <style>
-  /* Само за тази страница: центриран текст и три връзки под него. */
-  .lost { max-width: 62ch; margin-inline: auto; display: grid; gap: 14px; justify-items: start; }
-  .lost .lead { max-width: 56ch; }
-  .lost-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  @media (max-width: 520px) { .lost-actions { width: 100%; } .lost-actions .btn { flex: 1 1 auto; justify-content: center; } }
+  /* Само за тази страница: центриран текст между общата шапка и футъра. */
+  html { height: 100%; }
+  body.lost-page {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .lost-main {
+    flex: 1 1 auto;
+    min-height: calc(100svh - 6.0625rem);
+    display: grid;
+    place-items: center;
+    padding: clamp(24px, 6vw, 64px);
+  }
+  .lost-wrap {
+    width: min(100%, 52rem);
+    display: grid;
+    gap: 14px;
+    justify-items: center;
+    text-align: center;
+  }
+  .lost-title {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.1;
+  }
+  .lost-text {
+    margin: 0;
+    max-width: 100%;
+    font-size: clamp(16px, 1.1vw, 17px);
+    line-height: 1.6;
+  }
+  .lost-text a {
+    color: var(--ember);
+    text-underline-offset: 3px;
+  }
+  @media (min-width: 880px) {
+    .lost-title { white-space: nowrap; }
+  }
+  /* На телефон съобщението заема целия екран под шапката, за да не се
+     вижда футърът, докато човек не скролне. */
+  @media (max-width: 768px) {
+    .lost-main { min-height: calc(100svh - 4.8125rem); }
+  }
 </style>
 </head>
-<body>
+<body class="lost-page">
 
 <a class="skip-link" href="#main">Към съдържанието</a>
 
@@ -68,30 +121,11 @@
   </div>
 </div>
 
-<main id="main">
-
-  <section class="page-hero page-hero--plain" aria-labelledby="page-title">
-    <div class="wrap">
-      <div class="lost">
-        <h1 class="page-title" id="page-title">Страницата не е намерена</h1>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-tight" aria-label="Страницата не е намерена">
-    <div class="wrap">
-      <div class="lost">
-        <p class="lead">Адресът, който отвори, не води до страница на сайта. Възможно е връзката да е сгрешена или страницата да е преместена.</p>
-        <p>Ето къде да продължиш — най-бързо е да видиш предстоящите събития или да се върнеш в началото.</p>
-        <div class="lost-actions">
-          <a class="btn" href="index.html">Начало</a>
-          <a class="btn btn-ghost" href="events.html">Събития</a>
-          <a class="btn btn-ghost" href="index.html#contact">Пиши ни</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
+<main id="main" class="lost-main">
+  <div class="lost-wrap">
+    <h1 class="page-title lost-title" id="page-title">Страницата не е намерена</h1>
+    <p class="lost-text">Можеш да се върнеш към <a href="index.html">началната страница</a>.</p>
+  </div>
 </main>
 
 <footer class="site-footer">
@@ -138,6 +172,6 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/main.js?v=854e1713" defer></script>
+<script src="assets/js/main.js?v=7ae62831" defer></script>
 </body>
 </html>

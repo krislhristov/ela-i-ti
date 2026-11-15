@@ -2,7 +2,7 @@
  *
  * Стари идентификатори (?event=<id>) → адреси на статичните страници.
  * Прави се от: node tools/build-event-redirects.js --env <среда>
- * Източник: assets/js/events-data.js + assets/js/event-urls.js
+ * Източник: assets/js/events-data.js + assets/js/events-archive-data.js + assets/js/event-urls.js
  * Чете се от: assets/js/event-redirect.js
  */
 (function (root, table) {

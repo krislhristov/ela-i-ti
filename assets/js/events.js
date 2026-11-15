@@ -9,8 +9,8 @@
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function toDate(v) { if (!v) return null; var d = new Date(v); return isNaN(d.getTime()) ? null : d; }
-  function clock(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
-  function isoDay(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function clock(d) { return UI.clock ? UI.clock(d) : pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+  function isoDay(d) { return UI.isoDay ? UI.isoDay(d) : d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
 
   /* връзки към програма и кампания — по slug на събитието */
   var PROJECTS = Array.isArray(window.ELAITI_PROJECTS) ? window.ELAITI_PROJECTS : [];
@@ -63,7 +63,7 @@
   /* ── Списък със събития ───────────────────────────────────────────────── */
   function buildCard(item, eager) {
     var ev = item.ev;
-    var url = "event.html?event=" + encodeURIComponent(ev.slug);
+    var url = "events/" + encodeURIComponent(ev.slug) + ".html";
 
     var card = node("article", "event-card" + (item.future ? " is-future" : ""));
     var body = node("div", "event-card-body");
@@ -131,6 +131,8 @@
     /* цялата карта е кликаема; бутоните са отгоре и работят сами */
     var hit = node("a", "event-hit");
     hit.href = url;
+    hit.tabIndex = -1;
+    hit.setAttribute("aria-hidden", "true");
     hit.setAttribute("aria-label", "Отвори „" + ev.title + "“");
     card.appendChild(hit);
 
@@ -155,9 +157,30 @@
     if (!items.length) box.hidden = true;
   }
 
+  /* Годините идват от самите данни — не се поддържа ръчен списък, който
+     остарява всяка нова година. */
+  function fillYears(sel) {
+    var years = {};
+    ITEMS.forEach(function (it) { years[it.start.getFullYear()] = true; });
+    var list = Object.keys(years).sort(function (a, b) { return b - a; });
+    sel.innerHTML = "";
+    var all = document.createElement("option");
+    all.value = "";
+    all.textContent = "Година";
+    sel.appendChild(all);
+    list.forEach(function (year) {
+      var option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      sel.appendChild(option);
+    });
+  }
+
   function renderAll(box) {
     var section = document.getElementById("all-events");
     var controls = document.querySelectorAll("[data-filter]");
+    var yearSelect = document.querySelector('[data-filter="year"]');
+    if (yearSelect) fillYears(yearSelect);
     var counter = document.querySelector("[data-events-count]");
     var moreBtn = document.querySelector("[data-events-more]");
     var empty = document.querySelector('[data-events-empty="all"]');

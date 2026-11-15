@@ -77,7 +77,7 @@
       }
       if (event.key !== "Tab" || menu.hidden) return;
 
-      var focusable = menu.querySelectorAll("a, button");
+      var focusable = [toggle].concat(Array.prototype.slice.call(menu.querySelectorAll("a, button")));
       if (!focusable.length) return;
       var first = focusable[0];
       var last = focusable[focusable.length - 1];
@@ -231,9 +231,11 @@
 
   function charLength(value) {
     if (typeof Intl !== "undefined" && Intl.Segmenter) {
-      var segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+      if (!charLength.segmenter) {
+        charLength.segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+      }
       var count = 0;
-      var iterator = segmenter.segment(value)[Symbol.iterator]();
+      var iterator = charLength.segmenter.segment(value)[Symbol.iterator]();
       while (!iterator.next().done) count++;
       return count;
     }
@@ -328,6 +330,21 @@
 
     var formLoadedAt = Date.now();
 
+    function resetForm() {
+      form.reset();
+      required.forEach(function (input) {
+        updateCounter(input);
+        input.removeAttribute("aria-invalid");
+        var error = fieldError(input);
+        if (error) {
+          error.textContent = "";
+          error.hidden = true;
+        }
+      });
+      if (chipsWrap) chipsWrap.hidden = true;
+      formLoadedAt = Date.now();
+    }
+
     required.forEach(function (input) {
       input.addEventListener("blur", function () {
         if (input.value.trim() || input.getAttribute("aria-invalid") === "true") validateField(input);
@@ -369,10 +386,10 @@
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      // Ботовете попълват за части от секундата. Истинско съобщение не се пише толкова.
+      // Ботовете попълват за части от секундата. Не казваме „изпратено“, защото
+      // нищо не е изпратено — човек с autofill може да опита отново.
       if (Date.now() - formLoadedAt < 3000) {
-        setFormStatus("Благодарим! Съобщението е изпратено.");
-        form.reset();
+        setFormStatus("Изчакай секунда и опитай отново.", true);
         return;
       }
 
@@ -390,13 +407,17 @@
 
       if (form.elements["_honey"] && form.elements["_honey"].value) {
         setFormStatus("Благодарим! Съобщението е изпратено.");
-        form.reset();
+        resetForm();
         return;
       }
 
       // Адресът идва от action на формата — едно място за смяна при миграция.
       // formsubmit.co приема AJAX заявки на /ajax/ адрес; contact.php отговаря сам.
       var action = form.getAttribute("action") || "";
+      if (!action) {
+        setFormStatus("Формата не е настроена. Пиши ни на info@elaiti.com.", true);
+        return;
+      }
       var endpoint = action.replace("formsubmit.co/", "formsubmit.co/ajax/");
       var button = form.querySelector('button[type="submit"]');
       var label = button ? button.textContent : "";
@@ -409,7 +430,12 @@
       }
       setFormStatus("Изпращаме съобщението…");
 
-      fetch(endpoint, { method: "POST", body: data, headers: { Accept: "application/json" } })
+      var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+      var timer = controller ? window.setTimeout(function () { controller.abort(); }, 15000) : 0;
+      var options = { method: "POST", body: data, headers: { Accept: "application/json" } };
+      if (controller) options.signal = controller.signal;
+
+      fetch(endpoint, options)
         .then(function (response) {
           if (!response.ok) throw new Error("HTTP " + response.status);
           // Релеят отговаря с JSON, но с Content-Type text/html — затова се разчита на
@@ -425,13 +451,16 @@
         .then(function (result) {
           var ok = result && (result.success === true || result.success === "true" || result.ok === true);
           if (!ok) throw new Error((result && result.message) || "not accepted");
-          form.reset();
+          resetForm();
           setFormStatus("Благодарим! Съобщението е изпратено — ще отговорим на посочения имейл.");
         })
-        .catch(function () {
-          setFormStatus("Съобщението не тръгна. Опитай отново или ни пиши на info@elaiti.com.", true);
+        .catch(function (error) {
+          setFormStatus(error && error.name === "AbortError"
+            ? "Изпращането се забави. Провери връзката и опитай отново."
+            : "Съобщението не тръгна. Опитай отново или ни пиши на info@elaiti.com.", true);
         })
         .then(function () {
+          if (timer) window.clearTimeout(timer);
           if (button) {
             button.disabled = false;
             button.textContent = label;
@@ -482,8 +511,10 @@
         else dot.removeAttribute("aria-current");
         dot.tabIndex = k === i ? 0 : -1;
       });
-      prev.disabled = i <= 0;
-      next.disabled = i >= slides.length - 1;
+      prev.disabled = false;
+      next.disabled = false;
+      prev.setAttribute("aria-disabled", i <= 0 ? "true" : "false");
+      next.setAttribute("aria-disabled", i >= slides.length - 1 ? "true" : "false");
     }
 
     slides.forEach(function (slide, i) {
@@ -496,8 +527,24 @@
       dots.push(dot);
     });
 
-    prev.addEventListener("click", function () { go(index() - 1); });
-    next.addEventListener("click", function () { go(index() + 1); });
+    prev.addEventListener("click", function () {
+      if (index() <= 0) return;
+      go(index() - 1);
+    });
+    next.addEventListener("click", function () {
+      if (index() >= slides.length - 1) return;
+      go(index() + 1);
+    });
+    if (dotsWrap) {
+      dotsWrap.addEventListener("keydown", function (event) {
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        event.preventDefault();
+        var n = Math.max(0, Math.min(slides.length - 1,
+          index() + (event.key === "ArrowRight" ? 1 : -1)));
+        go(n);
+        if (dots[n]) dots[n].focus();
+      });
+    }
     viewport.addEventListener("scroll", function () {
       window.requestAnimationFrame(sync);
     }, { passive: true });

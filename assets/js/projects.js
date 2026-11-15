@@ -57,6 +57,8 @@
 
     var hit = node("a", "event-hit");
     hit.href = urlFor(item.slug);
+    hit.tabIndex = -1;
+    hit.setAttribute("aria-hidden", "true");
     hit.setAttribute("aria-label", "Отвори „" + item.title + "“");
     card.appendChild(hit);
 
@@ -198,7 +200,7 @@
           var link = node("a");
           link.appendChild(node("b", null, dayText(ev.start)));
           link.appendChild(document.createTextNode(" — " + ev.title));
-          link.href = "event.html?event=" + encodeURIComponent(ev.slug);
+          link.href = "events/" + encodeURIComponent(ev.slug) + ".html";
           li.appendChild(link);
           evList.appendChild(li);
         });

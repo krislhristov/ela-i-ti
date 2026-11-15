@@ -3,7 +3,8 @@
  * Страницата идва с числата, записани при сглобяването (за търсачки и за хора
  * без JavaScript). Този файл чете campaign-live.js — същата бройка, която cron-ът
  * обновява два пъти дневно — и ако тя е по-нова, подменя текста.
- * Ако числата са по-стари от 48 часа, прогресът се скрива и остава само целта.
+ * Ако числата са по-стари от 48 часа, те остават на страницата с надпис
+ * „към <дата>“ и бележка, че не са обновени — никога не се показват нули.
  */
 (function () {
   var UI = window.UI || {};
@@ -24,6 +25,7 @@
   }
 
   function dayText(v) {
+    if (UI.dayText) return UI.dayText(v);
     var t = new Date(v);
     if (isNaN(t.getTime())) return "";
     return t.getDate() + " " + MONTHS[t.getMonth()] + " " + t.getFullYear();
@@ -37,12 +39,8 @@
   }
 
   var age = (Date.now() - Date.parse(d.updated || "")) / 36e5;
-  if (!isNaN(age) && age > STALE_HOURS) {
-    box.innerHTML = '<p class="campaign-progress-row">Цел: ' + money(d.target) + "</p>" +
-      '<p class="campaign-note">Числата не са обновени от ' + dayText(d.updated) +
-      " — виж актуалните на страницата на кампанията.</p>";
-    return;
-  }
+  var stale = isNaN(age) || age > STALE_HOURS;
+  box.setAttribute("data-live-stale", stale ? "1" : "0");
 
   var donated = box.querySelector("[data-live-donated]");
   var of = box.querySelector("[data-live-of]");
@@ -61,4 +59,17 @@
     meta.textContent = bits.join(" · ");
   }
   if (stamp) stamp.textContent = "към " + dayText(d.updated);
+
+  var note = box.querySelector("[data-live-note]");
+  if (stale) {
+    if (!note) {
+      note = document.createElement("p");
+      note.className = "campaign-note";
+      note.setAttribute("data-live-note", "");
+      box.appendChild(note);
+    }
+    note.textContent = "Числата не са обновени след " + (dayText(d.updated) || "последното обновяване") + ".";
+  } else if (note) {
+    note.remove();
+  }
 })();

@@ -1,8 +1,8 @@
 /* Кампании: списък (campaigns.html) и страница на кампания (campaign.html?campaign=).
  *
  * Живите числа идват от campaign-live.js (обновява се от cron-а през Платформата.бг).
- * Ако ги няма или са по-стари от 48 часа, прогресът се скрива и се показва само
- * целта — никога не се показват нули.
+ * Ако ги няма, показваме само целта. Ако са по-стари от 48 часа, показваме
+ * последните добри числа с „към <дата>“ — никога не се показват нули.
  */
 (function () {
   var UI = window.UI || {};
@@ -33,7 +33,7 @@
     if (!d) return null;
     if (d.donated == null || d.target == null) return null;
     var t = Date.parse(d.updated || "");
-    if (!isNaN(t) && (Date.now() - t) / 36e5 > STALE_HOURS) return { stale: true, data: d };
+    if (isNaN(t) || (Date.now() - t) / 36e5 > STALE_HOURS) return { stale: true, data: d };
     return { stale: false, data: d };
   }
 
@@ -48,13 +48,6 @@
       box.appendChild(node("p", "campaign-progress-row", "Цел: " + money(camp.goal)));
       box.appendChild(node("p", "campaign-note",
         "Към момента не разполагаме с актуалните числа от Платформата.бг — виж ги на страницата на кампанията."));
-      return box;
-    }
-
-    if (live.stale) {
-      box.appendChild(node("p", "campaign-progress-row", "Цел: " + money(camp.goal)));
-      box.appendChild(node("p", "campaign-note",
-        "Числата от Платформата.бг не са обновени от " + dayText(live.data.updated) + " — виж актуалните на страницата на кампанията."));
       return box;
     }
 
@@ -78,6 +71,11 @@
     var dl = deadlineText(d.deadline);
     if (dl) metaBits.push("Приключва на " + dl);
     if (metaBits.length) box.appendChild(node("p", "campaign-meta", metaBits.join(" · ")));
+
+    if (live.stale) {
+      box.appendChild(node("p", "campaign-note",
+        "Числата не са обновени след " + (dayText(d.updated) || "последното обновяване") + "."));
+    }
 
     return box;
   }
@@ -117,6 +115,8 @@
 
       var hit = node("a", "event-hit");
       hit.href = urlFor(camp.slug);
+      hit.tabIndex = -1;
+      hit.setAttribute("aria-hidden", "true");
       hit.setAttribute("aria-label", "Отвори кампанията „" + camp.title + "“");
       card.appendChild(hit);
 
@@ -205,7 +205,7 @@
         var a = node("a");
         a.appendChild(node("b", null, dayText(ev.start)));
         a.appendChild(document.createTextNode(" — " + ev.title));
-        a.href = "event.html?event=" + encodeURIComponent(ev.slug);
+        a.href = "events/" + encodeURIComponent(ev.slug) + ".html";
         li.appendChild(a);
         ul.appendChild(li);
       });
