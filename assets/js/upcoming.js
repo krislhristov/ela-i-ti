@@ -84,12 +84,8 @@
     if (ev.short) body.appendChild(node("p", "slide-text", ev.short));
 
     var actions = node("div", "event-actions");
-    if (ev.signup) {
-      var signup = node("a", "btn", "Запиши се");
-      signup.href = ev.signup;
-      signup.target = "_blank";
-      signup.rel = "noopener";
-      actions.appendChild(signup);
+    if (ev.signup || ev.signupVolunteer) {
+      actions.appendChild(UI.signup(ev, ev.title));
     }
     var more = node("a", "btn btn-outline", "Научи повече");
     more.href = "events/" + encodeURIComponent(ev.slug) + ".html";

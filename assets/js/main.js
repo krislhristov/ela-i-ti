@@ -69,6 +69,22 @@
       if (toggle.getAttribute("aria-expanded") === "true") setMenu(false);
     });
 
+    /* Докосване извън менюто го затваря. Иначе то остава отворено и
+       следващото докосване, прицелено в страницата под него (например
+       бутона „Дари сега“ в началото), попада върху меню-връзка — на
+       телефон „Медии“ лежи точно на мястото на този бутон. */
+    document.addEventListener("pointerdown", function (event) {
+      if (toggle.getAttribute("aria-expanded") !== "true") return;
+      if (menu.contains(event.target) || toggle.contains(event.target)) return;
+      setMenu(false);
+    }, true);
+
+    /* iOS връща страницата от кеша със запазено състояние: менюто може да
+       се върне отворено и скролът заключен. Затова го затваряме. */
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) setMenu(false);
+    });
+
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
         setMenu(false);
@@ -94,6 +110,22 @@
     window.addEventListener("resize", function () {
       if (window.innerWidth > 980 && toggle.getAttribute("aria-expanded") === "true") setMenu(false);
     });
+  }
+
+  /* ── Няма залепнала подсветка след докосване ──────────────────────────── */
+  /* На телефон браузърът оставя :focus/:focus-within върху натиснатия бутон,
+     докато човек не натисне другаде — синият/оранжев кант изглежда като бъг.
+     След докосване махаме фокуса, освен ако целта не е поле за писане. */
+  if (window.matchMedia && window.matchMedia("(hover: none)").matches) {
+    document.addEventListener("pointerup", function (event) {
+      var el = event.target && event.target.closest
+        ? event.target.closest("button, a, [role='button'], .filter, .project-chip, .slider-dot, .slider-btn, .story-close, .copy-btn, .email-chip, .nav-toggle")
+        : null;
+      if (!el || !el.blur) return;
+      window.setTimeout(function () {
+        if (document.activeElement === el) el.blur();
+      }, 0);
+    }, true);
   }
 
   /* ── Current section in the navigation ────────────────────────────────── */
@@ -778,4 +810,196 @@
     try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
   };
   requestAnimationFrame(go);
+})();
+
+/* Скок към секция по #връзка в същата страница — изцяло наш.
+
+   Преди оставяхме браузъра да скролира (scroll-behavior: smooth) и после
+   коригирахме. На iOS Safari това даваше две-три движения: до „Новини и
+   истории“, после до даренията, а през тунела — долу, горе, пак долу,
+   защото анимацията на браузъра и нашата корекция се биеха.
+
+   Сега има само едно движение и то е наше: рисуваме го кадър по кадър с
+   requestAnimationFrame, като за целия скок изключваме плавността от CSS.
+   Накрая слагаме точната позиция, изчислена по живото положение на
+   секцията. Докосване, колелце или клавиш го спират веднага. */
+(function () {
+  var SELECTOR = 'a[href^="#"]';
+  if (!document.querySelector(SELECTOR)) return;
+
+  var root = document.documentElement;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var frame = null;
+  var restore = null;
+  var watchdog = 0;
+
+  var pad = function () {
+    return parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+  };
+  var topOf = function (el) {
+    return Math.max(0, Math.round(el.getBoundingClientRect().top + window.pageYOffset - pad()));
+  };
+  var stop = function () {
+    if (frame) { window.cancelAnimationFrame(frame); frame = null; }
+    if (watchdog) { window.clearTimeout(watchdog); watchdog = 0; }
+    if (restore) { root.style.scrollBehavior = restore; restore = null; }
+  };
+
+  var glideTo = function (el) {
+    stop();
+    var from = window.pageYOffset;
+    var to = topOf(el);
+    var distance = to - from;
+
+    /* Плавността от CSS се изключва за времето на нашия скок — иначе
+       всяко ние scrollTo() само стартира втора, браузърна анимация. */
+    restore = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+
+    if (reduce || Math.abs(distance) < 4) {
+      window.scrollTo(0, to);
+      stop();
+      return;
+    }
+
+    var duration = Math.max(320, Math.min(700, Math.abs(distance) * 0.11));
+    var started = 0;
+    var step = function (now) {
+      if (!started) started = now;
+      var p = Math.min(1, (now - started) / duration);
+      var eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      window.scrollTo(0, Math.round(from + distance * eased));
+      if (p < 1) {
+        frame = window.requestAnimationFrame(step);
+        return;
+      }
+      /* Последна дума: точното място по живото положение на секцията. */
+      window.scrollTo(0, topOf(el));
+      stop();
+    };
+    frame = window.requestAnimationFrame(step);
+
+    /* Ако браузърът не рисува кадри (скрит таб, пестене на батерия),
+       анимацията няма да тръгне — тогава скачаме направо на мястото. */
+    watchdog = window.setTimeout(function () {
+      watchdog = 0;
+      if (!frame) return;
+      if (Math.abs(window.pageYOffset - from) < 2) {
+        window.scrollTo(0, topOf(el));
+        stop();
+      }
+    }, 250);
+  };
+
+  /* Човекът поема контрола — спираме, без да се борим с пръста му. */
+  window.addEventListener("touchstart", stop, { passive: true });
+  window.addEventListener("wheel", stop, { passive: true });
+  window.addEventListener("keydown", stop);
+
+  document.addEventListener("click", function (event) {
+    if (event.defaultPrevented) return;
+    if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    var link = event.target.closest ? event.target.closest(SELECTOR) : null;
+    if (!link) return;
+    var href = link.getAttribute("href") || "";
+    /* „Към съдържанието“ (skip link) остава на браузъра — той мести и фокуса. */
+    if (href.length < 2 || href === "#main") return;
+    var target = document.getElementById(href.slice(1));
+    if (!target) return;
+
+    event.preventDefault();
+    glideTo(target);
+    if (history.pushState) history.pushState(null, "", href);
+  });
+
+  /* ── „Запиши се“: панел с две форми ─────────────────────────────────────
+     Слушателят е един за цялата страница: картите в списъка идват готови от
+     build-а и нямат свои слушатели, а страниците на събитията са статични. */
+  var floatingMenu = null;
+  var floatingHome = null;
+
+  /* Слайдерът на началната страница е с contain: paint, тоест всичко извън
+     него се реже. Затова там панелът се мести в слой накрая на body и се
+     позиционира под бутона — изглежда като в списъка, без да разтяга картата. */
+  function floatMenuInSlider(wrap, trigger) {
+    var menu = wrap.querySelector(".event-signup-menu");
+    if (!menu || !wrap.closest || !wrap.closest(".slider-viewport")) return;
+
+    floatingHome = menu.parentNode;
+    floatingMenu = menu;
+    document.body.appendChild(menu);
+    menu.classList.add("event-signup-menu--floating");
+
+    var w = menu.offsetWidth;
+    var h = menu.offsetHeight;
+    var r = trigger.getBoundingClientRect();
+    var left = Math.min(Math.max(12, r.left), window.innerWidth - w - 12);
+    var top = r.bottom + 8;
+    if (top + h > window.innerHeight - 12) top = Math.max(12, r.top - h - 8);
+    menu.style.left = Math.round(left) + "px";
+    menu.style.top = Math.round(top) + "px";
+  }
+
+  function restoreFloatingMenu() {
+    if (!floatingMenu || !floatingHome) return;
+    floatingMenu.classList.remove("event-signup-menu--floating");
+    floatingMenu.style.left = "";
+    floatingMenu.style.top = "";
+    floatingHome.appendChild(floatingMenu);
+    floatingMenu = null;
+    floatingHome = null;
+  }
+
+  function closeSignupPanel(wrap) {
+    wrap.classList.remove("is-open");
+    var trigger = wrap.querySelector(".event-signup-trigger");
+    if (trigger) trigger.setAttribute("aria-expanded", "false");
+    var card = wrap.parentNode;
+    while (card && !(card.classList && card.classList.contains("event-card"))) card = card.parentNode;
+    if (card) card.classList.remove("is-signup-open");
+    restoreFloatingMenu();
+  }
+
+  function closeSignupPanels() {
+    var opened = document.querySelectorAll(".event-signup.is-open");
+    for (var i = 0; i < opened.length; i++) closeSignupPanel(opened[i]);
+  }
+
+  document.addEventListener("click", function (event) {
+    var target = event.target;
+    var trigger = target && target.closest ? target.closest(".event-signup-trigger") : null;
+
+    if (trigger && trigger.getAttribute("aria-haspopup") === "true") {
+      event.preventDefault();
+      var wrap = trigger.parentNode;
+      var willOpen = !wrap.classList.contains("is-open");
+      /* един отворен панел на страница: новият затваря стария */
+      closeSignupPanels();
+      if (willOpen) {
+        wrap.classList.add("is-open");
+        trigger.setAttribute("aria-expanded", "true");
+        var card = wrap.parentNode;
+        while (card && !(card.classList && card.classList.contains("event-card"))) card = card.parentNode;
+        if (card) card.classList.add("is-signup-open");
+        floatMenuInSlider(wrap, trigger);
+      }
+      return;
+    }
+
+    var opened = document.querySelectorAll(".event-signup.is-open");
+    for (var i = 0; i < opened.length; i++) {
+      if (!opened[i].contains(event.target)) closeSignupPanel(opened[i]);
+    }
+  });
+
+  /* Скролът отмества панела от погледа — затваряме го, вместо да остане
+     отворен някъде из страницата. */
+  window.addEventListener("scroll", function () {
+    if (document.querySelector(".event-signup.is-open")) closeSignupPanels();
+  }, { passive: true });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+    closeSignupPanels();
+  });
 })();

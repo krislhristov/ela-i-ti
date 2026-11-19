@@ -40,8 +40,8 @@
   --light:      #EAF4F2;
   --light-muted: rgba(234, 244, 242, .86);
 
-  --display: "Wix Madefor Display", "Segoe UI", system-ui, sans-serif;
-  --body: "Wix Madefor Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --display: "Wix Madefor Display", "Wix Fallback Display", "Segoe UI", system-ui, sans-serif;
+  --body: "Wix Madefor Text", "Wix Fallback Text", "Segoe UI", system-ui, -apple-system, sans-serif;
 
   --maxw: 1400px;
   --gutter: clamp(20px, 4vw, 48px);
@@ -93,6 +93,9 @@ h1, h2, h3, h4 {
 }
 
 p { margin: 0; }
+
+
+
 ul, ol, dl, dd { margin: 0; padding: 0; }
 li { list-style: none; }
 
@@ -268,7 +271,6 @@ section[tabindex="-1"]:focus-visible { outline: none; }
 .brand {
   display: flex;
   align-items: center;
-  margin-right: auto;
   text-decoration: none;
 }
 .brand-logo {
@@ -304,7 +306,14 @@ section[tabindex="-1"]:focus-visible { outline: none; }
 .nav a[aria-current="page"]::after { transform: scaleX(1); }@media (hover: hover) {
 .nav a:hover::after{ transform: scaleX(1); }}
 
-.header-actions { display: flex; align-items: center; gap: 10px; }
+.header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+/* Телефон: „Дари сега“ → лупа → меню. Компютър: лупа → „Дари сега“, тоест
+   полето се разтваря наляво над менюто, а бутонът за дарение остава видим. */
+@media (min-width: 769px) {
+  .header-actions > .header-search { order: 1; }
+  .header-actions > .btn { order: 2; }
+}
 
 .nav-toggle {
   display: inline-flex;
@@ -324,16 +333,13 @@ section[tabindex="-1"]:focus-visible { outline: none; }
   .nav-toggle { display: none; align-items: normal; justify-content: normal; }
 }
 
-.nav-toggle-bars { display: grid; gap: 5px; justify-items: center; }
-.nav-toggle-bars i {
-  display: block;
-  width: 18px; height: 1.5px;
-  background: var(--ink);
-  transition: transform .22s var(--ease), opacity .22s var(--ease);
-}
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:first-child { transform: translateY(6.5px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:nth-child(2) { opacity: 0; }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars i:last-child { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-toggle { color: var(--ink); }
+.nav-toggle-icon { display: block; overflow: visible; }
+/* Показваме точно едната икона — без припокриване и без анимация, за да е
+   еднакво и в Safari, и при изключени анимации. */
+.nav-toggle-cross { display: none; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-lines { display: none; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-cross { display: block; }
 
 
 /* Mobile menu */
@@ -503,7 +509,6 @@ body.menu-open { overflow: hidden; }
   font-size: 15px;
   padding: 13px 26px;
   gap: 10px;
-  box-shadow: 0 10px 26px -10px rgba(9, 26, 36, .55);
 }
 
 @media (hover: hover) {
@@ -777,9 +782,11 @@ body.menu-open { overflow: hidden; }
   overflow: hidden;
   transition: transform .25s var(--ease), background-color .25s var(--ease);
 }
+@media (hover: hover) {
 .cta-card:focus-within {
   transform: translateY(-3px);
   background: #E4EDEE;
+}
 }@media (hover: hover) {
 .cta-card:hover{
   transform: translateY(-3px);
@@ -831,6 +838,9 @@ body.menu-open { overflow: hidden; }
   padding: 12px 18px;
   font-size: 14px;
   letter-spacing: .04em;
+  /* „Дари сега“ носи сянка от общия бутон; върху светлата карта тя се вижда
+     като мръсно петно — тук я няма, на снимка (герой, шапка) остава. */
+  box-shadow: none;
 }
 .cta-stats {
   display: flex;
@@ -923,7 +933,7 @@ body.menu-open { overflow: hidden; }
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
+  gap: 14px;   /* същият ритъм като картите на събития и проекти */
   align-items: start;
   background: var(--paper-2);
   border-radius: 28px;
@@ -1058,6 +1068,9 @@ body.menu-open { overflow: hidden; }
 .slide-card--event {
   grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
+  /* същият цвят като картата на предстоящо събитие в списъка („Събития“),
+     за да изглежда еднакво на двете места */
+  background: #E7F1EE;
 }
 .slide-card--event .slide-body { display: contents; }
 /* на телефон – само първите две новини в началото (останалите са в Медии) */
@@ -1092,6 +1105,17 @@ body.menu-open { overflow: hidden; }
 .slide-card--event .slide-text { order: 5; margin-top: 14px; margin-bottom: 0; }
 .slide-card--event .event-actions { order: 6; padding-top: 16px; }
 
+/* В слайдера панелът се мести в слой накрая на body (вж. main.js), за да не го
+   отреже contain: paint на изгледа — тук само го рисуваме над всичко. */
+.event-signup-menu.event-signup-menu--floating {
+  position: fixed;
+  display: flex;
+  z-index: 90;
+  width: max-content;
+  min-width: 252px;
+  max-width: calc(100vw - 24px);
+}
+
 @media (min-width: 769px) {
   .slide-card--event .slide-title { order: 0; }
   .slide-card--event .event-when { order: 0; margin-top: 10px; }
@@ -1099,6 +1123,38 @@ body.menu-open { overflow: hidden; }
   .slide-card--event .slide-media-wrap { order: 0; margin-top: 0; min-height: 260px; border-radius: 20px; }
   .slide-card--event .slide-text { order: 0; margin-top: 12px; }
   .slide-card--event .event-actions { order: 0; padding-top: clamp(18px, 2vw, 26px); }
+}
+
+/* Телефон: „Минали събития“ се подрежда като „Предстоящи събития“ —
+   заглавие, дата, място, снимка, описание, бутон. Тялото на картата няма
+   собствена кутия, за да минат всички елементи в един ред на подредба. */
+@media (max-width: 768px) {
+  .slide-card { display: flex; flex-direction: column; height: 100%; }
+  .slide-body { display: contents; }
+  .slide-card picture,
+  .slide-card .slide-media-wrap { order: 4; margin-top: 0; }
+  .slide-title { order: 1; }
+  /* Заглавието на събитието в слайдера следва същото като в списъка със
+     събития — там е с 2px по-едро и с тегло 700. */
+  .slide-card .slide-title { font-size: clamp(21px, 2.1vw, 30px); font-weight: 700; letter-spacing: -.012em; }
+  /* Същото като в картите на събитията: всички отстояния идват от самата
+     карта (14px), нито един ред не носи собствен margin. */
+  .slide-card .event-when { order: 2; margin-top: 0; }
+  .slide-card .event-place { order: 3; margin-top: 0; }
+  .slide-card .slide-text { order: 5; margin-top: 0; margin-bottom: 0; }
+  /* Бутоните стоят на дъното на картата: празното място остава след текста,
+     за да са подравнени всички карти в слайдера, колкото и кратък да е текстът. */
+  /* „Научи повече“ при миналите събития: също на дъното и в цялата ширина на
+     картата, като бутоните при предстоящите. */
+  .slide-card .slide-link {
+    order: 6;
+    margin-top: auto;
+    align-self: stretch;
+    width: 100%;
+    padding: 10px 24px;   /* еднакво отгоре и отдолу — текстът стои по средата */
+    text-align: center;
+  }
+  .slide-card .event-actions { order: 6; margin-top: auto; padding-top: 14px; }
 }
 .event-actions {
   display: flex;
@@ -1215,7 +1271,10 @@ body.menu-open { overflow: hidden; }
 .story:hover .story-arrow { background: var(--ember); color: #fff; }}
 /* Вътрешни страници: един и същ заглавен блок навсякъде (Начало работи другояче) */
 .page-hero--plain { padding-top: clamp(26px, 3.2vw, 44px); }
-.page-hero--plain .page-title { max-width: 20ch; font-size: clamp(31px, 3.90vw, 53px); }
+/* Ограничението е в пиксели, не в ch: ch зависи от шрифта и при смяна на
+   шрифта заглавието минава на два реда и после обратно — това беше
+   прескачането при смяна на страница. */
+.page-hero--plain .page-title { max-width: 860px; font-size: clamp(31px, 3.90vw, 53px); }
 .page-hero--plain .lead { max-width: 56ch; margin-top: var(--space-04); }
 .section-tight { padding-bottom: var(--section-y); }   /* горното разстояние идва от .page-hero + .section */
 
@@ -1414,6 +1473,13 @@ body.menu-open { overflow: hidden; }
 .support .section-intro { max-width: none; }
 
 /* Начини за дарение ------------------------------------------------------- */
+/* На компютър описанието върви точно по ширината на картите за дарение
+   (1240px): започва и завършва на една линия с тях, вместо да спира по
+   средата на екрана. На телефон и таблет нищо не се променя. */
+@media (min-width: 1025px) {
+  .support .section-intro,
+  .donate-hero .page-hero-copy .lead { max-width: 1240px; }
+}
 .give-methods {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
@@ -1427,6 +1493,7 @@ body.menu-open { overflow: hidden; }
    завършват двете на една линия. */
 .give-methods > .give-method:nth-child(4) { align-self: start; }
 .give-method--bank { justify-content: flex-start; }
+
 .give-method--bank .copy-list {
   width: 100%;
   display: flex;
@@ -1492,6 +1559,17 @@ body.menu-open { overflow: hidden; }
   max-width: 52ch;
 }
 .give-method .btn { margin-top: auto; }
+
+/* Банковата карта има три реда и беше с 4–16px по-дълга от DMS картата
+   (колкото по-тясна е страницата, толкова по-голяма е разликата), затова
+   двете не завършваха на една линия. По-малките копчета за копиране и
+   по-стегнатите отстояния я правят по-ниска от DMS, а решетката я разпъва
+   до нея — долните ръбове съвпадат на всяка ширина. На телефон картите са
+   една под друга и копчетата остават 44px, за да са удобни за пръст. */
+@media (min-width: 769px) {
+  .give-method--bank { gap: 10px; padding-block: 16px; }
+  .give-method--bank .copy-btn { width: 36px; height: 36px; }
+}
 /* бутоните в картите се свиват до текста; еднаква ширина с „Към кампанията“ */
 .give-method > .btn { width: auto; min-width: 196px; padding-inline: 30px; }
 .give-method .btn-outline-light { min-width: 185px; }
@@ -1643,8 +1721,11 @@ body.menu-open { overflow: hidden; }
   .contact { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 .contact-text > p { margin-top: 14px; max-width: none; color: var(--stone); }
-/* Формата е в дясната колона и започва от върха на страницата */
-.section.contact-page { padding-top: clamp(26px, 3.2vw, 44px); }
+/* Формата е в дясната колона и започва от върха на страницата.
+   Отстоянието и размерът на заглавието са същите като на вътрешните
+   страници (.page-hero) — иначе „Контакти“ изглежда по-различно. */
+.section.contact-page { padding-top: clamp(36px, 4.6vw, 64px); }
+.section.contact-page .page-title { font-size: clamp(31px, 3.90vw, 53px); }
 .contact-text > .lead { color: var(--ink); max-width: 52ch; margin-top: var(--space-04); }
 .contact-subtitle { margin-top: clamp(30px, 4vw, 52px); }
 
@@ -1874,6 +1955,18 @@ body.menu-open { overflow: hidden; }
 }}@media (hover: hover) {
 .footer-social a:hover .yt-tri { fill: var(--ember); }}
 .footer-social a:focus-visible { outline: 3px solid var(--paper); outline-offset: 3px; }
+
+/* Лого, надпис, социални икони — колко си дишат:
+   телефон — надписът залепва за логото (редовете на футъра иначе са на 28px),
+   а разстоянието до картата на сайта остава същото;
+   компютър — логото, надписът и иконите дишат малко повече. */
+@media (max-width: 768px) {
+  .footer-tagline { margin-top: -10px; }
+}
+@media (min-width: 769px) {
+  .footer-tagline { margin-top: 24px; }
+  .footer-social { margin-top: 26px; }
+}
 .footer-nav { display: grid; gap: 8px; }
 .footer-nav a {
   font-size: 14.5px;
@@ -2127,12 +2220,17 @@ body.menu-open { overflow: hidden; }
   border-radius: 28px;
   transition: transform .25s var(--ease), background-color .25s var(--ease);
 }
-.event-card:focus-within { transform: translateY(-3px); background: #E4EDEE; }@media (hover: hover) {
-.event-card:hover{ transform: translateY(-3px); background: #E4EDEE; }}
+@media (hover: hover) {
+  .event-card:focus-within { transform: translateY(-3px); background: #E4EDEE; }
+  .event-card:hover { transform: translateY(-3px); background: #E4EDEE; }
+}
 
 .event-card-body { display: contents; }
 @media (min-width: 769px) { .event-card { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); gap: var(--space-05); padding: var(--space-06); }
-  .event-card-body { display: flex; flex-direction: column; padding: clamp(6px, .9vw, 14px) clamp(16px, 2vw, 32px); } }
+  .event-card-body { display: flex; flex-direction: column; padding: clamp(6px, .9vw, 14px) clamp(16px, 2vw, 32px); }
+  /* Същият 16:9 прозорец като при проект и кампания: без това карта с малко
+     текст падаше до 250px и снимката ставаше двойно по-широка от другите. */
+  .event-card .event-media-wrap { aspect-ratio: 16 / 9; min-height: 0; } }
 .event-card-title {
   margin: 0;
   font-family: var(--display);
@@ -2171,6 +2269,69 @@ body.menu-open { overflow: hidden; }
 }
 .event-card .event-actions .btn { min-height: 46px; padding: 10px 24px; font-size: 15px; }
 
+/* „Запиши се“: една врата, две форми. Панелът се отваря под бутона; картата
+   се вдига над съседната, за да не мине панелът под нея. */
+.event-signup { position: relative; display: inline-flex; }
+.event-signup-chev {
+  width: 8px; height: 8px; margin-left: 2px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .18s ease;
+}
+
+/* Шевронът вдясно тегли текста наляво от центъра на бутона. Затова слагаме
+   невидим „балансьор“ отляво, колкото е шевронът с отстоянието му — надписът
+   застава точно по средата, а бутонът не губи ширина. */
+.event-signup-trigger::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 10px;
+}
+.event-signup.is-open .event-signup-chev { transform: translateY(1px) rotate(-135deg); }
+.event-signup-menu {
+  position: absolute; top: calc(100% + 8px); left: 0; z-index: 60;
+  display: none; flex-direction: column;
+  width: max-content; min-width: 252px; max-width: calc(100vw - 56px);
+  padding: 6px;
+  background: #fff; border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: 0 22px 44px -18px rgba(16, 41, 58, .34), 0 2px 6px rgba(16, 41, 58, .06);
+}
+.event-signup.is-open .event-signup-menu { display: flex; }
+.event-signup-option {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 48px; padding: 9px 12px; border-radius: 12px;
+  color: var(--ink); font-size: 15px; font-weight: 600; text-decoration: none;
+}
+.event-signup-ico {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--paper-2); font-size: 16px;
+}
+@media (hover: hover) {
+  .event-signup-option:hover { background: var(--paper-2); }
+  .event-signup-option:hover .event-signup-ico { background: #fff; }
+}
+.event-signup-go { margin-left: auto; color: var(--stone); font-weight: 400; }
+/* една стрелка за целия сайт — тънък щрих; при hover се плъзва напред/назад */
+.ico-arrow { flex: none; display: block; }
+.ico-arrow--back { transform: scaleX(-1); }
+.back-link .ico-arrow, .btn .ico-arrow { width: 14px; height: 11px; }
+@media (hover: hover) {
+  .event-signup-option:hover .ico-arrow,
+  .back-link:hover .ico-arrow,
+  .btn:hover .ico-arrow { transform: translateX(3px); }
+  .back-link:hover .ico-arrow--back,
+  .btn:hover .ico-arrow--back { transform: scaleX(-1) translateX(3px); }
+}
+.event-card.is-signup-open { z-index: 5; }
+@media (max-width: 768px) {
+  /* на телефон двата бутона си поделят реда, както преди — затова отстъпът
+     вътре в бутона е по-малък, за да стигне и „Научи повече“ */
+  .event-actions .event-signup { flex: 1 1 auto; min-width: 0; }
+  .event-actions .event-signup-trigger { flex: 1 1 auto; min-width: 0; }
+  .event-card .event-actions .btn { padding: 10px 18px; min-width: 0; }
+}
+
 .event-media-wrap {
   position: relative;
   display: block;
@@ -2195,21 +2356,24 @@ body.menu-open { overflow: hidden; }
 .slide-card .event-actions { position: relative; z-index: 2; }
 .event-hit:focus-visible { outline: 3px solid var(--ember); outline-offset: 4px; }
 .event-card-title { order: 1; margin: 0; max-width: none; }
-.event-card-body .event-when { order: 2; margin-top: 8px; }
-.event-card-body .event-place { order: 3; }
-.event-media-wrap { order: 4; margin-top: 14px; min-height: 0; border-radius: 18px; }
-.event-card-text { order: 5; margin-top: 14px; margin-bottom: 0; }
-.event-card .event-actions { order: 6; padding-top: 16px; }
+.event-card-body .event-when { order: 2; margin-top: 0; }
+.event-card-body .event-place { order: 3; margin-top: 0; }
+.event-media-wrap { order: 4; margin-top: 0; min-height: 0; border-radius: 18px; }
+.event-card-text { order: 5; margin-top: 0; margin-bottom: 0; }
+.event-card .event-actions { order: 6; padding-top: 0; }
 .event-card .event-actions .btn { flex: 1 1 auto; }
+/* на телефон отстоянието идва само от решетката на картата */
+.event-card .event-badge { margin-bottom: 0; }
 
 @media (min-width: 769px) {
   .event-card-title { order: 0; max-width: 26ch; }
   .event-card-body .event-when { order: 0; margin-top: 10px; }
-  .event-card-body .event-place { order: 0; }
+  .event-card-body .event-place { order: 0; margin-top: 3px; }
   .event-media-wrap { order: 0; margin-top: 0; min-height: 250px; border-radius: 20px; }
   .event-card-text { order: 0; margin-top: 12px; }
   .event-card .event-actions { order: 0; padding-top: clamp(16px, 1.8vw, 24px); }
   .event-card .event-actions .btn { flex: 0 1 auto; }
+  .event-card .event-badge { margin-bottom: 10px; }
 }
 
 .event-card-body a { position: relative; z-index: 2; }
@@ -2288,7 +2452,9 @@ body.menu-open { overflow: hidden; }
 .event-info-label { font-weight: 700; color: var(--ink); }
 .event-page-text p { margin: 0; font-size: 17.5px; line-height: 1.7; color: var(--ink); max-width: 68ch; }
 .event-page-text p + p { margin-top: 16px; }
-.event-page-aside { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.event-page-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+/* панелът се отваря под бутона, подравнен наляво с него */
+.event-page-aside .event-signup-menu { left: 0; right: auto; }
 
 .event-gallery {
   display: grid;
@@ -2319,17 +2485,17 @@ body.menu-open { overflow: hidden; }
 .event-page-layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
 .event-page-text { order: 4; margin-top: var(--space-10); }
 .event-info { order: 2; margin-top: var(--space-09); }
-.event-page-aside { align-items: center; margin-top: var(--space-09); order: 5; }
+.event-page-aside { align-items: flex-start; margin-top: var(--space-09); order: 5; }
 .event-cover { order: 3; margin: var(--space-10) 0 0; }
 .event-editions { order: 6; margin-top: var(--space-10); }
 .event-page-back { padding-top: clamp(22px, 4vw, 34px); }
 .event-page-head { order: 1; }
 .event-page-main, .event-page-side { display: contents; }
 
-/* на телефон „← назад“ е от дясната страна */
+/* на телефон и таблет „← назад“ стои отляво, както на компютър */
 @media (max-width: 1024px) {
-  .event-page-back { display: flex; justify-content: flex-end; }
-  .event-page-back .back-link { flex-direction: row-reverse; }
+  .event-page-back { display: flex; justify-content: flex-start; }
+  .event-page-back .back-link { flex-direction: row; }
 }
 
 @media (min-width: 1025px) {
@@ -2340,7 +2506,7 @@ body.menu-open { overflow: hidden; }
   .event-page-head, .event-page-text, .event-page-aside, .event-cover, .event-info, .event-editions { order: 0; }
   .event-page-text { margin-top: clamp(24px, 2.8vw, 36px); }
   .event-info { margin-top: 0; }
-  .event-page-aside { margin-top: 0; align-items: flex-end; }
+  .event-page-aside { margin-top: 0; align-items: flex-start; }
   .event-cover { margin-top: 0; }
   .event-editions { margin-top: clamp(26px, 3vw, 40px); }
 }
@@ -2390,13 +2556,25 @@ main.has-donate-dock + .site-footer { padding-bottom: 74px; }
 .donate-hero .page-title { color: var(--light); }
 .donate-hero .lead { color: var(--light-muted); }
 
-/* ── Проекти на телефон: заглавие, етикет, описание, снимка, „Научи повече“ ─ */
+/* ── Проекти на телефон: заглавие, етикет, снимка, описание, „Научи повече“ ─ */
 @media (max-width: 768px) {
   .project-card-title { order: 1; }
-  .project-card .project-meta { order: 2; margin: 4px 0 0; }
-  .project-card-text { order: 3; }
-  .project-card .event-media-wrap { order: 4; }
+  /* всички отстояния идват само от решетката (14px) — нито един ред няма
+     собствен margin, за да е еднакво разстоянието навсякъде в картата */
+  .project-card .project-meta { order: 2; margin: 0; }
+  .project-card .event-media-wrap { order: 3; margin-top: 0; }
+  .project-card .project-card-text { order: 4; margin-top: 0; }
   .project-card .btn { order: 5; }
+}
+
+/* ── Кампания на телефон: заглавие, етикет, числа, снимка, описание, бутон ─ */
+@media (max-width: 768px) {
+  [data-campaigns-list] .project-card-title { order: 1; }
+  [data-campaigns-list] .project-card .project-meta { order: 2; }
+  [data-campaigns-list] .campaign-progress { order: 3; margin-bottom: 0; }
+  [data-campaigns-list] .event-media-wrap { order: 4; margin-top: 0; }
+  [data-campaigns-list] .project-card-text { order: 5; margin-top: 0; }
+  [data-campaigns-list] .btn { order: 6; }
 }
 
 /* ── Страница „Събития“: филтри, етикет за предстоящо, порции ─────────── */
@@ -2439,10 +2617,11 @@ main.has-donate-dock + .site-footer { padding-bottom: 74px; }
 /* Предстоящото събитие: по-топъл фон, рамка и етикет — цвят сам не стига */
 .event-card.is-future {
   background: #E7F1EE;
-  box-shadow: inset 0 0 0 1px rgba(0, 107, 92, .22);
 }
-.event-card.is-future:hover,
-.event-card.is-future:focus-within { background: #DEEDE9; }
+@media (hover: hover) {
+  .event-card.is-future:hover,
+  .event-card.is-future:focus-within { background: #DEEDE9; }
+}
 .event-badge {
   align-self: flex-start;
   margin-bottom: 10px;
@@ -2543,12 +2722,17 @@ main.has-donate-dock + .site-footer { padding-bottom: 74px; }
   border-radius: 28px;
   transition: transform .25s var(--ease), background-color .25s var(--ease);
 }
-.project-card:focus-within { transform: translateY(-3px); background: #E4EDEE; }
-@media (hover: hover) { .project-card:hover { transform: translateY(-3px); background: #E4EDEE; } }
+@media (hover: hover) {
+  .project-card:focus-within { transform: translateY(-3px); background: #E4EDEE; }
+  .project-card:hover { transform: translateY(-3px); background: #E4EDEE; }
+}
 .project-card-body { display: contents; }
 @media (min-width: 769px) {
   .project-card { grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); gap: var(--space-05); padding: var(--space-06); }
   .project-card-body { display: flex; flex-direction: column; padding: clamp(6px, .9vw, 14px) clamp(16px, 2vw, 32px); }
+  /* Снимката е в същия 16:9 прозорец като при събитие и кампания — не по-широка.
+     min-height трябва да падне, иначе 250px надделява над съотношението. */
+  .project-card .event-media-wrap { aspect-ratio: 16 / 9; min-height: 0; }
 }
 .project-card-title {
   margin: 0;
@@ -2598,17 +2782,64 @@ main.has-donate-dock + .site-footer { padding-bottom: 74px; }
 .campaign-cover img { width: 100%; display: block; border-radius: 16px; }
 
 
-/* страница на проект: заглавие → етикет → снимка → описание → събития */
-@media (max-width: 768px) {
-  [data-project-page] .event-page-layout { display: block; }
-  [data-project-page] .event-page-main { display: block; }
+/* страница на проект: заглавие → етикет → снимка → описание → събития
+   На телефон и таблет редовете идват от order (родителите са display:contents),
+   затова всеки елемент си има номер — иначе DOM редът в двете колони би
+   подредил снимката след текста. */
+@media (max-width: 1024px) {
   [data-project-page] .event-page-head { order: 1; }
-  [data-project-page] .project-meta--lead { order: 2; margin-top: 6px; }
+  [data-project-page] .project-meta--lead { order: 2; margin: 6px 0 0; }
   [data-project-page] .project-cover { order: 3; margin: 16px 0 18px; }
-  [data-project-page] .event-page-text { order: 4; margin-top: 0; }
-  [data-project-page] .project-block { order: 5; }
+  [data-project-page] .project-lead { order: 4; }
+  [data-project-page] .event-page-text { order: 5; margin-top: 0; }
+  [data-project-page] .project-block { order: 6; }
 }
-.project-cover img { width: 100%; display: block; border-radius: 16px; }
+
+/* на компютър: заглавие, етикети и текст отляво; снимка и събития отдясно —
+   същата подредба като на страниците на събитие и кампания */
+@media (min-width: 1025px) {
+  [data-project-page] .event-page-head,
+  [data-project-page] .project-meta--lead,
+  [data-project-page] .project-lead,
+  [data-project-page] .project-cover,
+  [data-project-page] .project-block,
+  [data-project-page] .event-page-text { order: 0; }
+  [data-project-page] .project-meta--lead { margin: clamp(16px, 1.8vw, 20px) 0 0; }
+  [data-project-page] .project-lead { margin: clamp(16px, 1.8vw, 20px) 0 0; }
+  [data-project-page] .event-page-text { margin-top: clamp(22px, 2.4vw, 30px); }
+  [data-project-page] .project-cover { margin: 0; }
+  /* „Събития по проекта“ под снимката — същото отстояние като на кампанията */
+  [data-project-page] .project-block { margin-top: clamp(16px, 2vw, 26px); }
+}
+/* Снимката на проекта: на телефон квадрат (цялата снимка), на компютър 16:9
+   лента от същата снимка. --cover-aspect и --wide-focus идват от записа. */
+.project-cover img { width: 100%; display: block; border-radius: 16px; max-height: none;
+                     aspect-ratio: var(--cover-aspect, 1 / 1); object-fit: cover; }
+@media (min-width: 1025px) {
+  .project-cover img { aspect-ratio: 16 / 9; object-position: 50% var(--wide-focus, 50%); }
+}
+
+
+/* начална страница, секция „За нас“ на телефон:
+   заглавие на секцията → заголовок → снимка → текст → репликата → цитатът */
+@media (max-width: 768px) {
+  .wrap.about { display: flex; flex-direction: column; gap: 0; }
+  .about-text { display: contents; }
+  .about-head { order: 1; margin-bottom: 14px; }
+  .about-media { order: 2; margin: 0; }
+  .about-text > p { order: 3; }
+  .about-text > * + * { margin-top: 11px; }
+  .about-text > p + p { margin-top: 11px; }
+  .about-text > blockquote { order: 4; margin-top: 18px; }
+}
+
+
+/* страница „За нас“ на телефон: снимка → текст → видео, с еднакъв тесен отстъп */
+@media (max-width: 768px) {
+  .story-grid { gap: 14px; }
+  .about-story-media { margin: 0; }
+  .story-grid .about-video { margin: 0; }
+}
 
 /* ── Кампании: числа и прогрес ────────────────────────────────────────── */
 .campaign-progress { margin: 0 0 clamp(14px, 1.6vw, 20px); }
@@ -2621,3 +2852,293 @@ main.has-donate-dock + .site-footer { padding-bottom: 74px; }
 .campaign-note { margin: 6px 0 0; color: var(--stone); font-size: 13.5px; max-width: 46ch; }
 .campaign-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 clamp(20px, 2.4vw, 30px); }
 .campaign-actions .btn { margin: 0; }
+
+/* ── Телефон: вътрешното отстояние на картите е едно и също навсякъде ─────
+   Предстоящи и минали събития, списъкът със събития, кампаниите, проектите
+   и инициативите, както и картите в „Заедно можем повече“: 20px от ръба на
+   картата (досега 10px, а в „Заедно можем повече“ 14px). Снимката в картата
+   с текста стои на същото отстояние; в „Заедно можем повече“ снимката е цяла
+   по ширината на картата, там отстоянието е около текста. */
+@media (max-width: 768px) {
+  .slide-card,
+  .event-card,
+  .project-card { padding: 20px; }
+  .cta-body { padding: 20px; }
+}
+
+/* ── Описание → бутон: едно и също разстояние във всеки тип карта ─────────
+   Решетката на картата дава 14px; още 6px отстъп правят 20px —
+   същото разстояние във всеки тип карта. Досега проектът и
+   кампанията имаха 14px, събитието 32px, а картите от началната 30px. */
+@media (max-width: 768px) {
+  .project-card .btn { margin-top: 6px; }
+  .event-card .event-actions,
+  .slide-card--event .event-actions { padding-top: 6px; }
+}
+
+/* На компютър бутонът е залепен за дъното на картата (margin-top: auto).
+   Когато текстът е дълъг, това auto отстъпва на 0 и бутонът опира в текста —
+   затова слагаме долен отстъп на последния текстов блок: минимум 20px. */
+@media (min-width: 769px) {
+  .project-card-body > .project-card-text,
+  .project-card-body > .campaign-progress { margin-bottom: 20px; }
+  .event-card .event-actions,
+  .slide-card--event .event-actions { padding-top: 20px; }
+}
+
+/* ── Търсене ──────────────────────────────────────────────────────────────
+   Един и същ вид на две места: панел върху страницата (от лупата в шапката)
+   и страница search.html. Панелът е на телефон почти цял екран, на компютър
+   карта по средата; резултатите са списък, защото се четат, не се гледат. */
+.search-open, .search-open body { overflow: hidden; }
+
+/* Кръгче с лупа, което се разтваря наляво в поле (като на aktion-mensch.de).
+   Отворено, в десния край на „хапчето“ остава само лупата — тя праща формата. */
+/* Докато полето е отворено, цялата страница е покрита с прозрачен слой.
+   Докосването извън полето попада в него и само затваря — карта под него
+   не получава нито клик, нито подсветка. */
+/* Докато търсенето е отворено, съдържанието не приема докосвания изобщо:
+   нито карта, нито връзка могат да „светнат“ под пръста. */
+body.search-hold main { pointer-events: none; }
+/* Същото и за проблясъка, който телефонът рисува сам. Той се пази изключен
+   до края на затварящото докосване (click-ът може да дойде и след вдигането
+   на пръста), а при следващото докосване пак работи. */
+body.search-frozen,
+body.search-frozen * { -webkit-tap-highlight-color: transparent; }
+
+.search-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 69;
+  display: none;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+.header-search.is-open ~ .search-scrim,
+body > .search-scrim.is-on { display: block; }
+.header-search { position: relative; flex: 0 0 auto; width: 46px; height: 46px; z-index: 5; }
+.header-search-form {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  overflow: hidden;
+  transition: width .3s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease), background-color .2s var(--ease);
+}
+.header-search.is-open .header-search-form {
+  /* --search-w се смята при отваряне: колкото място има до менюто, до 340px */
+  width: min(var(--search-w, 340px), calc(100vw - 2 * var(--gutter)));
+  border-color: rgba(16, 41, 58, .35);
+  background: #fff;
+  box-shadow: 0 12px 30px -20px rgba(9, 26, 36, .55);
+}
+.header-search-form:focus-within { border-color: var(--pine); box-shadow: 0 0 0 3px rgba(27, 88, 157, .14); }
+.header-search-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  /* Затворено, полето няма нито ширина, нито отстояния — иначе невидимото
+     поле застава върху лупата и натискането не стига до нея. */
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15.5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s var(--ease);
+}
+.header-search.is-open .header-search-input {
+  padding: 0 8px 0 18px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.header-search-input:focus { outline: none; }
+.header-search-input::placeholder { color: var(--stone); }
+.header-search-input::-webkit-search-cancel-button { cursor: pointer; }
+.header-search-submit {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  margin-right: 1px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color .18s var(--ease), color .18s var(--ease);
+}
+@media (hover: hover) {
+  .header-search-submit:hover { background: var(--ink); color: var(--paper); }
+}
+.header-search.is-open .header-search-submit { background: var(--ink); color: var(--paper); }
+
+/* Докато полето е отворено, то заема мястото на менюто и на бутона за дарение —
+   те избледняват, за да не се вижда надпис под бялото „хапче“. Размерите не се
+   местят (opacity не пипа подредбата), затова нищо не подскача. */
+/* Тясна шапка (1025–1200): поле до менюто не се побира, затова слиза на ред
+   под шапката. Менюто остава цяло и видимо. */
+/* Тясна шапка (1025–1250): полето не слиза на втори ред, а ляга отгоре на
+   последните менюта. Сянката показва, че е слой над тях, а не част от реда. */
+.header-search.is-over .header-search-form {
+  box-shadow: 0 16px 34px -22px rgba(9, 26, 36, .6);
+}
+/* На телефон полето заема целия ред, затова логото и бутоните избледняват.
+   На компютър менюто си остава — полето просто ляга отгоре му. */
+@media (max-width: 768px) {
+  .site-header.is-searching .brand,
+  .site-header.is-searching .header-actions > .btn,
+  .site-header.is-searching .nav-toggle { opacity: 0; pointer-events: none; transition: opacity .2s var(--ease); }
+}
+
+/* полето */
+.search-form { display: flex; gap: 18px; align-items: center; }
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 54px;
+  padding: 0 24px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+}
+.search-input::placeholder { color: var(--stone); }
+.search-input:focus { outline: none; border-color: var(--pine); background: #fff; box-shadow: 0 0 0 3px rgba(27, 88, 157, .12); }
+.search-input:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; box-shadow: none; }
+.search-input::-webkit-search-cancel-button { cursor: pointer; }
+.search-submit { min-height: 54px; padding-inline: 28px; flex: 0 0 auto; }
+.search-close {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+@media (hover: hover) { .search-close:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); } }
+
+/* брояч и филтри */
+.search-count { margin: 14px 0 0; color: var(--stone); font-size: 14.5px; min-height: 0; }
+.search-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.search-filters[hidden] { display: none; }
+.search-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .16s var(--ease), border-color .16s var(--ease), color .16s var(--ease);
+}
+@media (hover: hover) { .search-chip:hover { border-color: rgba(16, 41, 58, .4); background: var(--paper-2); } }
+.search-chip.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.search-chip:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; }
+
+/* резултати */
+.search-results { margin-top: 6px; flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-bottom: 10px; scroll-padding-bottom: 10px; }
+.search-list { margin: 0; padding: 0; }
+.search-item { list-style: none; }
+.search-hit {
+  display: grid;
+  gap: 3px;
+  padding: 12px 12px 13px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: background-color .15s var(--ease);
+}
+@media (hover: hover) { .search-hit:hover { background: var(--paper-2); } }
+.search-hit:focus-visible { outline: 3px solid var(--pine); outline-offset: 2px; }
+.search-meta {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+.search-title {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.search-text { font-size: 14.5px; line-height: 1.45; color: var(--stone); }
+.search-hit mark { background: rgba(242, 117, 90, .28); color: inherit; border-radius: 2px; padding: 0 1px; }
+.search-more {
+  display: inline-flex;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pine);
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+
+/* празно и начало */
+.search-empty { padding: 4px 2px 4px; }
+.search-fix {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 0 16px;
+  border: 1px solid var(--pine);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pine);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+@media (hover: hover) { .search-fix:hover { background: var(--pine); color: var(--paper); } }
+
+/* страницата */
+.search-page { padding-block: clamp(10px, 1.6vw, 18px) clamp(38px, 4.6vw, 64px); }
+/* Заглавието на тази страница е служебно — не бива да заема екрана като
+   заглавна снимка. Работата тук е полето и резултатите. */
+.search-page .page-title { font-size: clamp(26px, 2.8vw, 40px); line-height: 1.04; margin-bottom: 26px; }
+.search-page .search-form { max-width: 720px; }
+.search-page .search-count { font-size: 15px; }
+.search-page .search-title { font-size: clamp(17px, 1.5vw, 20px); }
+.search-page .search-hit { padding: 14px 14px 15px; }
+
+@media (max-width: 768px) {
+  /* На телефон отвореното поле заема цялата ширина на шапката. Излиза и
+     над менюто (46px + 10px отстояние), за да стигне до десния ръб —
+     докато търсиш, менюто не ти трябва. */
+  .header-search.is-open .header-search-form {
+    width: calc(100vw - 2 * var(--gutter));
+    right: -56px;
+  }
+  .search-submit { display: none; }   /* на телефон Enter и лупата в клавиатурата стигат */
+  .search-results { margin-top: 0; }
+}

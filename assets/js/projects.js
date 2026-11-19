@@ -133,16 +133,14 @@
     page.innerHTML = "";
 
     var backWrap = node("div", "wrap event-page-back");
-    var back = node("a", "back-link", "← Проекти и инициативи");
-    back.href = "projects.html";
+    var back = UI.backLink("back-link", "Проекти и инициативи", "projects.html");
     backWrap.appendChild(back);
     page.appendChild(backWrap);
 
     if (!item) {
       var miss = node("div", "wrap event-missing");
       miss.appendChild(node("h1", "event-page-title", "Проектът не е намерен"));
-      var back2 = node("a", "btn btn-outline", "← Всички проекти");
-      back2.href = "projects.html";
+      var back2 = UI.backLink("btn btn-outline", "Всички проекти", "projects.html");
       miss.appendChild(back2);
       page.appendChild(miss);
       document.title = "Проектът не е намерен — Фондация „Ела и ти“";

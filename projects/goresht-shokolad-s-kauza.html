@@ -15,9 +15,17 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-700-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-700-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-600-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-400-cyrillic.woff2">
-<link rel="stylesheet" href="../assets/fonts/fonts.css?v=cc0928c4">
-<link rel="stylesheet" href="../assets/css/style.css?v=cc112f7a">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-400-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-500-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-500-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-600-latin.woff2">
+<link rel="stylesheet" href="../assets/fonts/fonts.css?v=71cdcb39">
+<link rel="stylesheet" href="../assets/css/style.css?v=c96fd6d0">
 </head>
 <body>
 
@@ -30,7 +38,6 @@
     </a>
 
     <nav class="nav" aria-label="Основна навигация">
-      <a href="../index.html">Начало</a>
       <a href="../events.html">Събития</a>
       <a href="../campaigns.html">Кампании</a>
       <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
@@ -41,8 +48,27 @@
 
     <div class="header-actions">
       <a class="btn btn-sm" href="../donate.html">Дари сега</a>
+
+      <!-- Търсене: кръгче с лупа, което се разтваря наляво в поле. Полето се
+           праща на search.html — същата страница, която носи и резултатите. -->
+      <div class="header-search" data-header-search>
+        <form class="header-search-form" role="search" action="../search.html" method="get">
+          <label class="visually-hidden" for="header-search-input">Търси в сайта</label>
+          <input class="header-search-input" id="header-search-input" name="q" type="search"
+                 placeholder="Търси…" autocomplete="off" spellcheck="false" tabindex="-1"
+                 data-header-search-input>
+          <button class="header-search-submit" type="submit" aria-label="Търси" aria-expanded="false"
+                  data-search-toggle>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.4 15.4 4.6 4.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </form>
+      </div>
+
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <svg class="nav-toggle-icon" aria-hidden="true" width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <path class="nav-toggle-lines" d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="1.6"/>
+          <path class="nav-toggle-cross" d="M2.5 1.5l13 11M15.5 1.5l-13 11" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
         <span class="visually-hidden">Меню</span>
       </button>
     </div>
@@ -51,7 +77,6 @@
 
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
   <nav aria-label="Мобилна навигация">
-    <a href="../index.html">Начало</a>
     <a href="../events.html">Събития</a>
     <a href="../campaigns.html">Кампании</a>
     <a href="../projects.html" aria-current="page">Проекти и инициативи</a>
@@ -64,11 +89,14 @@
   </div>
 </div>
 
+<script src="../assets/js/search-core.js?v=af877928" defer></script>
+<script src="../assets/js/search.js?v=2a8fdf81" defer></script>
+
 <main id="main">
 
 <div class="event-page">
     <div class="wrap event-page-back">
-      <a class="back-link" href="../projects.html">← Проекти и инициативи</a>
+      <a class="back-link" href="../projects.html"><svg class="ico-arrow ico-arrow--back" width="17" height="13" viewBox="0 0 17 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6.5h14M10 1.5l5 5-5 5"/></svg>Проекти и инициативи</a>
     </div>
 
     <div class="wrap event-page-layout" data-project-page>
@@ -133,6 +161,6 @@
     </div>
   </div>
 </footer>
-<script src="../assets/js/main.js?v=7ae62831" defer></script>
+<script src="../assets/js/main.js?v=6e90b536" defer></script>
 </body>
 </html>

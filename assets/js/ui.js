@@ -87,7 +87,76 @@
     return null;
   }
 
+  /* Една стрелка за целия сайт. Рисува се като SVG, защото буквата „→“ зависи
+     от шрифта и на всяка система изглежда различно, а тук щрихът е един. */
+  var SVG_NS = "http://www.w3.org/2000/svg";
+
+  function arrow(back) {
+    var svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("class", "ico-arrow" + (back ? " ico-arrow--back" : ""));
+    svg.setAttribute("width", "17");
+    svg.setAttribute("height", "13");
+    svg.setAttribute("viewBox", "0 0 17 13");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "1.6");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("aria-hidden", "true");
+    var path = document.createElementNS(SVG_NS, "path");
+    path.setAttribute("d", "M1 6.5h14M10 1.5l5 5-5 5");
+    svg.appendChild(path);
+    return svg;
+  }
+
+  function backLink(cls, text, href) {
+    var a = node("a", cls);
+    a.href = href;
+    a.appendChild(arrow(true));
+    a.appendChild(document.createTextNode(text));
+    return a;
+  }
+
+  /* „Запиши се“ с две форми: бутон, който отваря панел с участник и доброволец.
+     Живее тук, за да го ползват и списъкът, и слайдерът на началната страница.
+     Без JavaScript същата връзка води към формата за участници. */
+  function signupOption(href, ico, label) {
+    var a = node("a", "event-signup-option");
+    a.href = href;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.appendChild(node("span", "event-signup-ico", ico));
+    a.appendChild(node("span", "event-signup-label", label));
+    var go = node("span", "event-signup-go");
+    go.appendChild(arrow());
+    a.appendChild(go);
+    return a;
+  }
+
+  function signup(ev, title) {
+    var wrap = node("span", "event-signup");
+    var trigger = node("a", "btn event-signup-trigger", "Запиши се");
+    trigger.href = ev.signup || ev.signupVolunteer;
+    trigger.target = "_blank";
+    trigger.rel = "noopener";
+    if (title) trigger.setAttribute("aria-label", "Запиши се за „" + title + "“");
+    wrap.appendChild(trigger);
+
+    if (!ev.signup || !ev.signupVolunteer) return wrap;
+
+    trigger.setAttribute("aria-haspopup", "true");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.appendChild(node("span", "event-signup-chev"));
+
+    var menu = node("span", "event-signup-menu");
+    menu.appendChild(signupOption(ev.signup, "🏃", "Участник"));
+    menu.appendChild(signupOption(ev.signupVolunteer, "🤝", "Доброволец"));
+    wrap.appendChild(menu);
+    return wrap;
+  }
+
   window.UI = { MONTHS: MONTHS, node: node, dayText: dayText, clock: clock,
                 isoDay: isoDay, sofiaParts: sofiaParts, money: money,
-                withWebp: withWebp, bySlug: bySlug };
+                withWebp: withWebp, bySlug: bySlug, arrow: arrow, backLink: backLink,
+                signup: signup };
 })();

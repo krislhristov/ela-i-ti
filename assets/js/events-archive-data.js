@@ -1748,18 +1748,24 @@ window.ELAITI_ARCHIVE = [
     "start": "2026-05-09T00:00:00+02:00",
     "end": null,
     "allDay": true,
-    "location": "София център, бул. „Евлоги и Христо Георгиеви“ 43, 1142 София",
+    "location": "София център, мостът на бул. \"Евлоги и Христо Георгиеви\"",
     "category": "grad",
-    "short": "Здравейте приятели, Имаме удоволствието да ви поканим на специалния вело-поход на толерантността - \"Le tour du canal\" - обиколка на канала на Перловска река с изходен пункт бул. \"Евлоги и Христо Георгиеви\" 1, София.",
+    "short": "\"Le tour du Canal Sofia 2026 – Велопоход на толерантността\" е събитие, което събира участници с и без увреждания в едно общо приключение на колела, изпълнено с незабравими емоции и страхотно настроение!",
     "images": [
       {
-        "src": "assets/img/events/past/le-tour-du-canal-2026.jpg",
+        "src": "assets/img/campaigns/le-tour-du-canal-2026.jpg",
         "alt": "Le tour du canal"
       }
     ],
     "series": "le-tour",
     "seriesLabel": "Le tour du canal",
-    "ownPage": null
+    "ownPage": null,
+    "imageCrop": {
+      "x": 0,
+      "y": 90,
+      "w": 900,
+      "h": 506
+    }
   },
   {
     "slug": "da-se-hvanem-za-greblata-2026",
@@ -1939,13 +1945,13 @@ window.ELAITI_ARCHIVE = [
   {
     "slug": "le-tour-du-canal-velopohod-na-tolerantnostta-2026",
     "fb": "1381834203798826",
-    "title": "Le tour du canal — велопоход на толерантността ’26",
+    "title": "Le tour du Canal Plovdiv 2026",
     "start": "2026-10-17T00:00:00+02:00",
     "end": null,
     "allDay": true,
     "location": "Гребна База, Пловдив",
     "category": "grad",
-    "short": "Имаме удоволствието да ви поканим на LE TOUR DU CANAL 2026 – ВЕЛОПОХОД НА ТОЛЕРАНТНОСТТА - събитието, което събира участници с и без увреждания в едно общо приключение! ПРОГРАМА 17 октомври 2026 г.",
+    "short": "\"Le tour du Canal Plovdiv 2026 – Велопоход на толерантността\" е събитие, което събира участници с и без увреждания в едно общо приключение на колела, изпълнено с незабравими емоции и страхотно настроение!",
     "images": [
       {
         "src": "assets/img/events/past/le-tour-du-canal-velopohod-na-tolerantnostta-2026.jpg",

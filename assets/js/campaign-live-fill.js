@@ -46,7 +46,6 @@
   var of = box.querySelector("[data-live-of]");
   var bar = box.querySelector("[data-live-bar]");
   var meta = box.querySelector("[data-live-meta]");
-  var stamp = box.querySelector("[data-live-stamp]");
 
   if (donated) donated.textContent = money(d.donated);
   if (of) of.textContent = " от " + money(d.target);
@@ -58,18 +57,5 @@
     if (dl) bits.push("до " + dl);
     meta.textContent = bits.join(" · ");
   }
-  if (stamp) stamp.textContent = "към " + dayText(d.updated);
 
-  var note = box.querySelector("[data-live-note]");
-  if (stale) {
-    if (!note) {
-      note = document.createElement("p");
-      note.className = "campaign-note";
-      note.setAttribute("data-live-note", "");
-      box.appendChild(note);
-    }
-    note.textContent = "Числата не са обновени след " + (dayText(d.updated) || "последното обновяване") + ".";
-  } else if (note) {
-    note.remove();
-  }
 })();

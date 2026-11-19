@@ -19,7 +19,9 @@
  *   body      — дълго описание, масив от абзаци (само на страницата на събитието)
  *   images    — [{ src, alt }] — първата е основната снимка
  *   tickets   — цена на билета (напр. "10 €" или "Безплатно събитие")
- *   signup    — къде води „Запиши се“ (само за предстоящи събития)
+ *   signup    — където води „Запиши се (Участник)“ (само за предстоящи събития)
+ *   signupVolunteer — втората форма, „Запиши се (Доброволец)“; ако липсва,
+ *               картата показва един обикновен бутон „Запиши се“
  *
  * Минало или предстоящо се решава от датата — не се отбелязва ръчно.
  */
@@ -27,9 +29,9 @@ window.ELAITI_EVENTS = [
   {
     "slug": "nikola-run",
     "category": "grad",
-    "title": "Nikola's Run – Бягане с кауза",
+    "title": "Nikola's Run – Бягане с кауза СОФИЯ",
     "start": "2026-12-06T11:30:00+02:00",
-    "end": "2026-12-06T14:00:00+02:00",
+    "end": "2026-12-06T14:30:00+02:00",
     "location": "Борисова градина, езеро Ариана, гр. София",
     "short": "На 6 декември, една стара история ще оживее отново. Този път главните герои ще бъдат децата. Очакват ги около 2 км приключение, тайна мисия, загадки и изненади по трасето.",
     "body": [
@@ -39,12 +41,20 @@ window.ELAITI_EVENTS = [
     ],
     "images": [
       {
-        "src": "assets/img/events/nikolas-run.jpg",
+        "src": "assets/img/events/nikola-run.jpg",
         "alt": "Деца в зимни дрехи тичат край езерото в парка."
       }
     ],
-    "tickets": "10 €",
-    "signup": "https://forms.gle/7sZtVzoWcEdcwaT26"
+    "tickets": "Дарение по избор",
+    "signup": "https://forms.gle/7sZtVzoWcEdcwaT26",
+    "signupVolunteer": "https://forms.gle/sSvTVVtfVdnsKrcF7",
+    "imageCrop": {
+      "x": 0,
+      "y": 0,
+      "w": 900,
+      "h": 506
+    },
+    "allDay": false
   },
   {
     "slug": "nikola-run-plovdiv",
@@ -66,7 +76,8 @@ window.ELAITI_EVENTS = [
       }
     ],
     "tickets": "10 €",
-    "signup": "https://forms.gle/WgXNrwrkdfNcahBA8"
+    "signup": "https://forms.gle/WgXNrwrkdfNcahBA8",
+    "signupVolunteer": "https://forms.gle/sSvTVVtfVdnsKrcF7"
   },
   {
     "slug": "sofiya-i-za-men",

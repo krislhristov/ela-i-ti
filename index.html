@@ -18,9 +18,17 @@
 <meta name="twitter:image" content="https://elaiti.com/assets/img/hero/hero-group.jpg">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-700-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-700-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-display-600-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-400-cyrillic.woff2">
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=cc0928c4">
-<link rel="stylesheet" href="assets/css/style.css?v=cc112f7a">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-400-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-500-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-500-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-600-latin.woff2">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=71cdcb39">
+<link rel="stylesheet" href="assets/css/style.css?v=c96fd6d0">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -48,7 +56,6 @@
     </a>
 
     <nav class="nav" aria-label="Основна навигация">
-      <a href="index.html">Начало</a>
       <a href="events.html">Събития</a>
       <a href="campaigns.html">Кампании</a>
       <a href="projects.html">Проекти и инициативи</a>
@@ -59,8 +66,27 @@
 
     <div class="header-actions">
       <a class="btn btn-sm" href="#support">Дари сега</a>
+
+      <!-- Търсене: кръгче с лупа, което се разтваря наляво в поле. Полето се
+           праща на search.html — същата страница, която носи и резултатите. -->
+      <div class="header-search" data-header-search>
+        <form class="header-search-form" role="search" action="search.html" method="get">
+          <label class="visually-hidden" for="header-search-input">Търси в сайта</label>
+          <input class="header-search-input" id="header-search-input" name="q" type="search"
+                 placeholder="Търси…" autocomplete="off" spellcheck="false" tabindex="-1"
+                 data-header-search-input>
+          <button class="header-search-submit" type="submit" aria-label="Търси" aria-expanded="false"
+                  data-search-toggle>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.4 15.4 4.6 4.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </form>
+      </div>
+
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <svg class="nav-toggle-icon" aria-hidden="true" width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <path class="nav-toggle-lines" d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="1.6"/>
+          <path class="nav-toggle-cross" d="M2.5 1.5l13 11M15.5 1.5l-13 11" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
         <span class="visually-hidden">Меню</span>
       </button>
     </div>
@@ -69,7 +95,6 @@
 
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
   <nav aria-label="Мобилна навигация">
-    <a href="index.html">Начало</a>
     <a href="events.html">Събития</a>
     <a href="campaigns.html">Кампании</a>
     <a href="projects.html">Проекти и инициативи</a>
@@ -81,6 +106,9 @@
     <p>087&nbsp;888&nbsp;6890 · info@elaiti.com</p>
   </div>
 </div>
+
+<script src="assets/js/search-core.js?v=af877928" defer></script>
+<script src="assets/js/search.js?v=2a8fdf81" defer></script>
 
 <main id="main">
 
@@ -187,16 +215,20 @@
       </figure>
 
       <div class="about-text">
-        <h3 class="about-head">Как започна всичко?</h3>
+        <h3 class="about-head">„Ела и ти“ – там, където пътят свършва, започваме ние!</h3>
         <p>
-          Създадохме фондация „Ела и ти“ в подкрепа на хората в неравностойно положение.
+          Всичко започна през 2017 г. с желанието да изведем хората с увреждания извън познатите
+          им четири стени и да им отворим вратата към един различен, вълнуващ свят – от пещерите
+          и планинските върхове до спортните състезания. Всичко това постигаме единствено с
+          човешка сила, доверие, взаимна подкрепа и желание за приключения.
         </p>
         <p>
-          Започнахме дейността си с изготвяне на красиви изделия от отпадъци, като включвахме
-          активно самите хора. Част от инициативите ни са посещения на труднодостъпни места за
-          хора в неравностойно положение – със затруднена или невъзможна подвижност, с помощта
-          на сърцати доброволци и специализирани екипи от Планинска спасителна служба,
-          Пещерно спасяване и пещерни клубове от страната.
+          Така се роди „Ела и ти“ – общност от хора с и без увреждания, които споделят пътя,
+          емоциите, победите и приятелствата. А със „Заедно в града“ пренесохме тази мисия и в
+          ежедневието, защото всеки заслужава да бъде част от живота извън дома си.
+        </p>
+        <p>
+          Когато някой каже „Невъзможно!“, ние отговаряме: „Не, възможно е!“
         </p>
 
         <blockquote class="quote">
@@ -231,7 +263,9 @@
           </div>
           <div class="cta-body">
             <h3 class="cta-title">Участвай</h3>
-            <p class="cta-text">150+ души с увреждания видяха красотата на българската природа.</p>
+            <!--@REACH-START-->
+            <p class="cta-text">275+ души с увреждания видяха красотата на българската природа.</p>
+            <!--@REACH-END-->
             <a class="btn cta-btn" href="events.html">ВИЖ СЪБИТИЯТА</a>
           </div>
         </article>
@@ -298,14 +332,14 @@
               <article class="slide-card">
                 <picture><source type="image/webp" srcset="assets/img/events/past/le-tour-du-canal-velopohod-na-tolerantnostta-2026.webp"><img class="slide-media" src="assets/img/events/past/le-tour-du-canal-velopohod-na-tolerantnostta-2026.jpg" alt="Le tour du canal — велопоход на толерантността ’26" loading="lazy" decoding="async" width="900" height="1350"></picture>
                 <div class="slide-body">
-                  <h3 class="slide-title">Le tour du canal — велопоход на толерантността ’26</h3>
+                  <h3 class="slide-title">Le tour du Canal Plovdiv 2026</h3>
                   <p class="event-when"><time datetime="2026-10-17">17 октомври 2026</time></p>
                   <p class="event-place">Гребна База, Пловдив</p>
-                  <p class="slide-text">Имаме удоволствието да ви поканим на LE TOUR DU CANAL 2026 – ВЕЛОПОХОД НА ТОЛЕРАНТНОСТТА - събитието, което събира участници с и без увреждания в едно общо приключение! ПРОГРАМА 17 октомври 2026 г.</p>
-                  <a class="slide-link" href="events/le-tour-du-canal-velopohod-na-tolerantnostta-2026.html">Научи повече<span class="visually-hidden"> „Le tour du canal — велопоход на толерантността ’26“</span></a>
+                  <p class="slide-text">&quot;Le tour du Canal Plovdiv 2026 – Велопоход на толерантността&quot; е събитие, което събира участници с и без увреждания в едно общо приключение на колела, изпълнено с незабравими емоции и страхотно настроение!</p>
+                  <a class="slide-link" href="events/le-tour-du-canal-velopohod-na-tolerantnostta-2026.html">Научи повече<span class="visually-hidden"> „Le tour du Canal Plovdiv 2026“</span></a>
                 </div>
+                <a class="event-hit" href="events/le-tour-du-canal-velopohod-na-tolerantnostta-2026.html" aria-label="Отвори „Le tour du Canal Plovdiv 2026“"></a>
               </article>
-              <a class="event-hit" href="events/le-tour-du-canal-velopohod-na-tolerantnostta-2026.html" aria-label="Отвори „Le tour du canal — велопоход на толерантността ’26“"></a>
             </li>
 
             <li class="slide" aria-roledescription="слайд" aria-label="2 от 3">
@@ -316,8 +350,8 @@
                   <p class="slide-text">ЩАФЕТАТА ПРОДЪЛЖАВА! Тя тръгна на 3 октомври от „По стъпките на Алеко с приятел“ – пет отбора, пет колички, 43 участници и първите 3 073,77 € към голямата ни цел: 52 000 € за бус с рампа за „Ела и ти“.</p>
                   <a class="slide-link" href="events/byagay-za-ela-i-ti-dari-im-krila-poemi-shtafetata-2026.html">Научи повече<span class="visually-hidden"> „Бягай за „Ела и ти“ — дари им крила — поеми щафетата“</span></a>
                 </div>
+                <a class="event-hit" href="events/byagay-za-ela-i-ti-dari-im-krila-poemi-shtafetata-2026.html" aria-label="Отвори „Бягай за „Ела и ти“ — дари им крила — поеми щафетата“"></a>
               </article>
-              <a class="event-hit" href="events/byagay-za-ela-i-ti-dari-im-krila-poemi-shtafetata-2026.html" aria-label="Отвори „Бягай за „Ела и ти“ — дари им крила — поеми щафетата“"></a>
             </li>
 
             <li class="slide" aria-roledescription="слайд" aria-label="3 от 3">
@@ -330,8 +364,8 @@
                   <p class="slide-text">460 километра за една кауза. Отново.</p>
                   <a class="slide-link" href="events/trailcat-the-race-donate-wings-s-pirin-galov-2026.html">Научи повече<span class="visually-hidden"> „Trailcat The Race — DONATE WINGS с Пирин Галов“</span></a>
                 </div>
+                <a class="event-hit" href="events/trailcat-the-race-donate-wings-s-pirin-galov-2026.html" aria-label="Отвори „Trailcat The Race — DONATE WINGS с Пирин Галов“"></a>
               </article>
-              <a class="event-hit" href="events/trailcat-the-race-donate-wings-s-pirin-galov-2026.html" aria-label="Отвори „Trailcat The Race — DONATE WINGS с Пирин Галов“"></a>
             </li>
             <!--@PAST-END--></ul>
         </div>
@@ -368,6 +402,20 @@
 
       <div class="stories">
         <!--@STORIES-START-->
+        <a class="story" href="https://clinica.bg/40693-%E2%80%9Eela-i-ti%E2%80%9C-sys-stanovishte-sreshtu-proekta-za-ocenka-za-telk" target="_blank" rel="noopener">
+          <span class="story-media">
+            <picture><source type="image/webp" srcset="assets/img/media/clinica-2026-11-17.webp"><img src="assets/img/media/clinica-2026-11-17.jpg" alt="" loading="lazy" decoding="async" width="900" height="900"></picture>
+          </span>
+          <span class="story-meta">
+            <time class="story-date" datetime="2026-11-17">17.11.2026</time>
+            <span class="story-outlet">Clinica.bg</span>
+          </span>
+          <span class="story-foot">
+            <span class="story-title">„Ела и ти“ със становище срещу проекта за оценка за ТЕЛК</span>
+            <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </span>
+        </a>
+
         <a class="story" href="https://btvsport.bg/drugi/krila-kam-varha-video.html" target="_blank" rel="noopener">
           <span class="story-media">
             <picture><source type="image/webp" srcset="assets/img/media/btv-sport-2026-10-18.webp"><img src="assets/img/media/btv-sport-2026-10-18.jpg" alt="" loading="lazy" decoding="async" width="900" height="506"></picture>
@@ -406,20 +454,6 @@
           </span>
           <span class="story-foot">
             <span class="story-title">Black Sea Trail край Варна на 18 октомври: 300 бегачи</span>
-            <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </span>
-        </a>
-
-        <a class="story" href="https://360mag.bg/posts/164475" target="_blank" rel="noopener">
-          <span class="story-media">
-            <picture><source type="image/webp" srcset="assets/img/media/360-2026-10-15.webp"><img src="assets/img/media/360-2026-10-15.jpg" alt="" loading="lazy" decoding="async" width="900" height="506"></picture>
-          </span>
-          <span class="story-meta">
-            <time class="story-date" datetime="2026-10-15">15.10.2026</time>
-            <span class="story-outlet">360°</span>
-          </span>
-          <span class="story-foot">
-            <span class="story-title">Второ място за Пирин Галов на 466-километровия ултрамаратон TRAILCAT 300</span>
             <span class="story-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </span>
         </a>
@@ -669,9 +703,10 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/events-data.js?v=88e5eedb" defer></script>
-<script src="assets/js/upcoming.js?v=b9d79b70" defer></script>
-<script src="assets/js/main.js?v=7ae62831" defer></script>
+<script src="assets/js/events-data.js?v=6b206aa6" defer></script>
+<script src="assets/js/ui.js?v=bbba6ca1" defer></script>
+<script src="assets/js/upcoming.js?v=f1b257dd" defer></script>
+<script src="assets/js/main.js?v=6e90b536" defer></script>
 <script src="assets/js/count-up.js?v=85ecf8df" defer></script>
 </body>
 </html>

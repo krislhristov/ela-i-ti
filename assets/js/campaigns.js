@@ -37,6 +37,23 @@
     return { stale: false, data: d };
   }
 
+  /* Крайният срок идва от Платформата.бг. Минал ли е, кампанията е приключила —
+     независимо какво пише в tools/campaigns.json. */
+  function deadlineDate(raw) {
+    if (!raw) return null;
+    var m = String(raw).match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+    if (!m) { var t = Date.parse(raw); return isNaN(t) ? null : t; }
+    return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]),
+                    m[4] ? Number(m[4]) : 23, m[5] ? Number(m[5]) : 59).getTime();
+  }
+
+  function statusOf(camp) {
+    var live = LIVE[camp.slug];
+    var end = live ? deadlineDate(live.deadline) : null;
+    if (end) return Date.now() > end ? "closed" : "active";
+    return camp.status === "closed" ? "closed" : "active";
+  }
+
   function urlFor(slug) { return "campaigns/" + encodeURIComponent(slug) + ".html"; }
 
   /* блок с числата */
@@ -72,11 +89,6 @@
     if (dl) metaBits.push("Приключва на " + dl);
     if (metaBits.length) box.appendChild(node("p", "campaign-meta", metaBits.join(" · ")));
 
-    if (live.stale) {
-      box.appendChild(node("p", "campaign-note",
-        "Числата не са обновени след " + (dayText(d.updated) || "последното обновяване") + "."));
-    }
-
     return box;
   }
 
@@ -90,7 +102,7 @@
 
       var body = node("div", "project-card-body");
       var meta = node("p", "project-meta");
-      meta.appendChild(node("span", "project-kind", camp.status === "closed" ? "Приключила" : "Активна"));
+      meta.appendChild(node("span", "project-kind", statusOf(camp) === "closed" ? "Приключила" : "Активна"));
       body.appendChild(meta);
       body.appendChild(node("h2", "project-card-title", camp.title));
       if (camp.summary) body.appendChild(node("p", "project-card-text", camp.summary));
@@ -135,16 +147,14 @@
     page.innerHTML = "";
 
     var backWrap = node("div", "wrap event-page-back");
-    var back = node("a", "back-link", "← Кампании");
-    back.href = "campaigns.html";
+    var back = UI.backLink("back-link", "Кампании", "campaigns.html");
     backWrap.appendChild(back);
     page.appendChild(backWrap);
 
     if (!camp) {
       var miss = node("div", "wrap event-missing");
       miss.appendChild(node("h1", "event-page-title", "Кампанията не е намерена"));
-      var back2 = node("a", "btn btn-outline", "← Всички кампании");
-      back2.href = "campaigns.html";
+      var back2 = UI.backLink("btn btn-outline", "Всички кампании", "campaigns.html");
       miss.appendChild(back2);
       page.appendChild(miss);
       document.title = "Кампанията не е намерена — Фондация „Ела и ти“";
@@ -183,7 +193,7 @@
     }
 
     var actions = node("div", "campaign-actions");
-    var give = node("a", "btn btn-donate", "Дари през Платформата.бг");
+    var give = node("a", "btn btn-donate", "Дари в Платформата");
     give.href = camp.platformata;
     give.target = "_blank";
     give.rel = "noopener";

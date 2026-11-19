@@ -84,13 +84,8 @@
     if (ev.short) body.appendChild(node("p", "event-card-text", ev.short));
 
     var actions = node("div", "event-actions");
-    if (item.future && ev.signup) {
-      var signup = node("a", "btn", "Запиши се");
-      signup.href = ev.signup;
-      signup.target = "_blank";
-      signup.rel = "noopener";
-      signup.setAttribute("aria-label", "Запиши се за „" + ev.title + "“");
-      actions.appendChild(signup);
+    if (item.future && (ev.signup || ev.signupVolunteer)) {
+      actions.appendChild(UI.signup(ev, ev.title));
     }
     var more = node("a", "btn btn-outline", "Научи повече");
     more.href = url;
@@ -301,8 +296,7 @@
       page.innerHTML = "";
       var miss = node("div", "wrap event-missing");
       miss.appendChild(node("h1", "event-page-title", "Събитието не е намерено"));
-      var back = node("a", "btn btn-outline", "← Всички събития");
-      back.href = "events.html";
+      var back = UI.backLink("btn btn-outline", "Всички събития", "events.html");
       miss.appendChild(back);
       page.appendChild(miss);
       document.title = "Събитието не е намерено — Фондация „Ела и ти“";
@@ -316,8 +310,7 @@
 
     /* „← Всички събития“ стои над двете колони */
     var backWrap = node("div", "wrap event-page-back");
-    var backLink = node("a", "back-link", "← Всички събития");
-    backLink.href = "events.html";
+    var backLink = UI.backLink("back-link", "Всички събития", "events.html");
     backWrap.appendChild(backLink);
     page.appendChild(backWrap);
 
@@ -400,7 +393,7 @@
     infoRow("📍", "Локация", ev.location);
     infoRow("📅", "Дата", dayText(item.start));
     infoRow("👋", "Начало", item.ev.allDay ? "" : clock(item.start));
-    infoRow("🎫", "Билети", ev.tickets);
+    infoRow("🎫", "Такса за участие", ev.tickets);
 
     /* Към коя програма принадлежи събитието (ако принадлежи) */
     var proj = projectFor(ev.slug);
@@ -430,12 +423,8 @@
       side.appendChild(clink);
     }
 
-    if (item.future && ev.signup) {
-      var cta = node("a", "btn", "Запиши се");
-      cta.href = ev.signup;
-      cta.target = "_blank";
-      cta.rel = "noopener";
-      side.appendChild(cta);
+    if (item.future && (ev.signup || ev.signupVolunteer)) {
+      side.appendChild(UI.signup(ev, ev.title));
     }
     if (side.childNodes.length) sideCol.appendChild(side);
 

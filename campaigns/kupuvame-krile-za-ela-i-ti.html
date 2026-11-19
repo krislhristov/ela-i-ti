@@ -15,9 +15,17 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-700-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-700-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-display-600-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-400-cyrillic.woff2">
-<link rel="stylesheet" href="../assets/fonts/fonts.css?v=cc0928c4">
-<link rel="stylesheet" href="../assets/css/style.css?v=cc112f7a">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-400-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-500-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-500-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/wix-madefor-text-600-latin.woff2">
+<link rel="stylesheet" href="../assets/fonts/fonts.css?v=71cdcb39">
+<link rel="stylesheet" href="../assets/css/style.css?v=c96fd6d0">
 </head>
 <body>
 
@@ -30,7 +38,6 @@
     </a>
 
     <nav class="nav" aria-label="Основна навигация">
-      <a href="../index.html">Начало</a>
       <a href="../events.html">Събития</a>
       <a href="../campaigns.html" aria-current="page">Кампании</a>
       <a href="../projects.html">Проекти и инициативи</a>
@@ -41,8 +48,27 @@
 
     <div class="header-actions">
       <a class="btn btn-sm" href="../donate.html">Дари сега</a>
+
+      <!-- Търсене: кръгче с лупа, което се разтваря наляво в поле. Полето се
+           праща на search.html — същата страница, която носи и резултатите. -->
+      <div class="header-search" data-header-search>
+        <form class="header-search-form" role="search" action="../search.html" method="get">
+          <label class="visually-hidden" for="header-search-input">Търси в сайта</label>
+          <input class="header-search-input" id="header-search-input" name="q" type="search"
+                 placeholder="Търси…" autocomplete="off" spellcheck="false" tabindex="-1"
+                 data-header-search-input>
+          <button class="header-search-submit" type="submit" aria-label="Търси" aria-expanded="false"
+                  data-search-toggle>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.4 15.4 4.6 4.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </form>
+      </div>
+
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-nav-toggle>
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <svg class="nav-toggle-icon" aria-hidden="true" width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <path class="nav-toggle-lines" d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="1.6"/>
+          <path class="nav-toggle-cross" d="M2.5 1.5l13 11M15.5 1.5l-13 11" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
         <span class="visually-hidden">Меню</span>
       </button>
     </div>
@@ -51,7 +77,6 @@
 
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
   <nav aria-label="Мобилна навигация">
-    <a href="../index.html">Начало</a>
     <a href="../events.html">Събития</a>
     <a href="../campaigns.html" aria-current="page">Кампании</a>
     <a href="../projects.html">Проекти и инициативи</a>
@@ -64,11 +89,14 @@
   </div>
 </div>
 
+<script src="../assets/js/search-core.js?v=af877928" defer></script>
+<script src="../assets/js/search.js?v=2a8fdf81" defer></script>
+
 <main id="main" class="has-donate-dock">
 
 <div class="event-page" data-campaign="kupuvame-krile-za-ela-i-ti">
     <div class="wrap event-page-back">
-      <a class="back-link" href="../campaigns.html">← Кампании</a>
+      <a class="back-link" href="../campaigns.html"><svg class="ico-arrow ico-arrow--back" width="17" height="13" viewBox="0 0 17 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6.5h14M10 1.5l5 5-5 5"/></svg>Кампании</a>
     </div>
 
     <div class="wrap event-page-layout">
@@ -76,12 +104,10 @@
         <div class="event-page-head">
           <h1 class="event-page-title">Купуваме криле за „Ела и ти“</h1>
         </div>
-        <p class="project-lead">Помогнете ни да закупим специализиран бус с платформа, с който да стигаме заедно до още хора, събития и приключения.</p>
           <div class="campaign-progress" data-live-campaign="kupuvame-krile-za-ela-i-ti">
-            <p class="campaign-progress-row"><b data-live-donated>3 699 €</b><span data-live-of> от 52 000 €</span></p>
+            <p class="campaign-progress-row"><b data-live-donated>3 704 €</b><span data-live-of> от 52 000 €</span></p>
             <div class="campaign-bar"><span class="campaign-bar-fill" data-live-bar style="width:7.1%"></span></div>
-            <p class="campaign-meta" data-live-meta>133 дарители · до 14 ноември 2026</p>
-            <p class="campaign-stamp" data-live-stamp>към 13 ноември 2026</p>
+            <p class="campaign-meta" data-live-meta>134 дарители · до 15 януари 2027</p>
           </div>
         <div class="event-page-text">
           <p>Ние сме фондация „Ела и Ти“ и вече девет години заедно с нашите приятели  с увреждания и стотици доброволци доказваме, че бариерите не са непреодолими. Качваме хора в инвалидни колички до планински върхове и езера, влизаме заедно в пещери, участваме в спортни състезания, ходим на концерти, организираме походи, срещи и приключения. Създаваме събития, в които хората с увреждания не са зрители, а участници. Но за да се случи всичко това, първо трябва да стигнем дотам, a „Ела и Ти“ няма собствен транспорт.</p>
@@ -112,7 +138,7 @@
           <b>Купуваме криле за „Ела и ти“</b>
           <span>Всяко дарение ни приближава до целта</span>
         </p>
-        <a class="btn btn-donate" href="https://platformata.bg/deca-i-vazrastni-s-uvrejdania/kupuvame-krile-za-ela-i-ti" target="_blank" rel="noopener">Дари през Платформата.бг</a>
+        <a class="btn btn-donate" href="https://platformata.bg/deca-i-vazrastni-s-uvrejdania/kupuvame-krile-za-ela-i-ti" target="_blank" rel="noopener">Дари в Платформата</a>
         <a class="btn btn-outline" href="../donate.html">Други начини</a>
       </div>
     </div>
@@ -165,9 +191,9 @@
     </div>
   </div>
 </footer>
-<script src="../assets/js/ui.js?v=c90f2faf" defer></script>
-<script src="../assets/js/campaign-live.js?v=2b87130f" defer></script>
-<script src="../assets/js/campaign-live-fill.js?v=c1774e03" defer></script>
-<script src="../assets/js/main.js?v=7ae62831" defer></script>
+<script src="../assets/js/ui.js?v=bbba6ca1" defer></script>
+<script src="../assets/js/campaign-live.js?v=796f7e6f" defer></script>
+<script src="../assets/js/campaign-live-fill.js?v=c4e9d096" defer></script>
+<script src="../assets/js/main.js?v=6e90b536" defer></script>
 </body>
 </html>
