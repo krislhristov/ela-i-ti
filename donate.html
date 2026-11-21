@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-600-cyrillic.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/wix-madefor-text-600-latin.woff2">
 <link rel="stylesheet" href="assets/fonts/fonts.css?v=71cdcb39">
-<link rel="stylesheet" href="assets/css/style.css?v=c96fd6d0">
+<link rel="stylesheet" href="assets/css/style.css?v=1b1e5e51">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -124,64 +124,86 @@
 <section class="section section-dark donate-methods" id="support" aria-label="Начини за дарение">
     <div class="wrap">
               <div class="give-methods">
-          <div class="give-method" data-amounts>
-            <p class="give-method-head">През ePay</p>
-            <div class="epay-row">
-              <div class="select-wrap">
-                <label class="visually-hidden" for="amount">Сума за дарение</label>
-                <select id="amount" class="amount-select" data-amount-select>
-                <option value="">Сума</option>
-                <option value="5" selected>5 €</option>
-                <option value="10">10 €</option>
-                <option value="20">20 €</option>
-                <option value="50">50 €</option>
-                <option value="100">100 €</option>
-                </select>
-                <svg class="select-arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <form class="give-method give-method--card" method="post" action="/pay/create.php" data-donate>
+            <div class="card-head">
+              <p class="give-method-head">С карта</p>
+              <div class="pay-tabs" role="radiogroup" aria-label="Вид дарение">
+                <input class="pay-tab-input" type="radio" name="mode" id="mode-once" value="once" checked>
+                <label class="pay-tab" for="mode-once">Еднократно</label>
+                <input class="pay-tab-input" type="radio" name="mode" id="mode-monthly" value="monthly">
+                <label class="pay-tab" for="mode-monthly">Месечно</label>
               </div>
-            <a class="btn btn-donate give-amounts-cta" data-amount-cta
-            href="https://www.epay.bg/v3main/paylogin?min=1801952452&total=5&checksum=7fa7e69cd0aae19b07aab606a5fef6bb577c4028&descr=%D0%94%D0%B0%D1%80%D0%B5%D0%BD%D0%B8%D0%B5&encoding=utf8&url_ok=https%3A%2F%2Fwww.epay.bg%2Fv3main%2Ffront%3Fp%3Dthanks&url_cancel=https%3A%2F%2Fwww.epay.bg%2Fv3main%2Ffront%3Fp%3Dcancel"
-            target="_blank" rel="noopener">Дари 5 €</a>
-          </div>
-          </div>
+            </div>
 
-          <div class="give-method">
-            <p class="give-method-head">През Платформата.бг</p>
-            <a class="btn" href="https://platformata.bg/deca-i-vazrastni-s-uvrejdania/kupuvame-krile-za-ela-i-ti" target="_blank" rel="noopener">Към кампанията</a>
-          </div>
+            <div class="amount-grid" role="group" aria-label="Избор на сума">
+              <button class="amount-chip" type="button" data-amount="5" aria-pressed="false">5 €</button>
+              <button class="amount-chip" type="button" data-amount="10" aria-pressed="false">10 €</button>
+              <button class="amount-chip is-on" type="button" data-amount="20" aria-pressed="true">20 €</button>
+              <button class="amount-chip" type="button" data-amount="50" aria-pressed="false">50 €</button>
+              <button class="amount-chip" type="button" data-amount="100" aria-pressed="false">100 €</button>
+              <button class="amount-chip" type="button" data-amount="250" aria-pressed="false">250 €</button>
+            </div>
 
-          <div class="give-method give-method--bank">
-            <p class="give-method-head">По банков път</p>
-            <ul class="copy-list">
-            <li class="copy-row">
-            <span class="copy-label">IBAN</span>
-            <span class="copy-value" data-copy-value>BG77FINV91501016961387</span>
-            <button class="copy-btn" type="button" data-copy aria-label="Копирай IBAN">
-            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            </button>
-            </li>
-            <li class="copy-row">
-            <span class="copy-label">Получател</span>
-            <span class="copy-value" data-copy-value>Фондация „Ела и ти“</span>
-            <button class="copy-btn" type="button" data-copy aria-label="Копирай получател">
-            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            </button>
-            </li>
-            <li class="copy-row">
-            <span class="copy-label">Основание</span>
-            <span class="copy-value" data-copy-value>Дарение</span>
-            <button class="copy-btn" type="button" data-copy aria-label="Копирай основание">
-            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            </button>
-            </li>
-            </ul>
-            <p class="copy-status" role="status" aria-live="polite" data-copy-status></p>
-          </div>
+            <label class="sum-field">
+              <span class="sum-cur"><b>€</b><span>EUR</span></span>
+              <span class="sum-value">
+                <input class="sum-input" name="amount" type="text" inputmode="numeric" value="20" maxlength="7" autocomplete="off" aria-label="Сума за дарение">
+                <span class="sum-period" data-period hidden>/ месец</span>
+              </span>
+            </label>
 
-          <div class="give-method">
-            <p class="give-method-head">DMS ELA на 17 777</p>
-            <p class="give-method-text">Дари със SMS от 1,02 евро или се абонирай за месечно SMS дарение от 2,56 или 5,12 евро.</p>
-            <a class="btn btn-donate" href="sms:17777?body=DMS%20ELA">Изпрати SMS</a>
+            <p class="pay-error" role="alert" hidden>Лимитът на дарението е €100,000</p>
+            <button class="btn btn-donate pay-cta" type="submit">Дари 20 €</button>
+            <p class="pay-brand">Сигурно плащане през <span class="visually-hidden">Stripe</span><svg class="pay-brand-logo" viewBox="0 0 360 151" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M360 78.0002C360 52.4002 347.6 32.2002 323.9 32.2002C300.1 32.2002 285.7 52.4002 285.7 77.8002C285.7 107.9 302.7 123.1 327.1 123.1C339 123.1 348 120.4 354.8 116.6V96.6002C348 100 340.2 102.1 330.3 102.1C320.6 102.1 312 98.7002 310.9 86.9002H359.8C359.8 85.6002 360 80.4002 360 78.0002ZM310.6 68.5002C310.6 57.2002 317.5 52.5002 323.8 52.5002C329.9 52.5002 336.4 57.2002 336.4 68.5002H310.6Z"/><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M247.1 32.2002C237.3 32.2002 231 36.8002 227.5 40.0002L226.2 33.8002H204.2V150.4L229.2 145.1L229.3 116.8C232.9 119.4 238.2 123.1 247 123.1C264.9 123.1 281.2 108.7 281.2 77.0002C281.1 48.0002 264.6 32.2002 247.1 32.2002ZM241.1 101.1C235.2 101.1 231.7 99.0002 229.3 96.4002L229.2 59.3002C231.8 56.4002 235.4 54.4002 241.1 54.4002C250.2 54.4002 256.5 64.6002 256.5 77.7002C256.5 91.1002 250.3 101.1 241.1 101.1Z"/><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M169.8 26.3001L194.9 20.9001V0.600098L169.8 5.9001V26.3001Z"/><path fill="currentColor" d="M194.9 33.9001H169.8V121.4H194.9V33.9001Z"/><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M142.9 41.3001L141.3 33.9001H119.7V121.4H144.7V62.1001C150.6 54.4001 160.6 55.8001 163.7 56.9001V33.9001C160.5 32.7001 148.8 30.5001 142.9 41.3001Z"/><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M92.8999 12.2002L68.4999 17.4002L68.3999 97.5002C68.3999 112.3 79.4999 123.2 94.2999 123.2C102.5 123.2 108.5 121.7 111.8 119.9V99.6002C108.6 100.9 92.7999 105.5 92.7999 90.7002V55.2002H111.8V33.9002H92.7999L92.8999 12.2002Z"/><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M25.3 59.3002C25.3 55.4002 28.5 53.9002 33.8 53.9002C41.4 53.9002 51 56.2002 58.6 60.3002V36.8002C50.3 33.5002 42.1 32.2002 33.8 32.2002C13.5 32.2002 0 42.8002 0 60.5002C0 88.1002 38 83.7002 38 95.6002C38 100.2 34 101.7 28.4 101.7C20.1 101.7 9.5 98.3002 1.1 93.7002V117.5C10.4 121.5 19.8 123.2 28.4 123.2C49.2 123.2 63.5 112.9 63.5 95.0002C63.4 65.2002 25.3 70.5002 25.3 59.3002Z"/></svg></p>
+          </form>
+
+          <div class="give-aside">
+            <div class="give-method give-method--bank">
+              <p class="give-method-head">По банков път</p>
+              <ul class="copy-list">
+              <li class="copy-row">
+              <span class="copy-label">IBAN</span>
+              <span class="copy-value" data-copy-value>BG77FINV91501016961387</span>
+              <button class="copy-btn" type="button" data-copy aria-label="Копирай IBAN">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+              </li>
+              <li class="copy-row">
+              <span class="copy-label">Получател</span>
+              <span class="copy-value" data-copy-value>Фондация „Ела и ти“</span>
+              <button class="copy-btn" type="button" data-copy aria-label="Копирай получател">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+              </li>
+              <li class="copy-row">
+              <span class="copy-label">Основание</span>
+              <span class="copy-value" data-copy-value>Дарение</span>
+              <button class="copy-btn" type="button" data-copy aria-label="Копирай основание">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+              </li>
+              <li class="copy-row copy-row--soon">
+              <span class="copy-label">Blink P2P</span>
+              <span class="copy-value" data-copy-value>Очаква се скоро</span>
+              <button class="copy-btn" type="button" data-copy aria-label="Копирай">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+              </li>
+              </ul>
+              <p class="copy-status" role="status" aria-live="polite" data-copy-status></p>
+            </div>
+
+            <div class="give-aside-row">
+              <div class="give-method">
+                <p class="give-method-head">През Platformata.bg</p>
+                <a class="btn" href="https://platformata.bg/deca-i-vazrastni-s-uvrejdania/kupuvame-krile-za-ela-i-ti" target="_blank" rel="noopener">Към кампанията</a>
+              </div>
+
+              <div class="give-method">
+                <p class="give-method-head">DMS ELA на 17 777</p>
+                <a class="btn btn-donate" href="sms:17777?body=DMS%20ELA">Изпрати SMS</a>
+              </div>
+            </div>
           </div>
         </div>
   </section>
@@ -240,7 +262,7 @@
 </footer>
 <script src="assets/js/events-data.js?v=6b206aa6" defer></script>
 <script src="assets/js/upcoming.js?v=f1b257dd" defer></script>
-<script src="assets/js/main.js?v=6e90b536" defer></script>
+<script src="assets/js/main.js?v=5cbc5956" defer></script>
 <script src="assets/js/count-up.js?v=85ecf8df" defer></script>
 </body>
 </html>

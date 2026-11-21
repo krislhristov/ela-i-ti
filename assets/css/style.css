@@ -2275,19 +2275,10 @@ body.menu-open { overflow: hidden; }
 .event-signup-chev {
   width: 8px; height: 8px; margin-left: 2px;
   border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
+  transform: rotate(45deg);
   transition: transform .18s ease;
 }
-
-/* Шевронът вдясно тегли текста наляво от центъра на бутона. Затова слагаме
-   невидим „балансьор“ отляво, колкото е шевронът с отстоянието му — надписът
-   застава точно по средата, а бутонът не губи ширина. */
-.event-signup-trigger::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 10px;
-}
-.event-signup.is-open .event-signup-chev { transform: translateY(1px) rotate(-135deg); }
+.event-signup.is-open .event-signup-chev { transform: rotate(-135deg); }
 .event-signup-menu {
   position: absolute; top: calc(100% + 8px); left: 0; z-index: 60;
   display: none; flex-direction: column;
@@ -3141,4 +3132,325 @@ body > .search-scrim.is-on { display: block; }
   }
   .search-submit { display: none; }   /* на телефон Enter и лупата в клавиатурата стигат */
   .search-results { margin-top: 0; }
+}
+
+/* ── Дарение с карта (Stripe) ──────────────────────────────────────────────
+   Картата е сама вляво; банката, Платформата и DMS са вдясно — банката отгоре,
+   другите две един до друг под нея, за да завършват двете колони на една
+   линия. На телефон всичко е в една колона в същия ред. */
+.give-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(10px, 1.1vw, 16px);
+  align-items: stretch;
+  max-width: 1240px;
+}
+.give-aside {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(10px, 1.1vw, 16px);
+}
+.give-aside-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(10px, 1.1vw, 16px);
+}
+@media (max-width: 900px) {
+  .give-methods { grid-template-columns: 1fr; }
+  .give-aside { grid-template-rows: none; }
+  .give-aside-row { grid-template-columns: 1fr; }
+}
+
+.give-method--card { row-gap: 0; }
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.pay-tabs {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 9999px;
+  background: rgba(9, 26, 36, .30);
+  border: 1px solid rgba(234, 244, 242, .14);
+}
+.pay-tab-input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pay-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(234, 244, 242, .8);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .18s var(--ease), color .18s var(--ease);
+}
+.pay-tab-input:checked + .pay-tab { background: var(--paper); color: var(--ink); }
+.pay-tab-input:focus-visible + .pay-tab { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+.amount-grid {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  margin-top: 14px;
+}
+.amount-chip {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 50px;
+  padding: 6px 2px;
+  border: 1px solid rgba(234, 244, 242, .24);
+  border-radius: var(--r);
+  background: transparent;
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color .16s var(--ease), border-color .16s var(--ease), color .16s var(--ease);
+}
+@media (hover: hover) { .amount-chip:hover { border-color: var(--paper); } }
+.amount-chip.is-on { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+.amount-chip:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+.sum-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+  min-height: 64px;
+  padding: 6px 14px;
+  border: 1px solid rgba(234, 244, 242, .32);
+  border-radius: var(--r);
+  cursor: text;
+}
+.sum-field:focus-within { border-color: var(--paper); }
+.sum-cur { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; flex: 0 0 auto; }
+.sum-cur b { font-family: var(--display); font-size: 19px; line-height: 1; color: var(--paper); }
+.sum-cur span { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(234, 244, 242, .6); }
+.sum-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--paper);
+  outline: none;
+}
+.give-method--card .pay-cta { width: 100%; margin-top: auto; }
+.pay-note { margin-top: 10px; font-size: 12px; line-height: 1.45; color: rgba(234, 244, 242, .62); }
+.copy-row--soon .copy-value { color: rgba(234, 244, 242, .62); }
+
+@media (max-width: 768px) {
+  .card-head { row-gap: 10px; }
+  .pay-tabs { width: 100%; }
+  .pay-tab { flex: 1; }
+  .amount-grid { flex-wrap: wrap; gap: 8px; }
+  .amount-chip { flex: 1 1 28%; min-height: 52px; font-size: 18px; }
+  .sum-input { font-size: 24px; }
+  .give-method--card .pay-cta { margin-top: 14px; }
+}
+
+.pay-error {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ember-soft);
+}
+.pay-error[hidden] { display: none; }
+.give-method--card .pay-cta:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.pay-brand {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  color: rgba(234, 244, 242, .7);
+}
+.pay-brand-logo { display: block; width: 66px; height: auto; }
+
+/* Логото на Stripe е знак за доверие под бутона: центрирано, по-малко. */
+.give-method--card .pay-brand { width: 100%; margin-top: 16px; justify-content: center; }
+.give-method--card .pay-brand-logo { width: 58px; }
+
+/* „Сигурно плащане през stripe“ — текст и логото на един ред. */
+.give-method--card .pay-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 14px;
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: rgba(234, 244, 242, .7);
+}
+.give-method--card .pay-brand-logo { width: 46px; height: auto; transform: translateY(1px); }
+
+/* Логото се подравнява по височината на буквите, не по размера на шрифта. */
+.give-method--card .pay-brand { font-size: 13px; gap: 6px; }
+.give-method--card .pay-brand-logo { width: 38px; transform: translateY(.5px); }
+
+/* Логото се равнява по височината на главните букви, не по шрифта. */
+.give-method--card .pay-brand { font-size: 13px; }
+.give-method--card .pay-brand-logo { width: 32px; transform: translateY(-1px); }
+
+/* „Сигурно плащане през stripe“: логото се подравнява по базовата линия на
+   текста, не по средата на реда. */
+.give-method--card .pay-brand {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(234, 244, 242, .7);
+}
+.give-method--card .pay-brand-logo {
+  display: inline-block;
+  width: 30px;
+  height: auto;
+  vertical-align: -3px;
+  transform: none;
+}
+
+/* „месец“ се пише с малки букви, както е в текста. */
+.give-method--card .sum-cur span { text-transform: none; letter-spacing: .06em; }
+
+/* Официалното лого от комплекта на Stripe: малко по-голям етикет на полето. */
+.give-method--card .pay-brand-logo { vertical-align: -2px; }
+.sum-cur span { font-size: 11px; }
+.sum-cur b { font-size: 20px; }
+
+/* Логото се равнява по височината на главните букви на текста (≈10px). */
+.give-method--card .pay-brand-logo { width: 24px; vertical-align: -2px; }
+
+/* Етикетът на полето: още малко по-едър и по-четим. */
+.sum-cur span { font-size: 11.5px; letter-spacing: .04em; color: rgba(234, 244, 242, .78); }
+
+/* „€ / EUR“ е един блок: стегнати редове, равни отстояния от рамката. */
+.sum-cur { justify-content: center; gap: 2px; }
+.sum-cur b { line-height: 1; }
+.sum-cur span { line-height: 1.2; }
+
+/* Логото е малко по-голямо от текста, но остава на същата базова линия. */
+.give-method--card .pay-brand-logo { width: 34px; vertical-align: -2.5px; }
+
+/* Числото се мести оптически към средата на блока „€ / EUR“. */
+.sum-input { transform: translateY(2px); }
+
+/* Редовете на блока са с нормална височина, за да е центриран мастилото. */
+.sum-cur b { line-height: 1.15; }
+.sum-cur span { line-height: 1.25; }
+
+/* Без отместване: числото се центрира от браузъра в полето. */
+.sum-input { transform: none; }
+
+/* Блокът „€ / EUR“ се вдига с 1px, за да е точно в средата на полето. */
+.sum-cur { transform: translateY(-1px); }
+
+/* По-закръглени ъгли в блока за дарения и малко повече въздух между редовете. */
+.give-method { border-radius: 14px; }
+.amount-chip { border-radius: 12px; }
+.sum-field { border-radius: 14px; }
+.amount-grid { margin-top: 20px; }
+.sum-field { margin-top: 16px; }
+.pay-brand { margin-top: 18px; }
+
+/* Логото се сваля с 3px: измерено спрямо базовата линия на текста. */
+.give-method--card .pay-brand-logo { vertical-align: -5.5px; }
+
+/* Един и същ радиус за бутоните, полето и картите. */
+.amount-chip { border-radius: 14px; }
+
+/* „/ месец“ стои след сумата, не при валутата. */
+.sum-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.sum-value .sum-input { flex: 1 1 auto; width: auto; min-width: 0; }
+.sum-period {
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(234, 244, 242, .72);
+  white-space: nowrap;
+}
+.sum-period[hidden] { display: none; }
+
+/* Логото се центрира оптически по тялото на буквите (x-височина), не по базовата линия. */
+.give-method--card .pay-brand-logo { vertical-align: -3.4px; }
+
+/* Банковите редове: етикет с фиксирана ширина, за да започват всички стойности
+   на една и съща вертикала — и на телефон, и на десктоп. */
+.give-method--bank .copy-row {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 6px;
+}
+.give-method--bank .copy-label {
+  flex-basis: auto;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.give-method--bank .copy-value { text-align: left; }
+@media (min-width: 769px) {
+  .give-method--bank .copy-row { grid-template-columns: 104px minmax(0, 1fr) auto; column-gap: 8px; }
+}
+
+/* Колоните не могат да надхвърлят контейнера: без това картите излизат надясно
+   на тесен екран (min-content на вътрешния ред ги разпъва). */
+.give-methods { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.give-methods > * { min-width: 0; }
+.give-aside-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+@media (max-width: 900px) {
+  .give-methods { grid-template-columns: minmax(0, 1fr); }
+  .give-aside-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Логото: с 1px по-ниско от предишното. */
+.give-method--card .pay-brand-logo { vertical-align: -4.4px; }
+
+/* „Запиши се“: ако под бутона няма място, панелът се отваря нагоре —
+   и никога не излиза извън екрана по височина. */
+.event-signup--up .event-signup-menu { top: auto; bottom: calc(100% + 8px); }
+.event-signup-menu { max-height: calc(100vh - 24px); overflow-y: auto; }
+
+/* Фина настройка: логото с 0.3px по-високо. */
+.give-method--card .pay-brand-logo { vertical-align: -4.1px; }
+
+/* Десктоп: трите реда в картата дишат с еднакъв отстъп, а полето за сума
+   завършва на една линия с долния ръб на банковата карта отдясно. */
+@media (min-width: 901px) {
+  .give-method--card .amount-grid { margin-top: 25.5px; }
+  .give-method--card .sum-field { margin-top: 25.5px; }
+}
+
+/* 25.25px: с тази стойност полето за сума завършва точно на ръба на банковата карта. */
+@media (min-width: 901px) {
+  .give-method--card .amount-grid { margin-top: 25.25px; }
+  .give-method--card .sum-field { margin-top: 25.25px; }
 }

@@ -749,41 +749,82 @@
     document.addEventListener("pointerdown", function () { root.classList.remove("kbd"); }, true);
   })();
 
-  /* ── Избор на сума за дарение ─────────────────────────────────────────── */
+  /* ── Дарение с карта ────────────────────────────────────────────────────
+     Формата се праща към /pay/create.php, който прави Checkout сесия в Stripe.
+     Тук само държим полето, бутоните за сума и надписа на бутона в синхрон.
+     Без JavaScript формата пак работи: полето има стойност, а „Еднократно“ е
+     избрано по подразбиране. */
   (function () {
-    var box = document.querySelector("[data-amounts]");
-    if (!box) return;
-    var select = box.querySelector("[data-amount-select]");
-    var cta = box.querySelector("[data-amount-cta]");
-    if (!select || !cta) return;
+    var form = document.querySelector("[data-donate]");
+    if (!form) return;
 
-    var base = "Дари";
-    /* Подписаният линк на ePay: сменя се само total, checksum-ът е общ за всички суми. */
-    var EPAY = "https://www.epay.bg/v3main/paylogin?min=1801952452&total={sum}"
-      + "&checksum=7fa7e69cd0aae19b07aab606a5fef6bb577c4028"
-      + "&descr=%D0%94%D0%B0%D1%80%D0%B5%D0%BD%D0%B8%D0%B5&encoding=utf8"
-      + "&url_ok=https%3A%2F%2Fwww.epay.bg%2Fv3main%2Ffront%3Fp%3Dthanks"
-      + "&url_cancel=https%3A%2F%2Fwww.epay.bg%2Fv3main%2Ffront%3Fp%3Dcancel";
+    var field = form.querySelector(".sum-input");
+    var chips = form.querySelectorAll("[data-amount]");
+    var cta = form.querySelector(".pay-cta");
+    var period = form.querySelector("[data-period]");
+    var error = form.querySelector(".pay-error");
+    var modes = form.querySelectorAll('input[name="mode"]');
+    if (!field || !cta) return;
 
-    function sync() {
-      var sum = select.value;
-      if (sum) {
-        cta.textContent = base + " " + sum + " €";
-        cta.href = EPAY.replace("{sum}", encodeURIComponent(sum));
-        cta.removeAttribute("aria-disabled");
-      } else {
-        cta.textContent = base;
-        cta.setAttribute("aria-disabled", "true");
-      }
+    var MAX = 100000;
+
+    function monthly() {
+      var on = form.querySelector('input[name="mode"]:checked');
+      return !!on && on.value === "monthly";
     }
 
-    select.addEventListener("change", sync);
+    /* В полето влизат само цифри, най-много шест; хилядите се пишат със запетая. */
+    function digits() {
+      return field.value.replace(/\D+/g, "").slice(0, 6);
+    }
 
-    cta.addEventListener("click", function (event) {
-      if (cta.getAttribute("aria-disabled") === "true") {
-        event.preventDefault();
-        select.focus();
+    function withCommas(value) {
+      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function sync() {
+      var sum = digits();
+      var shown = withCommas(sum);
+      if (field.value !== shown) {
+        var before = field.value.slice(0, field.selectionStart || 0).replace(/\D/g, "").length;
+        field.value = shown;
+        var pos = 0;
+        var seen = 0;
+        while (pos < shown.length && seen < before) {
+          if (shown.charAt(pos) >= "0" && shown.charAt(pos) <= "9") seen++;
+          pos++;
+        }
+        try { field.setSelectionRange(pos, pos); } catch (e) {}
       }
+      var over = Number(sum) > MAX;
+      if (error) error.hidden = !over;
+      cta.disabled = over || !sum;
+      cta.textContent = sum && !over
+        ? "Дари " + shown + " €" + (monthly() ? " месечно" : "")
+        : "Дари";
+      if (period) period.hidden = !monthly();
+      Array.prototype.forEach.call(chips, function (chip) {
+        var on = chip.dataset.amount === sum;
+        chip.classList.toggle("is-on", on);
+        chip.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+    }
+
+    Array.prototype.forEach.call(chips, function (chip) {
+      chip.addEventListener("click", function () {
+        field.value = chip.dataset.amount;
+        sync();
+      });
+    });
+
+    field.addEventListener("input", sync);
+    field.addEventListener("keydown", function (event) {
+      if (event.key.length === 1 && !/[0-9]/.test(event.key) && !event.metaKey && !event.ctrlKey) {
+        event.preventDefault();
+      }
+    });
+    Array.prototype.forEach.call(modes, function (radio) {
+      radio.addEventListener("change", sync);
     });
 
     sync();
@@ -940,6 +981,17 @@
     menu.style.top = Math.round(top) + "px";
   }
 
+  /* Панелът трябва да се вижда целият: щом под бутона няма място, отваря се
+     над него. Така при дълъг списък „Запиши се“ не изчезва под екрана. */
+  function fitSignupMenu(wrap) {
+    var menu = wrap.querySelector(".event-signup-menu");
+    if (!menu) return;
+    var rect = menu.getBoundingClientRect();
+    if (!rect.height) return;
+    if (rect.bottom <= window.innerHeight - 12) return;
+    wrap.classList.add("event-signup--up");
+  }
+
   function restoreFloatingMenu() {
     if (!floatingMenu || !floatingHome) return;
     floatingMenu.classList.remove("event-signup-menu--floating");
@@ -952,6 +1004,7 @@
 
   function closeSignupPanel(wrap) {
     wrap.classList.remove("is-open");
+    wrap.classList.remove("event-signup--up");
     var trigger = wrap.querySelector(".event-signup-trigger");
     if (trigger) trigger.setAttribute("aria-expanded", "false");
     var card = wrap.parentNode;
@@ -982,6 +1035,7 @@
         while (card && !(card.classList && card.classList.contains("event-card"))) card = card.parentNode;
         if (card) card.classList.add("is-signup-open");
         floatMenuInSlider(wrap, trigger);
+        fitSignupMenu(wrap);
       }
       return;
     }
