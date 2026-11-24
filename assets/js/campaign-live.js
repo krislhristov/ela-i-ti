@@ -6,6 +6,6 @@ window.ELAITI_CAMPAIGN_LIVE = {
     "donors": 137,
     "source": "platformata.bg",
     "target": 52000.0,
-    "updated": "2026-11-22T20:01:07+02:00"
+    "updated": "2026-11-24T12:25:16+02:00"
   }
 };
